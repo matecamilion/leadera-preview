@@ -64,8 +64,13 @@
        RESET
     ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+    /* overflow-x vive en <html>, no en <body>: en <body> lo convierte en
+       scroll container propio, y como nunca scrollea deja inactivo el
+       view-timeline de la colina. En <html> el overflow se propaga al
+       viewport —mismo recorte horizontal, el scroller sigue siendo el
+       documento— y el sticky del nav no se entera. */
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; }
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
     :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
@@ -397,6 +402,10 @@
        El recorte de arriba lo disuelve una máscara sobre la franja:
        con overflow:hidden a secas el blur se corta en línea recta y
        se ve el canto.
+
+       La colina no se dispara: su tamaño está atado al scroll. El
+       progreso lo marca el usuario, así que si scrollea despacio crece
+       despacio y si vuelve para arriba se achica de nuevo.
     ============================================================ */
     .hero-transition {
       position: relative;
@@ -405,10 +414,16 @@
       background: var(--bg);
       -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 30%);
               mask-image: linear-gradient(180deg, transparent 0%, #000 30%);
+      view-timeline-name: --hero-hill;
+      view-timeline-axis: block;
     }
 
     /* La base y los flancos de la colina caen fuera de la franja: lo
-       único que entra en cuadro es el lomo. */
+       único que entra en cuadro es el lomo.
+
+       El estado escrito acá es el FINAL, que es lo que se ve sin JS y
+       sin scroll-driven animations. El scrubbing lo pisa desde el
+       primer frame, así que no hay salto visible. */
     .hero-hill {
       position: absolute;
       left: 6%; right: 6%; bottom: -118px;
@@ -417,11 +432,40 @@
       background: var(--verde-yerba);
       filter: blur(58px);
       transform-origin: 50% 100%;
-      opacity: 0;
-      transform: translateY(52px) scaleY(.6);
-      transition: opacity .8s var(--ease-out-expo), transform 1.1s var(--ease-out-expo);
+      opacity: 1;
+      transform: none;
+      will-change: transform, opacity;
     }
-    .hero-transition.visible .hero-hill { opacity: 1; transform: translateY(0) scaleY(1); }
+
+    /* Sólo transform y opacity: nada que obligue a recalcular layout. */
+    @keyframes hero-hill-grow {
+      from { opacity: .12; transform: translateY(52px) scaleY(.55); }
+      to   { opacity: 1;   transform: translateY(0)    scaleY(1); }
+    }
+
+    /* Camino nativo, sin una línea de JS.
+
+       Ojo con el timing-function: acá no es una curva temporal, porque
+       no hay tiempo. Mapea progreso-de-scroll → progreso-de-animación,
+       que es exactamente el ease-out-quart sobre el input que se busca.
+
+       animation-duration va explícito en auto: el shorthand `animation`
+       lo dejaría en 0s y con un timeline de scroll eso no reproduce el
+       rango, salta. Por eso todo en longhand. */
+    @supports (animation-timeline: view()) {
+      .hero-hill {
+        animation-name: hero-hill-grow;
+        animation-duration: auto;
+        animation-fill-mode: both;
+        animation-timing-function: cubic-bezier(.165,.84,.44,1);
+        animation-timeline: --hero-hill;
+        /* Arranca recién cuando la franja está bien adentro del cuadro:
+           con cover 0% el ease-out se come casi todo el crecimiento
+           mientras la franja todavía asoma por el borde de abajo, y no
+           se llega a ver crecer nada. */
+        animation-range: cover 12% cover 62%;
+      }
+    }
 
     .hero-seal {
       position: absolute; inset: 0; pointer-events: none;
@@ -854,10 +898,13 @@
         transition: none !important;
       }
       .mockup-shell, .mockup-shell:hover { transition: none !important; transform: none !important; }
-      /* La colina se muestra directamente en su estado final. */
+      /* La colina no se ata al scroll: queda quieta en su estado final.
+         El JS del fallback tampoco corre, ni siquiera engancha el
+         listener. */
       .hero-hill {
         opacity: 1 !important; transform: none !important;
-        transition: none !important;
+        animation: none !important;
+        will-change: auto;
       }
       .pill-dot { animation: none !important; }
       /* El abanico queda quieto en su reposo: se ve el mazo armado,
@@ -1304,9 +1351,53 @@
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
 
-  /* .hero-transition entra acá para heredar el unobserve: la colina
-     crece una sola vez y no vuelve a dispararse al scrollear arriba. */
-  document.querySelectorAll('.reveal, .reveal-pop, .reveal-draw, .hero-transition').forEach(el => io.observe(el));
+  document.querySelectorAll('.reveal, .reveal-pop, .reveal-draw').forEach(el => io.observe(el));
+
+  /* ----------------------------------------------------------------
+     Colina hero → problema — fallback de scroll-linked
+
+     Si el navegador entiende animation-timeline (Chrome, Edge) el
+     efecto ya está resuelto en CSS y esto no corre. Safari todavía no,
+     así que ahí se replica el mismo scrub a mano.
+
+     No es una animación: no hay duración ni timer. Cada frame lee
+     dónde está la franja y escribe el valor que le corresponde a esa
+     posición de scroll, así que el gesto es reversible y va al ritmo
+     del usuario. Una sola lectura de layout por frame, y sólo se
+     escriben transform y opacity.
+  ---------------------------------------------------------------- */
+  const hillStrip = document.querySelector('.hero-transition');
+  const hill      = document.querySelector('.hero-hill');
+  const nativeScrollTimeline = window.CSS && CSS.supports('animation-timeline: view()');
+
+  if (hill && hillStrip && !reduceMotion && !nativeScrollTimeline) {
+    /* Mismo tramo que el animation-range de arriba: cover 12% → 62%. */
+    const FROM = .12, TO = .62;
+    const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
+    let queued = false;
+
+    const paint = () => {
+      queued = false;
+      const r  = hillStrip.getBoundingClientRect();
+      const vh = window.innerHeight;
+      /* cover va de "el borde de arriba toca el pie del viewport" a
+         "el borde de abajo sale por arriba". */
+      const raw = (vh - r.top) / (vh + r.height);
+      const p   = Math.min(Math.max((raw - FROM) / (TO - FROM), 0), 1);
+      const e   = easeOutQuart(p);
+
+      hill.style.opacity   = (.12 + .88 * e).toFixed(3);
+      hill.style.transform = 'translateY(' + (52 - 52 * e).toFixed(2) + 'px) scaleY(' + (.55 + .45 * e).toFixed(4) + ')';
+    };
+
+    const schedule = () => {
+      if (!queued) { queued = true; requestAnimationFrame(paint); }
+    };
+
+    addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', schedule, { passive: true });
+    paint();
+  }
 
   /* ----------------------------------------------------------------
      Smooth scroll for anchor links
