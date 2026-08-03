@@ -155,14 +155,18 @@
     /* row-reverse en lugar de reordenar el DOM: el <h1> sigue siendo
        el primer contenido del hero para lectores de pantalla y para
        el orden de tabulación, pero se pinta a la derecha. */
+    /* space-between con columnas que no crecen: el mockup queda al ras
+       del margen izquierdo de la página y el texto al ras del derecho,
+       los dos alineados con la grilla del nav. El aire sobrante cae en
+       la calle del medio, que es donde corresponde. */
     .hero-wrap {
       max-width: var(--max-w); margin: 0 auto;
       padding: 88px 24px 80px;
       display: flex; flex-direction: row-reverse;
-      align-items: center; gap: 60px;
+      align-items: center; justify-content: space-between; gap: 48px;
       min-height: calc(100vh - 64px);
     }
-    .hero-copy { flex: 1; min-width: 0; max-width: 510px; }
+    .hero-copy { flex: 1 1 460px; min-width: 0; max-width: 540px; }
 
     /* Único eyebrow de la página. Las demás secciones usan
        jerarquía tipográfica en lugar de repetir este patrón. */
@@ -191,7 +195,7 @@
 
     .hero-sub {
       font-size: clamp(15.5px, 1.8vw, 17.5px); color: var(--text-2);
-      line-height: 1.72; margin-bottom: 40px; max-width: 420px;
+      line-height: 1.72; margin-bottom: 40px; max-width: 462px;
     }
 
     .cta-row { display: flex; flex-wrap: wrap; gap: 11px; align-items: center; margin-bottom: 44px; }
@@ -233,35 +237,27 @@
        HERO MOCKUP
     ============================================================ */
     .hero-visual {
-      flex: 1; min-width: 0;
-      display: flex; justify-content: center; align-items: center;
+      flex: 0 1 424px; min-width: 0;
+      display: flex; justify-content: flex-start; align-items: center;
     }
 
-    /* El mockup vive a la izquierda: el eje de fuga se invierte
-       respecto de la composición anterior (rotateY pasa a positivo)
+    /* Frame de vista rápida, no ventana de escritorio: vertical, de
+       esquinas muy redondeadas (radio de notificación, no de card) y
+       con un bisel blanco de 10px que hace de cuerpo del dispositivo.
+       El bisel además despega el frame del fondo, que comparte color
+       con la pantalla (ambos --bg).
+
+       El mockup vive a la izquierda: el eje de fuga se invierte
+       respecto de la composición original (rotateY pasa a positivo)
        para que el borde que se aleja sea el exterior. */
     .mockup-shell {
-      width: 100%; max-width: 492px;
-      background: #fff; border-radius: 16px;
-      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,0,0,.055);
-      overflow: hidden;
+      width: 100%; max-width: 424px;
+      background: #fff; border-radius: 30px; padding: 10px;
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(15,23,42,.07);
       transform: perspective(1100px) rotateY(5deg) rotateX(2deg);
       transition: transform .7s var(--ease);
     }
     .mockup-shell:hover { transform: perspective(1100px) rotateY(1.5deg) rotateX(.5deg); }
-
-    /* browser bar */
-    .mkbar {
-      background: #1e293b; padding: 11px 16px;
-      display: flex; align-items: center; gap: 12px;
-    }
-    .mkdots { display: flex; gap: 6px; }
-    .mkdot { width: 11px; height: 11px; border-radius: 50%; }
-    .mkdot.r { background: #ff5f57; } .mkdot.y { background: #ffbd2e; } .mkdot.g { background: #28c840; }
-    .mkurl {
-      flex: 1; background: #334155; border-radius: 6px;
-      padding: 5px 12px; font-size: 11px; color: var(--on-dark); font-family: monospace;
-    }
 
     /* ------------------------------------------------------------
        app body — recorte de la pantalla "Mi día" real: solo la tarjeta
@@ -280,7 +276,9 @@
       --app-hero-grad:      linear-gradient(150deg,#0F6E5C,#0B5246 60%,#0A3D33); /* --hero-grad */
       --app-hero-accent:    #EF9F27;   /* --hero-accent (= --color-tibio) */
       background: var(--bg);
-      padding: 16px 16px 20px;
+      /* Radio concéntrico con el frame: 30px externos − 10px de bisel. */
+      border-radius: 20px;
+      padding: 16px 15px 20px;
     }
 
     /* Hero + stats embebidas: el hero reserva padding inferior y las
@@ -666,7 +664,8 @@
 
     @media (max-width: 580px) {
       section { padding: 72px 20px; }
-      .mkbody { padding: 13px 13px 16px; }
+      .mockup-shell { border-radius: 26px; padding: 8px; }
+      .mkbody { border-radius: 18px; padding: 14px 13px 17px; }
       .mk-hero { padding: 15px 14px 34px; }
       .mk-hero h4 { font-size: 17px; }
       .mk-stats { margin: -25px 8px 14px; gap: 7px; }
@@ -825,16 +824,6 @@
   <!-- app mockup -->
   <div class="hero-visual reveal d2">
     <div class="mockup-shell">
-      <!-- browser chrome -->
-      <div class="mkbar">
-        <div class="mkdots">
-          <div class="mkdot r"></div>
-          <div class="mkdot y"></div>
-          <div class="mkdot g"></div>
-        </div>
-        <div class="mkurl">app.leadera.com.ar/hoy</div>
-      </div>
-
       <!-- app body — solo la tarjeta de "Mi día", sin sidebar -->
       <div class="mkbody">
         <div class="mk-hero">
