@@ -95,9 +95,9 @@
     /* ============================================================
        NAV
     ============================================================ */
-    /* Acotado por clase, no por tipo: el documento tiene otro <nav>
-       (el del mockup del hero) y un selector `nav` suelto le imponía
-       fondo blanco, sticky, z-index y padding. */
+    /* Acotado por clase, no por tipo: un selector `nav` suelto alcanza
+       a cualquier otro <nav> del documento y le impone fondo blanco,
+       sticky, z-index y padding. */
     .site-nav {
       position: sticky; top: 0; z-index: 100;
       background: rgba(255,255,255,.92);
@@ -152,10 +152,14 @@
     /* ============================================================
        HERO
     ============================================================ */
+    /* row-reverse en lugar de reordenar el DOM: el <h1> sigue siendo
+       el primer contenido del hero para lectores de pantalla y para
+       el orden de tabulación, pero se pinta a la derecha. */
     .hero-wrap {
       max-width: var(--max-w); margin: 0 auto;
       padding: 88px 24px 80px;
-      display: flex; align-items: center; gap: 60px;
+      display: flex; flex-direction: row-reverse;
+      align-items: center; gap: 60px;
       min-height: calc(100vh - 64px);
     }
     .hero-copy { flex: 1; min-width: 0; max-width: 510px; }
@@ -229,19 +233,22 @@
        HERO MOCKUP
     ============================================================ */
     .hero-visual {
-      flex: 1.25; min-width: 0;
-      display: flex; justify-content: center; align-items: flex-start;
+      flex: 1; min-width: 0;
+      display: flex; justify-content: center; align-items: center;
     }
 
+    /* El mockup vive a la izquierda: el eje de fuga se invierte
+       respecto de la composición anterior (rotateY pasa a positivo)
+       para que el borde que se aleja sea el exterior. */
     .mockup-shell {
-      width: 100%; max-width: 572px;
+      width: 100%; max-width: 492px;
       background: #fff; border-radius: 16px;
       box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,0,0,.055);
       overflow: hidden;
-      transform: perspective(1100px) rotateY(-5deg) rotateX(2deg);
+      transform: perspective(1100px) rotateY(5deg) rotateX(2deg);
       transition: transform .7s var(--ease);
     }
-    .mockup-shell:hover { transform: perspective(1100px) rotateY(-1.5deg) rotateX(.5deg); }
+    .mockup-shell:hover { transform: perspective(1100px) rotateY(1.5deg) rotateX(.5deg); }
 
     /* browser bar */
     .mkbar {
@@ -257,172 +264,113 @@
     }
 
     /* ------------------------------------------------------------
-       app body — réplica de la pantalla "Mi día" real.
+       app body — recorte de la pantalla "Mi día" real: solo la tarjeta
+       de tareas del día, sin sidebar ni navegación. Se lee como una
+       lista de pendientes, no como un panel de métricas.
        Los tokens de abajo son copia literal del design system de la
        app (leadera-front/src/styles.css); no se inventa ningún color.
     ------------------------------------------------------------ */
     .mkbody {
       --app-primary:        #0F6E5C;   /* --color-primary      */
-      --app-sidebar-bg:     #0A3D33;   /* --sidebar-bg         */
-      --app-sidebar-text:   #D3E2DD;   /* --sidebar-text       */
-      --app-sidebar-muted:  #8FAEA6;   /* --sidebar-muted      */
-      --app-sidebar-active: #0F6E5C;   /* --sidebar-active     */
-      --app-sidebar-border: rgba(255,255,255,.12); /* --sidebar-border */
-      --app-mint:           #2EBD8B;   /* --brand-mint         */
       --app-caliente:       #D85A30;   /* --color-caliente     */
       --app-tibio:          #EF9F27;   /* --color-tibio        */
-      --app-frio:           #378ADD;   /* --color-frio         */
       --app-text:           #16213B;   /* --color-text         */
       --app-text-muted:     #5A6779;   /* --color-text-muted   */
       --app-border:         #E5E7EB;   /* --color-border       */
       --app-hero-grad:      linear-gradient(150deg,#0F6E5C,#0B5246 60%,#0A3D33); /* --hero-grad */
       --app-hero-accent:    #EF9F27;   /* --hero-accent (= --color-tibio) */
-      display: flex; height: 430px;
+      background: var(--bg);
+      padding: 16px 16px 20px;
     }
-
-    /* ---- sidebar ---- */
-    .mksidebar {
-      width: 186px; background: var(--app-sidebar-bg);
-      padding: 12px 8px 10px; flex-shrink: 0;
-      display: flex; flex-direction: column;
-    }
-    .mk-logo {
-      display: flex; align-items: center; gap: 1px;
-      padding: 2px 6px 10px;
-      font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -.3px; line-height: 1;
-    }
-    .mk-logo-mark { width: 11px; height: 11px; color: var(--app-mint); flex-shrink: 0; }
-    .mk-nav { flex: 1; display: flex; flex-direction: column; gap: 1px; min-height: 0; }
-    .mk-nav-label {
-      padding: 7px 6px 3px;
-      font-size: 7.5px; font-weight: 700; letter-spacing: .06em;
-      text-transform: uppercase; color: var(--app-sidebar-muted);
-    }
-    .mk-nav-label:first-child { padding-top: 0; }
-    .mk-nav-item {
-      display: flex; align-items: center; gap: 7px;
-      padding: 5px 6px; border-radius: 5px;
-      font-size: 9.5px; font-weight: 500;
-      color: var(--app-sidebar-text); cursor: default;
-    }
-    .mk-nav-item.primary { color: #fff; font-weight: 600; }
-    /* Activo: relleno sólido de marca, sin borde lateral (igual que la app) */
-    .mk-nav-item.on { background: var(--app-sidebar-active); color: #fff; font-weight: 600; }
-    .mk-nav-icon { width: 12px; height: 12px; flex-shrink: 0; }
-
-    .mk-user {
-      display: flex; align-items: center; gap: 6px;
-      border-top: 1px solid var(--app-sidebar-border);
-      padding: 8px 4px 0; margin-top: 6px;
-    }
-    .mk-user-av {
-      width: 22px; height: 22px; border-radius: 50%;
-      background: var(--app-sidebar-active); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 8px; font-weight: 700; flex-shrink: 0;
-    }
-    .mk-user-name { font-size: 9px; font-weight: 600; color: #fff; flex: 1; }
-    .mk-user-chev { width: 10px; height: 10px; color: var(--app-sidebar-muted); flex-shrink: 0; }
-
-    /* ---- main ---- */
-    .mkmain {
-      flex: 1; background: var(--bg);
-      overflow-y: auto; padding: 12px 12px 16px;
-    }
-    .mkmain::-webkit-scrollbar { width: 3px; }
-    .mkmain::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
     /* Hero + stats embebidas: el hero reserva padding inferior y las
        cards lo pisan con margen negativo, igual que .home-hero real. */
     .mk-hero {
       background: var(--app-hero-grad);
-      border-radius: 11px; padding: 15px 14px 32px;
+      border-radius: 12px; padding: 18px 17px 38px;
     }
     .mk-hero h4 {
-      font-size: 15px; font-weight: 600; color: #fff;
-      line-height: 1.12; letter-spacing: -.3px; margin-bottom: 4px;
+      font-size: 19px; font-weight: 600; color: #fff;
+      line-height: 1.14; letter-spacing: -.4px; margin-bottom: 5px;
     }
     .mk-hero h4 span { color: var(--app-hero-accent); font-weight: 700; }
-    .mk-hero p { font-size: 9.5px; color: rgba(255,255,255,.85); }
+    .mk-hero p { font-size: 11.5px; color: rgba(255,255,255,.85); }
 
     .mk-stats {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 7px;
-      margin: -23px 10px 14px; position: relative;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 9px;
+      margin: -27px 11px 16px; position: relative;
     }
     .mk-stat {
-      background: #fff; border-radius: 9px; padding: 9px 10px 7px;
-      display: flex; flex-direction: column; gap: 2px;
+      background: #fff; border-radius: 10px; padding: 11px 12px 9px;
+      display: flex; flex-direction: column; gap: 3px;
       box-shadow: 0 1px 0 rgba(22,33,59,.04), 0 6px 18px -8px rgba(22,33,59,.16);
     }
-    .mk-stat-n { font-size: 17px; font-weight: 600; line-height: 1; }
-    .mk-stat-l { font-size: 7px; font-weight: 700; letter-spacing: .06em; color: var(--app-text-muted); }
+    .mk-stat-n { font-size: 21px; font-weight: 600; line-height: 1; }
+    .mk-stat-l { font-size: 8.5px; font-weight: 700; letter-spacing: .06em; color: var(--app-text-muted); }
     .mk-stat.calientes    .mk-stat-n { color: var(--app-caliente); }
     .mk-stat.nuevos       .mk-stat-n { color: var(--app-text-muted); }
     .mk-stat.seguimientos .mk-stat-n { color: var(--app-tibio); }
 
     .mk-progress {
-      background: #fff; border: 1px solid var(--app-border); border-radius: 11px;
-      padding: 10px 12px; margin-bottom: 15px;
+      background: #fff; border: 1px solid var(--app-border); border-radius: 12px;
+      padding: 12px 14px; margin-bottom: 18px;
       box-shadow: 0 1px 0 rgba(22,33,59,.04), 0 6px 18px -8px rgba(22,33,59,.10);
     }
     .mk-progress-head {
-      display: flex; justify-content: space-between; gap: 8px;
-      font-size: 8.5px; font-weight: 600; color: #334155; margin-bottom: 7px;
+      display: flex; justify-content: space-between; gap: 10px;
+      font-size: 10.5px; font-weight: 600; color: #334155; margin-bottom: 9px;
     }
     .mk-progress-head b { color: var(--app-text); }
-    .mk-progress-bar { height: 5px; background: var(--app-border); border-radius: 10px; overflow: hidden; }
+    .mk-progress-bar { height: 6px; background: var(--app-border); border-radius: 10px; overflow: hidden; }
     .mk-progress-fill { height: 100%; width: 30%; background: var(--app-primary); border-radius: 10px; }
 
-    /* ---- secciones de leads ---- */
-    .mk-sec { margin-bottom: 14px; }
-    .mk-sec-head { display: flex; align-items: center; gap: 7px; margin-bottom: 3px; }
+    /* ---- sección de leads prioritarios ---- */
+    .mk-sec-head { display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
     .mk-sec-icon {
-      width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
+      background: #fde8e0; color: var(--app-caliente);
     }
-    .mk-sec-icon svg { width: 12px; height: 12px; }
-    .mk-sec-icon.prioritarios { background: #fde8e0; color: var(--app-caliente); }
-    .mk-sec-icon.nuevos       { background: #dbeafe; color: var(--app-frio); }
-    .mk-sec-title { font-size: 11px; font-weight: 800; color: #1e293b; letter-spacing: -.2px; }
-    .mk-count { font-size: 7.5px; font-weight: 600; padding: 2px 6px; border-radius: 999px; white-space: nowrap; }
-    .mk-count.prioritarios { background: #fde8e0; color: var(--app-caliente); }
-    .mk-count.nuevos       { background: #dbeafe; color: var(--app-frio); }
-    .mk-sec-sub { font-size: 8px; color: var(--app-text-muted); margin-bottom: 8px; }
+    .mk-sec-icon svg { width: 15px; height: 15px; }
+    .mk-sec-title { font-size: 13.5px; font-weight: 800; color: #1e293b; letter-spacing: -.25px; }
+    .mk-count {
+      font-size: 9.5px; font-weight: 600; padding: 3px 8px; border-radius: 999px;
+      white-space: nowrap; background: #fde8e0; color: var(--app-caliente);
+    }
+    .mk-sec-sub { font-size: 10px; color: var(--app-text-muted); margin-bottom: 10px; }
 
     .mk-card {
       background: #fff; border: 1px solid var(--app-border);
-      border-left: 3px solid transparent; border-radius: 8px;
-      padding: 7px 9px 7px 7px; margin-bottom: 6px;
-      display: flex; align-items: center; gap: 7px;
+      border-left: 3px solid transparent; border-radius: 9px;
+      padding: 9px 11px 9px 9px; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 9px;
       cursor: default; transition: box-shadow .15s;
     }
+    .mk-card:last-child { margin-bottom: 0; }
     .mk-card:hover { box-shadow: 0 2px 8px rgba(22,33,59,.10); }
     .mk-card.borde-caliente { border-left-color: var(--app-caliente); }
     .mk-card.borde-tibio    { border-left-color: var(--app-tibio); }
-    .mk-card.borde-frio     { border-left-color: var(--app-frio); }
 
     .mk-av {
-      width: 26px; height: 26px; border-radius: 50%;
+      width: 32px; height: 32px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 700; flex-shrink: 0;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
     }
     .av-caliente { background: #fde8e0; color: var(--app-caliente); }
     .av-tibio    { background: #fef3c7; color: #92400e; }
-    .av-frio     { background: #dbeafe; color: var(--app-frio); }
 
     .mk-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-    .mk-name { font-size: 10px; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .mk-detalle { font-size: 8px; color: var(--app-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mk-name { font-size: 12.5px; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mk-detalle { font-size: 10px; color: var(--app-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .mk-pill { font-size: 7.5px; font-weight: 700; padding: 2px 6px; border-radius: 999px; flex-shrink: 0; white-space: nowrap; }
+    .mk-pill { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 999px; flex-shrink: 0; white-space: nowrap; }
     .pill-caliente { background: #fde8e0; color: var(--app-caliente); }
     .pill-tibio    { background: #fef3c7; color: #92400e; }
-    .pill-frio     { background: #dbeafe; color: var(--app-frio); }
 
     /* Outline, no relleno sólido (igual que .lead-row-btn real) */
     .mk-btn {
-      flex-shrink: 0; font-size: 8px; font-weight: 600;
-      padding: 4px 8px; border-radius: 6px;
+      flex-shrink: 0; font-size: 10px; font-weight: 600;
+      padding: 5px 10px; border-radius: 7px;
       border: 1px solid var(--app-border); background: #fff; color: #334155;
       white-space: nowrap;
     }
@@ -711,16 +659,27 @@
 
     @media (max-width: 580px) {
       section { padding: 72px 20px; }
-      /* La app real esconde el sidebar tras la hamburguesa en mobile;
-         el mockup hace lo mismo y deja "Mi día" a ancho completo, que
-         además evita que las stat-cards se aprieten. */
-      .mkbody { height: 380px; }
-      .mksidebar { display: none; }
-      .mk-hero h4 { font-size: 14px; }
-      .mk-stat-n { font-size: 15px; }
+      .mkbody { padding: 13px 13px 16px; }
+      .mk-hero { padding: 15px 14px 34px; }
+      .mk-hero h4 { font-size: 17px; }
+      .mk-stats { margin: -25px 8px 14px; gap: 7px; }
+      .mk-stat { padding: 9px 10px 8px; }
+      .mk-stat-n { font-size: 19px; }
+      .mk-stat-l { font-size: 8px; }
       .sintoma { gap: 14px; }
       .sintoma-lead { gap: 16px; }
       .pcard-featured { flex-direction: column; text-align: center; }
+    }
+
+    /* La fila de lead tiene 4 piezas fijas (avatar, badge, botón) más el
+       nombre elástico. Por debajo de ~400px se ajustan las fijas para que
+       el nombre no quede reducido a puntos suspensivos. */
+    @media (max-width: 400px) {
+      .mk-card { gap: 7px; padding: 8px 9px 8px 8px; }
+      .mk-av { width: 28px; height: 28px; font-size: 10px; }
+      .mk-pill { font-size: 8.5px; padding: 2px 6px; }
+      .mk-btn { font-size: 9px; padding: 4px 7px; }
+      .mk-sec-sub { margin-bottom: 8px; }
     }
 
     /* ============================================================
@@ -767,14 +726,8 @@
     <g id="i-home"><path d="M3.5 10.2 12 3.6l8.5 6.6V19.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/><path d="M9.5 20.5V14h5v6.5"/></g>
     <g id="i-pipeline"><rect x="3" y="4" width="5" height="16" rx="1.6"/><rect x="9.5" y="4" width="5" height="10.5" rx="1.6"/><rect x="16" y="4" width="5" height="13.5" rx="1.6"/></g>
     <g id="i-record"><path d="M14 3.5H7a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5Z"/><path d="M14 3.5v5h5"/><path d="M8.5 13.5h7M8.5 17h4"/></g>
-    <!-- íconos del mockup (equivalentes lineales a los Material Symbols de la app) -->
-    <g id="i-task-check"><circle cx="12" cy="12" r="9"/><path d="M8 12.2l2.6 2.6L16.2 9.2"/></g>
-    <g id="i-dashboard"><rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/></g>
-    <g id="i-deal"><path d="M3.5 9h13l-3.2-3.2"/><path d="M20.5 15h-13l3.2 3.2"/></g>
-    <g id="i-building"><path d="M2.5 21h19"/><path d="M5.5 21V4.5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1V21"/><path d="M14.5 21V11h3a1 1 0 0 1 1 1v9"/><path d="M8.5 8h3M8.5 12h3M8.5 16h3"/></g>
-    <g id="i-person-add"><circle cx="9.5" cy="7.5" r="3.5"/><path d="M3 20.5v-1.3a4.7 4.7 0 0 1 4.7-4.7h3.6a4.7 4.7 0 0 1 4.7 4.7v1.3"/><path d="M19 4.5v5M21.5 7h-5"/></g>
+    <!-- ícono del mockup (equivalente lineal al Material Symbol de la app) -->
     <g id="i-warning"><path d="M10.3 4.3 2.2 18.4A2 2 0 0 0 3.9 21.4h16.2a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"/><path d="M12 9.6v4.2"/><path d="M12 17.4h.01"/></g>
-    <g id="i-chevron-up"><path d="M6.5 14.5 12 9l5.5 5.5"/></g>
   </defs>
 </svg>
 
@@ -868,167 +821,64 @@
         <div class="mkurl">app.leadera.com.ar/hoy</div>
       </div>
 
-      <!-- app body -->
+      <!-- app body — solo la tarjeta de "Mi día", sin sidebar -->
       <div class="mkbody">
-        <!-- sidebar -->
-        <div class="mksidebar">
-          <div class="mk-logo">
-            <span>Lead</span>
-            <svg class="mk-logo-mark" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><polygon points="3,2 10,6 3,10"/></svg>
-            <span>Era</span>
+        <div class="mk-hero">
+          <h4>Hoy te quedan <span>7</span> tareas</h4>
+          <p>Gestioná tus contactos y hacé crecer tu cartera</p>
+        </div>
+
+        <div class="mk-stats">
+          <div class="mk-stat calientes">
+            <div class="mk-stat-n">3</div>
+            <div class="mk-stat-l">CALIENTES</div>
           </div>
-
-          <nav class="mk-nav">
-            <div class="mk-nav-label">Principal</div>
-            <div class="mk-nav-item primary on">
-              <svg class="mk-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg>
-              Mi día
-            </div>
-            <div class="mk-nav-item primary">
-              <svg class="mk-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-task-check"/></svg>
-              Gestión del día
-            </div>
-            <div class="mk-nav-item">
-              <svg class="mk-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-checklist"/></svg>
-              Objetivos diarios
-            </div>
-            <div class="mk-nav-item primary">
-              <svg class="mk-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-dashboard"/></svg>
-              Panel
-            </div>
-
-            <div class="mk-nav-label">Gestión</div>
-            <div class="mk-nav-item">
-              <svg class="mk-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-deal"/></svg>
-              Operaciones
-            </div>
-            <div class="mk-nav-item">
-              <svg class="mk-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-people"/></svg>
-              Leads
-            </div>
-            <div class="mk-nav-item">
-              <svg class="mk-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-building"/></svg>
-              Propiedades
-            </div>
-            <div class="mk-nav-item">
-              <svg class="mk-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-person-add"/></svg>
-              Nuevo Lead
-            </div>
-
-            <div class="mk-nav-label">Equipo</div>
-            <div class="mk-nav-item">
-              <svg class="mk-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-people"/></svg>
-              Mi equipo
-            </div>
-          </nav>
-
-          <div class="mk-user">
-            <div class="mk-user-av">MG</div>
-            <div class="mk-user-name">Martín González</div>
-            <svg class="mk-user-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chevron-up"/></svg>
+          <div class="mk-stat nuevos">
+            <div class="mk-stat-n">5</div>
+            <div class="mk-stat-l">NUEVOS</div>
+          </div>
+          <div class="mk-stat seguimientos">
+            <div class="mk-stat-n">8</div>
+            <div class="mk-stat-l">SEGUIM.</div>
           </div>
         </div>
 
-        <!-- main area -->
-        <div class="mkmain" id="mkmain">
-          <div class="mk-hero">
-            <h4>Hoy te quedan <span>7</span> tareas</h4>
-            <p>Gestioná tus contactos y hacé crecer tu cartera</p>
+        <div class="mk-progress">
+          <div class="mk-progress-head">
+            <span>Progreso del día</span>
+            <span>Completaste <b>3</b> de 10</span>
+          </div>
+          <div class="mk-progress-bar"><div class="mk-progress-fill"></div></div>
+        </div>
+
+        <div class="mk-sec">
+          <div class="mk-sec-head">
+            <div class="mk-sec-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg>
+            </div>
+            <div class="mk-sec-title">Leads prioritarios</div>
+            <div class="mk-count">2 urgentes</div>
+          </div>
+          <div class="mk-sec-sub">Atención inmediata requerida por falta de contacto</div>
+
+          <div class="mk-card borde-caliente" id="mkc1" style="opacity:0;transform:translateY(10px)">
+            <div class="mk-av av-caliente">JG</div>
+            <div class="mk-info">
+              <div class="mk-name">Juan García</div>
+              <div class="mk-detalle">Sin interacciones registradas</div>
+            </div>
+            <div class="mk-pill pill-caliente">Caliente</div>
+            <div class="mk-btn">Registrar</div>
           </div>
 
-          <div class="mk-stats">
-            <div class="mk-stat calientes">
-              <div class="mk-stat-n">3</div>
-              <div class="mk-stat-l">CALIENTES</div>
+          <div class="mk-card borde-tibio" id="mkc2" style="opacity:0;transform:translateY(10px)">
+            <div class="mk-av av-tibio">AS</div>
+            <div class="mk-info">
+              <div class="mk-name">Ana Soria</div>
+              <div class="mk-detalle">Sin interacciones registradas</div>
             </div>
-            <div class="mk-stat nuevos">
-              <div class="mk-stat-n">5</div>
-              <div class="mk-stat-l">NUEVOS</div>
-            </div>
-            <div class="mk-stat seguimientos">
-              <div class="mk-stat-n">8</div>
-              <div class="mk-stat-l">SEGUIM.</div>
-            </div>
-          </div>
-
-          <div class="mk-progress">
-            <div class="mk-progress-head">
-              <span>Progreso del día</span>
-              <span>Completaste <b>3</b> de 10</span>
-            </div>
-            <div class="mk-progress-bar"><div class="mk-progress-fill"></div></div>
-          </div>
-
-          <div class="mk-sec">
-            <div class="mk-sec-head">
-              <div class="mk-sec-icon prioritarios">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg>
-              </div>
-              <div class="mk-sec-title">Leads prioritarios</div>
-              <div class="mk-count prioritarios">2 urgentes</div>
-            </div>
-            <div class="mk-sec-sub">Atención inmediata requerida por falta de contacto</div>
-
-            <div class="mk-card borde-caliente" id="mkc1" style="opacity:0;transform:translateY(10px)">
-              <div class="mk-av av-caliente">JG</div>
-              <div class="mk-info">
-                <div class="mk-name">Juan García</div>
-                <div class="mk-detalle">Sin interacciones registradas</div>
-              </div>
-              <div class="mk-pill pill-caliente">Caliente</div>
-              <div class="mk-btn">Registrar</div>
-            </div>
-
-            <div class="mk-card borde-tibio" id="mkc2" style="opacity:0;transform:translateY(10px)">
-              <div class="mk-av av-tibio">AS</div>
-              <div class="mk-info">
-                <div class="mk-name">Ana Soria</div>
-                <div class="mk-detalle">Sin interacciones registradas</div>
-              </div>
-              <div class="mk-pill pill-tibio">Tibio</div>
-              <div class="mk-btn">Registrar</div>
-            </div>
-          </div>
-
-          <div class="mk-sec">
-            <div class="mk-sec-head">
-              <div class="mk-sec-icon nuevos">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-person-add"/></svg>
-              </div>
-              <div class="mk-sec-title">Nuevos leads</div>
-              <div class="mk-count nuevos">3 nuevos</div>
-            </div>
-            <div class="mk-sec-sub">Personas que consultaron recientemente y esperan respuesta</div>
-
-            <div class="mk-card borde-frio" id="mkc3" style="opacity:0;transform:translateY(10px)">
-              <div class="mk-av av-frio">LM</div>
-              <div class="mk-info">
-                <div class="mk-name">Laura Martínez</div>
-                <div class="mk-detalle">Sin interacciones registradas</div>
-              </div>
-              <div class="mk-pill pill-frio">Frío</div>
-              <div class="mk-btn">Registrar</div>
-            </div>
-
-            <div class="mk-card borde-frio" id="mkc4" style="opacity:0;transform:translateY(10px)">
-              <div class="mk-av av-frio">RP</div>
-              <div class="mk-info">
-                <div class="mk-name">Rodrigo Paz</div>
-                <div class="mk-detalle">Sin interacciones registradas</div>
-              </div>
-              <div class="mk-pill pill-frio">Frío</div>
-              <div class="mk-btn">Registrar</div>
-            </div>
-
-            <div class="mk-card borde-frio" id="mkc5" style="opacity:0;transform:translateY(10px)">
-              <div class="mk-av av-frio">DV</div>
-              <div class="mk-info">
-                <div class="mk-name">Diego Vidal</div>
-                <div class="mk-detalle">Sin interacciones registradas</div>
-              </div>
-              <div class="mk-pill pill-frio">Frío</div>
-              <div class="mk-btn">Registrar</div>
-            </div>
+            <div class="mk-pill pill-tibio">Tibio</div>
+            <div class="mk-btn">Registrar</div>
           </div>
         </div>
       </div>
@@ -1304,7 +1154,7 @@
   /* ----------------------------------------------------------------
      Mockup lead cards — staggered entry animation
   ---------------------------------------------------------------- */
-  const cards = ['mkc1','mkc2','mkc3','mkc4','mkc5'];
+  const cards = ['mkc1','mkc2'];
   const mockupObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
