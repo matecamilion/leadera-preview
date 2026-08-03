@@ -600,6 +600,83 @@
     .fcard.featured p  { color: rgba(255,255,255,.84); }
     .fcard.featured:hover { box-shadow: var(--shadow-teal-h); border-color: transparent; }
 
+    /* ------------------------------------------------------------
+       ABANICO DE FICHAS — solo en "Historial completo por lead"
+
+       Ocupa exactamente el hueco del ícono que reemplaza (46px de alto
+       + 15px de margen), así la card no crece y la fila del grid
+       mantiene la altura de las otras dos.
+
+       Las fichas se apilan sobre el borde inferior del bloque: la de
+       adelante se lee entera y las de atrás sólo asoman. La rotación
+       las abre hacia la izquierda y el desborde cae dentro del margen
+       de 15px, sin llegar nunca al <h3>.
+
+       Los colores son los mismos del mockup del hero (design system de
+       la app); no se inventa ninguno.
+    ------------------------------------------------------------ */
+    .fan {
+      --app-caliente:     #D85A30;
+      --app-tibio:        #EF9F27;
+      --app-border:       #E5E7EB;
+      --app-text-muted:   #5A6779;
+      position: relative;
+      height: 46px;
+      margin-bottom: 15px;
+    }
+
+    /* 30px de alto y el pivote cerca del canto izquierdo: con la ficha
+       de adelante apoyada abajo, las de atrás levantan el extremo
+       derecho ~17px y el abanico entero entra en los 46px. */
+    .fan-card {
+      position: absolute; left: 0; bottom: 0;
+      width: 172px; height: 30px;
+      background: #fff;
+      border: 1px solid var(--app-border);
+      border-left: 3px solid transparent;
+      border-radius: 8px;
+      padding: 0 7px 0 6px;
+      display: flex; align-items: center; gap: 6px;
+      box-shadow: 0 1px 2px rgba(22,33,59,.06), 0 6px 14px -8px rgba(22,33,59,.28);
+      transform-origin: 12% 100%;
+      transition: transform .5s var(--ease-pop);
+    }
+
+    /* Reposo: mazo casi cerrado. Hover: se abre un paso más, sin llegar
+       al borde de la card. El escalonado del delay hace que las de
+       atrás salgan después, que es lo que da el gesto de abanico. */
+    .fan-card.f1 { transform: rotate(-6.6deg) translateY(-3px); z-index: 1; transition-delay: .09s; }
+    .fan-card.f2 { transform: rotate(-4.4deg) translateY(-2px); z-index: 2; transition-delay: .06s; }
+    .fan-card.f3 { transform: rotate(-2.2deg) translateY(-1px); z-index: 3; transition-delay: .03s; }
+    .fan-card.f4 { transform: rotate(0deg);                     z-index: 4; }
+
+    .fcard:hover .fan-card.f1 { transform: rotate(-10.5deg) translateY(-6px); }
+    .fcard:hover .fan-card.f2 { transform: rotate(-7deg)    translateY(-4px); }
+    .fcard:hover .fan-card.f3 { transform: rotate(-3.5deg)  translateY(-2px); }
+
+    .fan-card.t-caliente { border-left-color: var(--app-caliente); }
+    .fan-card.t-tibio    { border-left-color: var(--app-tibio); }
+    .fan-card.t-frio     { border-left-color: var(--app-text-muted); }
+
+    .fan-av {
+      width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px; font-weight: 700; letter-spacing: -.2px;
+    }
+    .fan-name {
+      flex: 1; min-width: 0;
+      font-size: 9.5px; font-weight: 700; color: #0f172a; letter-spacing: -.1px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .fan-pill {
+      flex-shrink: 0; white-space: nowrap;
+      font-size: 7.5px; font-weight: 700; padding: 2px 6px; border-radius: 999px;
+    }
+
+    .t-caliente .fan-av, .t-caliente .fan-pill { background: #fde8e0; color: var(--app-caliente); }
+    .t-tibio    .fan-av, .t-tibio    .fan-pill { background: #fef3c7; color: #92400e; }
+    .t-frio     .fan-av, .t-frio     .fan-pill { background: #eef2f7; color: var(--app-text-muted); }
+
     /* ============================================================
        CTA FINAL
 
@@ -783,6 +860,13 @@
         transition: none !important;
       }
       .pill-dot { animation: none !important; }
+      /* El abanico queda quieto en su reposo: se ve el mazo armado,
+         pero el hover ya no lo abre. Ojo, no es transform:none —eso
+         apilaría las cuatro fichas una encima de otra. */
+      .fan-card { transition: none !important; }
+      .fcard:hover .fan-card.f1 { transform: rotate(-6.6deg) translateY(-3px); }
+      .fcard:hover .fan-card.f2 { transform: rotate(-4.4deg) translateY(-2px); }
+      .fcard:hover .fan-card.f3 { transform: rotate(-2.2deg) translateY(-1px); }
       .paso:hover .paso-num,
       .fcard:hover,
       .btn-main:hover, .btn-main-lg:hover, .nav-links a.nav-cta:hover { transform: none !important; }
@@ -1128,8 +1212,29 @@
         <p>Visualizá en qué etapa está cada negocio: primer contacto, visita, oferta, reserva, escritura. Sin perder el hilo de ninguna operación en curso.</p>
       </div>
       <div class="fcard reveal d4">
-        <div class="fcard-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-record"/></svg>
+        <!-- Fichas de ejemplo, mismos nombres que el mockup del hero.
+             Decorativo: lo que se lee está en el h3 y el p. -->
+        <div class="fan" aria-hidden="true">
+          <div class="fan-card f1 t-tibio">
+            <div class="fan-av">RP</div>
+            <div class="fan-name">Rodrigo Paz</div>
+            <div class="fan-pill">Tibio</div>
+          </div>
+          <div class="fan-card f2 t-frio">
+            <div class="fan-av">LM</div>
+            <div class="fan-name">Laura Martínez</div>
+            <div class="fan-pill">Frío</div>
+          </div>
+          <div class="fan-card f3 t-tibio">
+            <div class="fan-av">AS</div>
+            <div class="fan-name">Ana Soria</div>
+            <div class="fan-pill">Tibio</div>
+          </div>
+          <div class="fan-card f4 t-caliente">
+            <div class="fan-av">JG</div>
+            <div class="fan-name">Juan García</div>
+            <div class="fan-pill">Caliente</div>
+          </div>
         </div>
         <h3>Historial completo por lead</h3>
         <p>Cada lead tiene su ficha con todo: llamadas, mensajes, notas, propiedades mostradas, visitas. Todo en un solo lugar, visible para todo el equipo.</p>
