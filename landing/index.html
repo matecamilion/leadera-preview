@@ -599,9 +599,16 @@
     }
     .footer-logo-mark svg { width: 12px; height: 12px; }
     .footer-copy { font-size: 12.5px; color: var(--on-dark-dim); }
-    .footer-links { display: flex; gap: 18px; }
+    .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
     .footer-links a { font-size: 12.5px; color: var(--on-dark-dim); transition: color .18s; }
     .footer-links a:hover { color: var(--teal-bright); }
+
+    /* Atribución, no un quinto link de navegación: el filete lo separa
+       del grupo sin cambiarle el peso tipográfico. */
+    .footer-links a.footer-poyca {
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,255,255,.12);
+    }
 
     /* ============================================================
        MOBILE RESPONSIVE
@@ -669,6 +676,13 @@
       .sintoma { gap: 14px; }
       .sintoma-lead { gap: 16px; }
       .pcard-featured { flex-direction: column; text-align: center; }
+
+      /* Con el footer apilado el filete vertical pierde sentido:
+         la atribución pasa a ocupar su propio renglón. */
+      .footer-links { row-gap: 12px; }
+      .footer-links a.footer-poyca {
+        flex-basis: 100%; padding-left: 0; border-left: none;
+      }
     }
 
     /* La fila de lead tiene 4 piezas fijas (avatar, badge, botón) más el
@@ -1096,6 +1110,7 @@
       <a href="mailto:contacto@leadera.com.ar">Contacto</a>
       <a href="#">Términos</a>
       <a href="#">Privacidad</a>
+      <a href="https://www.poyca.com.ar" class="footer-poyca" target="_blank" rel="noopener noreferrer">Un producto de Poyca Estudio</a>
     </div>
   </div>
 </footer>
