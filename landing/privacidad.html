@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Privacidad — LeadEra</title>
+  <meta name="description" content="Cómo LeadEra recopila, usa y protege los datos personales de las inmobiliarias y agentes que usan el CRM.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       TOKENS — subconjunto de index.html. Si cambia la escala allá,
+       hay que traerla acá a mano: estas páginas no comparten hoja.
+    ============================================================ */
+    :root {
+      --teal:          #0F6E5C;
+      --teal-bright:   #1A937C;
+      --teal-dark:     #0C5A4B;
+      --teal-faint:    #ECFBF8;
+      --teal-rgb:        15,110,92;
+
+      --bg:            #F7F8FA;
+      --text:          #0f172a;
+      --text-2:        #475569;
+      --text-muted:    #626F84;
+      --border:        #e2e8f0;
+      --border-faint:  #f1f5f9;
+      --dark:          #0f172a;
+      --on-dark-dim:   #7f8ea3;
+      --amber:         #f97316;
+
+      --shadow-teal:   0 4px 16px rgba(var(--teal-rgb),.24);
+      --shadow-teal-h: 0 8px 26px rgba(var(--teal-rgb),.32);
+      --font: 'Inter', -apple-system, sans-serif;
+      --max-w: 1200px;
+      --read-w: 720px;
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+
+    /* ============================================================
+       NAV — igual que index.html
+    ============================================================ */
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 19px; font-weight: 800; letter-spacing: -.5px; color: var(--text);
+    }
+    .logo-mark {
+      width: 32px; height: 32px; background: var(--teal); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .logo-mark svg { width: 14px; height: 14px; }
+    .logo .accent { color: var(--teal); }
+
+    .nav-links { display: flex; align-items: center; gap: 22px; list-style: none; }
+    .nav-links a { font-size: 13.5px; font-weight: 500; color: var(--text-2); transition: color .18s; }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-links a.nav-login {
+      font-weight: 600; color: var(--text);
+      padding: 8px 2px;
+      transition: color .18s;
+    }
+    .nav-links a.nav-login:hover { color: var(--teal); }
+
+    .nav-links a.nav-cta {
+      background: var(--teal); color: #fff;
+      padding: 8px 18px; border-radius: 8px;
+      font-weight: 700; font-size: 13.5px;
+      box-shadow: var(--shadow-teal);
+      transition: background .18s, transform .18s, box-shadow .18s;
+    }
+    .nav-links a.nav-cta:hover {
+      background: var(--teal-dark); color: #fff;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-teal-h);
+    }
+    .hamburger {
+      display: none; background: none; border: none;
+      cursor: pointer; padding: 6px; color: var(--text);
+    }
+
+    /* ============================================================
+       TEXTO LEGAL
+
+       Columna de lectura de 720px, no el --max-w de 1200: con el
+       cuerpo a 16px eso da ~75 caracteres por renglón.
+    ============================================================ */
+    .legal {
+      max-width: var(--read-w); margin: 0 auto;
+      padding: 80px 24px 120px;
+      overflow-wrap: break-word;
+    }
+    .legal h1 {
+      font-size: clamp(30px, 5vw, 42px); font-weight: 800;
+      letter-spacing: -1.2px; line-height: 1.12;
+      color: var(--text);
+    }
+    .legal-meta {
+      margin-top: 14px; font-size: 14px; color: var(--text-muted);
+    }
+    .legal-head {
+      padding-bottom: 36px; margin-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legal h2 {
+      font-size: 21px; font-weight: 700; letter-spacing: -.4px; line-height: 1.3;
+      color: var(--text);
+      margin-top: 52px; margin-bottom: 14px;
+    }
+    .legal h3 {
+      font-size: 16.5px; font-weight: 700; line-height: 1.4;
+      color: var(--text-2);
+      margin-top: 30px; margin-bottom: 10px;
+    }
+    .legal p,
+    .legal li { font-size: 16px; line-height: 1.75; color: var(--text); }
+    .legal p + p { margin-top: 14px; }
+    .legal ul, .legal ol { margin: 14px 0 14px 22px; }
+    .legal li + li { margin-top: 8px; }
+    .legal li::marker { color: var(--teal); }
+    .legal ul + p, .legal ol + p { margin-top: 14px; }
+    .legal strong { font-weight: 650; }
+    .legal a {
+      color: var(--teal); font-weight: 500;
+      text-decoration: underline; text-decoration-thickness: 1px;
+      text-underline-offset: 3px; text-decoration-color: rgba(var(--teal-rgb),.35);
+      transition: text-decoration-color .18s;
+    }
+    .legal a:hover { text-decoration-color: var(--teal); }
+    .legal hr { border: none; border-top: 1px solid var(--border); margin: 44px 0; }
+
+    /* ============================================================
+       FOOTER — igual que index.html
+    ============================================================ */
+    footer {
+      background: var(--dark); border-top: 1px solid rgba(255,255,255,.06);
+      padding: 36px 24px;
+    }
+    .footer-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.4px;
+    }
+    .footer-logo-mark {
+      width: 27px; height: 27px; background: var(--teal-bright); border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .footer-logo-mark svg { width: 12px; height: 12px; }
+    .footer-copy { font-size: 12.5px; color: var(--on-dark-dim); }
+    .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+    .footer-links a { font-size: 12.5px; color: var(--on-dark-dim); transition: color .18s; }
+    .footer-links a:hover { color: var(--teal-bright); }
+    .footer-links a.footer-poyca {
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,255,255,.12);
+    }
+
+    /* ============================================================
+       MOBILE RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1040px) {
+      .nav-links { gap: 18px; }
+    }
+
+    @media (max-width: 920px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column; align-items: stretch; gap: 0;
+        position: absolute; top: 64px; left: 0; right: 0; z-index: 99;
+        background: #fff; padding: 8px 20px 18px;
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 10px 28px rgba(15,23,42,.08);
+      }
+      .nav-links.open a { display: block; padding: 12px 2px; font-size: 15px; }
+      .nav-links.open a.nav-login {
+        border-top: 1px solid var(--border-faint);
+        margin-top: 6px; padding-top: 15px;
+      }
+      .nav-links.open a.nav-cta {
+        text-align: center; margin-top: 12px;
+        padding: 13px 18px; font-size: 15px;
+      }
+      .hamburger { display: block; }
+    }
+
+    @media (max-width: 580px) {
+      .legal { padding: 52px 20px 88px; }
+      .legal-head { padding-bottom: 28px; }
+      .legal h2 { font-size: 19px; margin-top: 42px; }
+      .legal p, .legal li { font-size: 15.5px; }
+
+      .footer-links { row-gap: 12px; }
+      .footer-links a.footer-poyca {
+        flex-basis: 100%; padding-left: 0; border-left: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .nav-links a.nav-cta:hover { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================================================
+     NAV
+     Los anchors de secciones vuelven a index.html. El logo lleva a
+     la home: acá no hay otra forma de volver sin usar el menú.
+================================================================ -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo" aria-label="LeadEra — volver al inicio">
+      <div class="logo-mark">
+        <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <polygon points="2,1 12,7 2,13" fill="white"/>
+        </svg>
+      </div>
+      <span>Lead<span class="accent">Era</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#problema">El problema</a></li>
+      <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+      <li><a href="index.html#features">Funcionalidades</a></li>
+      <li><a href="https://app.leadera.com.ar/login" class="nav-login">Iniciar sesión</a></li>
+      <li><a href="https://wa.me/542235827465?text=Hola!%20Quiero%20agendar%20una%20demo%20de%20LeadEra" class="nav-cta">Agendar demo</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <rect y="3" width="20" height="2" rx="1"/>
+        <rect y="9" width="20" height="2" rx="1"/>
+        <rect y="15" width="20" height="2" rx="1"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ================================================================
+     CONTENIDO
+================================================================ -->
+<main class="legal">
+  <header class="legal-head">
+    <h1>Política de Privacidad de LeadEra</h1>
+    <p class="legal-meta"><strong>Última actualización:</strong> 11 de septiembre de 2026</p>
+  </header>
+
+  <h2>1. Quiénes somos</h2>
+  <p>LeadEra ("nosotros", "nuestro") es un software desarrollado por
+    <strong>Mateo Camilion (DNI 46.639.525)</strong>
+    para uso de agentes y agencias inmobiliarias en Argentina. Esta Política de Privacidad explica
+    qué datos recolectamos, cómo los usamos, con quién los compartimos y qué
+    derechos tenés sobre ellos.</p>
+  <p>Si tenés preguntas sobre esta política o querés ejercer alguno de los
+    derechos descriptos más abajo, podés escribirnos a
+    <strong><a href="mailto:contacto@leadera.com.ar">contacto@leadera.com.ar</a></strong>.</p>
+
+  <h2>2. A quién aplica esta política</h2>
+  <p>Esta política cubre dos tipos de personas:</p>
+  <ul>
+    <li><strong>Usuarios de LeadEra</strong>: agentes inmobiliarios y administradores de
+      agencias que usan la plataforma para gestionar su trabajo comercial.</li>
+    <li><strong>Personas cuyos datos son cargados por un Usuario</strong>: los leads,
+      compradores, vendedores e inquilinos cuyos datos de contacto un agente
+      carga en el sistema como parte de su gestión comercial. Estas personas no
+      tienen una cuenta en LeadEra ni acceden directamente a la plataforma.</li>
+  </ul>
+  <p>Si sos un lead cuyos datos fueron cargados por un agente inmobiliario y
+    querés ejercer tus derechos sobre esos datos, contactanos directamente a
+    nosotros o a la agencia/agente que te tiene como contacto — la agencia es
+    quien decide qué datos tuyos carga y con qué finalidad (ver sección 8).</p>
+
+  <h2>3. Qué datos recolectamos</h2>
+
+  <h3>3.1 Datos que nos das directamente</h3>
+  <ul>
+    <li><strong>Datos de cuenta</strong>: nombre, apellido, email, teléfono, contraseña
+      (almacenada de forma encriptada, nunca en texto plano).</li>
+    <li><strong>Datos de tu agencia</strong>: nombre de la inmobiliaria, y datos de
+      facturación si contratás un plan pago.</li>
+    <li><strong>Datos de tus leads y clientes</strong>: los que vos como agente cargás en el
+      sistema — nombre, teléfono, email, origen del contacto, notas,
+      interacciones registradas, propiedades de interés, operaciones
+      comerciales.</li>
+    <li><strong>Contenido que cargás</strong>: fotos de propiedades, descripciones,
+      documentos que subas al sistema.</li>
+  </ul>
+
+  <h3>3.2 Datos que recolectamos automáticamente</h3>
+  <ul>
+    <li><strong>Datos de uso</strong>: qué funciones usás, con qué frecuencia, para mejorar
+      el producto y detectar errores.</li>
+    <li><strong>Datos técnicos</strong>: dirección IP, tipo de navegador, sistema operativo,
+      con fines de seguridad y diagnóstico.</li>
+  </ul>
+
+  <h3>3.3 Datos de servicios de terceros que conectás vos mismo</h3>
+  <ul>
+    <li><strong>Google Calendar</strong> (opcional): si elegís conectar tu cuenta de Google,
+      ver sección 4 para el detalle específico de qué accedemos y por qué.</li>
+    <li><strong>Mercado Pago</strong>: si contratás un plan pago, Mercado Pago procesa el
+      pago directamente; nosotros no almacenamos los datos de tu tarjeta o
+      cuenta bancaria, solo recibimos la confirmación de que el pago se
+      realizó.</li>
+  </ul>
+
+  <h2>4. Uso de Google Calendar (Google API Services)</h2>
+  <p>Si conectás tu cuenta de Google a LeadEra, accedemos a tu Google Calendar
+    con el único fin de:</p>
+  <ul>
+    <li>Crear eventos en tu calendario a partir de las tareas y visitas que
+      cargás en LeadEra, para que tengas todo en un solo lugar.</li>
+    <li>(Si corresponde según lo que tengas habilitado) Leer tus eventos de
+      Google Calendar para reflejarlos dentro de LeadEra.</li>
+  </ul>
+  <p><strong>No usamos estos datos para ningún otro fin.</strong> No los usamos para publicidad,
+    no los compartimos con terceros, y no los usamos para entrenar modelos de
+    inteligencia artificial de propósito general.</p>
+  <p>El uso y la transferencia a LeadEra de la información recibida de las APIs
+    de Google se adhiere a la <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Política de Datos de Usuario de los Servicios de
+    API de Google</a>, incluidos los requisitos de Uso Limitado (Limited Use).</p>
+  <p>Podés revocar el acceso a tu Google Calendar en cualquier momento
+    desde tu cuenta de Google en
+    <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer">https://myaccount.google.com/permissions</a>.
+    Al hacerlo, dejamos de poder acceder a tu calendario. Actualmente no
+    eliminamos automáticamente los datos de sincronización ya guardados al
+    revocar el acceso; podés solicitar su eliminación escribiéndonos a
+    <a href="mailto:contacto@leadera.com.ar">contacto@leadera.com.ar</a>.</p>
+
+  <h2>5. Para qué usamos los datos</h2>
+  <ul>
+    <li>Brindar y mantener el servicio (que puedas usar LeadEra para gestionar
+      tu trabajo).</li>
+    <li>Procesar pagos de tu suscripción.</li>
+    <li>Comunicarnos con vos sobre tu cuenta, cambios en el servicio, o
+      soporte técnico.</li>
+    <li>Mejorar el producto (analizando patrones de uso agregados, no
+      individuales).</li>
+    <li>Cumplir obligaciones legales.</li>
+    <li>Seguridad: detectar y prevenir fraude, abuso o accesos no autorizados.</li>
+  </ul>
+  <p>No vendemos tus datos ni los datos de tus leads a terceros. No usamos los
+    datos de tus leads para ningún fin fuera de brindarte el servicio de
+    LeadEra.</p>
+
+  <h2>6. Con quién compartimos datos</h2>
+  <p>Compartimos datos únicamente con los proveedores que necesitamos para
+    operar el servicio, y solo en la medida necesaria:</p>
+  <ul>
+    <li><strong>Supabase</strong>: nuestra base de datos e infraestructura backend, donde se
+      almacena toda la información de tu cuenta y tus leads.</li>
+    <li><strong>Mercado Pago</strong>: para procesar pagos de suscripción.</li>
+    <li><strong>Google</strong>: únicamente si vos conectás tu cuenta, y solo para la
+      funcionalidad de calendario descripta en la sección 4.</li>
+  </ul>
+  <p>Cada uno de estos proveedores tiene sus propias políticas de privacidad y
+    está obligado contractualmente a proteger tus datos.</p>
+  <p>No compartimos datos con otras agencias inmobiliarias ni con otros usuarios
+    de LeadEra fuera de tu propia organización, salvo que vos mismo decidas
+    compartir algo (por ejemplo, invitando a un compañero de equipo a tu
+    agencia dentro de la plataforma).</p>
+
+  <h2>7. Dónde se almacenan los datos</h2>
+  <p>Tus datos se almacenan en la infraestructura de Supabase, en la región de
+    São Paulo, Brasil.</p>
+
+  <h2>8. Tu responsabilidad como agencia/agente</h2>
+  <p>Si cargás datos de tus leads y clientes en LeadEra, sos vos (o tu agencia)
+    quien decide qué datos cargar y con qué finalidad los usás en tu gestión
+    comercial — actuás como responsable del tratamiento de esos datos frente a
+    esas personas, conforme a la Ley 25.326. LeadEra actúa como proveedor de la
+    plataforma que almacena y organiza esos datos por tu cuenta.</p>
+  <p>Esto significa que sos responsable de contar con una base legal adecuada
+    para cargar los datos de contacto de tus leads (por ejemplo, porque te
+    contactaron ellos mismos, o porque tenés su consentimiento) y de responder
+    a sus pedidos de acceso, rectificación o eliminación de sus datos.</p>
+
+  <h2>9. Cuánto tiempo conservamos los datos</h2>
+  <p>Conservamos tus datos mientras tu cuenta esté activa. Si cancelás tu
+    cuenta, conservamos los datos por 30 días
+    para permitirte reactivarla, y luego los eliminamos de forma definitiva,
+    salvo que debamos conservar algo por obligación legal (por ejemplo,
+    comprobantes de facturación).</p>
+
+  <h2>10. Tus derechos</h2>
+  <p>Conforme a la Ley 25.326, tenés derecho a:</p>
+  <ul>
+    <li><strong>Acceder</strong> a los datos que tenemos sobre vos.</li>
+    <li><strong>Rectificar</strong> datos incorrectos o desactualizados.</li>
+    <li><strong>Eliminar</strong> tus datos (con las excepciones legales que correspondan).</li>
+    <li><strong>Oponerte</strong> a ciertos usos de tus datos.</li>
+  </ul>
+  <p>Para ejercer cualquiera de estos derechos, escribinos a
+    <strong><a href="mailto:contacto@leadera.com.ar">contacto@leadera.com.ar</a></strong>. También podés hacer un reclamo ante la
+    Agencia de Acceso a la Información Pública (AAIP), autoridad de control en
+    la materia.</p>
+
+  <h2>11. Seguridad</h2>
+  <p>Implementamos medidas técnicas y organizativas para proteger tus datos,
+    incluyendo encriptación de contraseñas, control de acceso basado en roles,
+    y aislamiento de datos entre distintas agencias dentro de la plataforma.
+    Ningún sistema es 100% infalible, pero trabajamos activamente para mantener
+    tus datos seguros.</p>
+
+  <h2>12. Cookies</h2>
+  <p>Ni LeadEra ni leadera.com.ar utilizan cookies de analítica ni de
+    publicidad (no usamos Google Analytics, Meta Pixel, Google Tag Manager
+    ni herramientas similares). La aplicación guarda únicamente tu sesión
+    de inicio en el almacenamiento local de tu navegador (localStorage),
+    necesaria para mantenerte conectado. La landing carga la tipografía
+    desde Google Fonts, por lo que Google recibe la dirección IP de quien
+    visita el sitio.</p>
+
+  <h2>13. Cambios a esta política</h2>
+  <p>Podemos actualizar esta política ocasionalmente. Si hacemos cambios
+    significativos, te avisaremos por email o dentro de la plataforma antes de
+    que entren en vigencia.</p>
+
+  <h2>14. Contacto</h2>
+  <p>Ante cualquier consulta sobre esta política o el tratamiento de tus datos,
+    escribinos a <strong><a href="mailto:contacto@leadera.com.ar">contacto@leadera.com.ar</a></strong>.</p>
+</main>
+
+<!-- ================================================================
+     FOOTER
+================================================================ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-mark">
+        <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <polygon points="2,1 11,6 2,11" fill="white"/>
+        </svg>
+      </div>
+      Lead<span style="color:var(--teal-bright)">Era</span>
+    </div>
+    <div class="footer-copy">© LeadEra 2026 · Todos los derechos reservados</div>
+    <div class="footer-links">
+      <a href="https://app.leadera.com.ar/login">Iniciar sesión</a>
+      <a href="mailto:contacto@leadera.com.ar">Contacto</a>
+      <a href="terminos.html">Términos</a>
+      <a href="privacidad.html" aria-current="page">Privacidad</a>
+      <a href="https://www.poyca.com.ar" class="footer-poyca" target="_blank" rel="noopener noreferrer">Un producto de Poyca Estudio</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ----------------------------------------------------------------
+     Mobile nav toggle — igual que index.html
+  ---------------------------------------------------------------- */
+  const ham = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+
+  ham.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    ham.setAttribute('aria-expanded', String(open));
+    ham.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  });
+
+  navLinks.addEventListener('click', e => {
+    if (e.target.closest('a')) {
+      navLinks.classList.remove('open');
+      ham.setAttribute('aria-expanded', 'false');
+      ham.setAttribute('aria-label', 'Abrir menú');
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Términos de Servicio — LeadEra</title>
+  <meta name="description" content="Condiciones de uso del CRM LeadEra para inmobiliarias y agentes inmobiliarios.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       TOKENS — subconjunto de index.html. Si cambia la escala allá,
+       hay que traerla acá a mano: estas páginas no comparten hoja.
+    ============================================================ */
+    :root {
+      --teal:          #0F6E5C;
+      --teal-bright:   #1A937C;
+      --teal-dark:     #0C5A4B;
+      --teal-faint:    #ECFBF8;
+      --teal-rgb:        15,110,92;
+
+      --bg:            #F7F8FA;
+      --text:          #0f172a;
+      --text-2:        #475569;
+      --text-muted:    #626F84;
+      --border:        #e2e8f0;
+      --border-faint:  #f1f5f9;
+      --dark:          #0f172a;
+      --on-dark-dim:   #7f8ea3;
+      --amber:         #f97316;
+
+      --shadow-teal:   0 4px 16px rgba(var(--teal-rgb),.24);
+      --shadow-teal-h: 0 8px 26px rgba(var(--teal-rgb),.32);
+      --font: 'Inter', -apple-system, sans-serif;
+      --max-w: 1200px;
+      --read-w: 720px;
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+
+    /* ============================================================
+       NAV — igual que index.html
+    ============================================================ */
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 19px; font-weight: 800; letter-spacing: -.5px; color: var(--text);
+    }
+    .logo-mark {
+      width: 32px; height: 32px; background: var(--teal); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .logo-mark svg { width: 14px; height: 14px; }
+    .logo .accent { color: var(--teal); }
+
+    .nav-links { display: flex; align-items: center; gap: 22px; list-style: none; }
+    .nav-links a { font-size: 13.5px; font-weight: 500; color: var(--text-2); transition: color .18s; }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-links a.nav-login {
+      font-weight: 600; color: var(--text);
+      padding: 8px 2px;
+      transition: color .18s;
+    }
+    .nav-links a.nav-login:hover { color: var(--teal); }
+
+    .nav-links a.nav-cta {
+      background: var(--teal); color: #fff;
+      padding: 8px 18px; border-radius: 8px;
+      font-weight: 700; font-size: 13.5px;
+      box-shadow: var(--shadow-teal);
+      transition: background .18s, transform .18s, box-shadow .18s;
+    }
+    .nav-links a.nav-cta:hover {
+      background: var(--teal-dark); color: #fff;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-teal-h);
+    }
+    .hamburger {
+      display: none; background: none; border: none;
+      cursor: pointer; padding: 6px; color: var(--text);
+    }
+
+    /* ============================================================
+       TEXTO LEGAL
+
+       Columna de lectura de 720px, no el --max-w de 1200: con el
+       cuerpo a 16px eso da ~75 caracteres por renglón.
+    ============================================================ */
+    .legal {
+      max-width: var(--read-w); margin: 0 auto;
+      padding: 80px 24px 120px;
+      overflow-wrap: break-word;
+    }
+    .legal h1 {
+      font-size: clamp(30px, 5vw, 42px); font-weight: 800;
+      letter-spacing: -1.2px; line-height: 1.12;
+      color: var(--text);
+    }
+    .legal-meta {
+      margin-top: 14px; font-size: 14px; color: var(--text-muted);
+    }
+    .legal-head {
+      padding-bottom: 36px; margin-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legal h2 {
+      font-size: 21px; font-weight: 700; letter-spacing: -.4px; line-height: 1.3;
+      color: var(--text);
+      margin-top: 52px; margin-bottom: 14px;
+    }
+    .legal h3 {
+      font-size: 16.5px; font-weight: 700; line-height: 1.4;
+      color: var(--text-2);
+      margin-top: 30px; margin-bottom: 10px;
+    }
+    .legal p,
+    .legal li { font-size: 16px; line-height: 1.75; color: var(--text); }
+    .legal p + p { margin-top: 14px; }
+    .legal ul, .legal ol { margin: 14px 0 14px 22px; }
+    .legal li + li { margin-top: 8px; }
+    .legal li::marker { color: var(--teal); }
+    .legal ul + p, .legal ol + p { margin-top: 14px; }
+    .legal strong { font-weight: 650; }
+    .legal a {
+      color: var(--teal); font-weight: 500;
+      text-decoration: underline; text-decoration-thickness: 1px;
+      text-underline-offset: 3px; text-decoration-color: rgba(var(--teal-rgb),.35);
+      transition: text-decoration-color .18s;
+    }
+    .legal a:hover { text-decoration-color: var(--teal); }
+    .legal hr { border: none; border-top: 1px solid var(--border); margin: 44px 0; }
+
+    /* ============================================================
+       FOOTER — igual que index.html
+    ============================================================ */
+    footer {
+      background: var(--dark); border-top: 1px solid rgba(255,255,255,.06);
+      padding: 36px 24px;
+    }
+    .footer-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.4px;
+    }
+    .footer-logo-mark {
+      width: 27px; height: 27px; background: var(--teal-bright); border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .footer-logo-mark svg { width: 12px; height: 12px; }
+    .footer-copy { font-size: 12.5px; color: var(--on-dark-dim); }
+    .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+    .footer-links a { font-size: 12.5px; color: var(--on-dark-dim); transition: color .18s; }
+    .footer-links a:hover { color: var(--teal-bright); }
+    .footer-links a.footer-poyca {
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,255,255,.12);
+    }
+
+    /* ============================================================
+       MOBILE RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1040px) {
+      .nav-links { gap: 18px; }
+    }
+
+    @media (max-width: 920px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column; align-items: stretch; gap: 0;
+        position: absolute; top: 64px; left: 0; right: 0; z-index: 99;
+        background: #fff; padding: 8px 20px 18px;
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 10px 28px rgba(15,23,42,.08);
+      }
+      .nav-links.open a { display: block; padding: 12px 2px; font-size: 15px; }
+      .nav-links.open a.nav-login {
+        border-top: 1px solid var(--border-faint);
+        margin-top: 6px; padding-top: 15px;
+      }
+      .nav-links.open a.nav-cta {
+        text-align: center; margin-top: 12px;
+        padding: 13px 18px; font-size: 15px;
+      }
+      .hamburger { display: block; }
+    }
+
+    @media (max-width: 580px) {
+      .legal { padding: 52px 20px 88px; }
+      .legal-head { padding-bottom: 28px; }
+      .legal h2 { font-size: 19px; margin-top: 42px; }
+      .legal p, .legal li { font-size: 15.5px; }
+
+      .footer-links { row-gap: 12px; }
+      .footer-links a.footer-poyca {
+        flex-basis: 100%; padding-left: 0; border-left: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .nav-links a.nav-cta:hover { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================================================
+     NAV
+     Los anchors de secciones vuelven a index.html. El logo lleva a
+     la home: acá no hay otra forma de volver sin usar el menú.
+================================================================ -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo" aria-label="LeadEra — volver al inicio">
+      <div class="logo-mark">
+        <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <polygon points="2,1 12,7 2,13" fill="white"/>
+        </svg>
+      </div>
+      <span>Lead<span class="accent">Era</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#problema">El problema</a></li>
+      <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+      <li><a href="index.html#features">Funcionalidades</a></li>
+      <li><a href="https://app.leadera.com.ar/login" class="nav-login">Iniciar sesión</a></li>
+      <li><a href="https://wa.me/542235827465?text=Hola!%20Quiero%20agendar%20una%20demo%20de%20LeadEra" class="nav-cta">Agendar demo</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <rect y="3" width="20" height="2" rx="1"/>
+        <rect y="9" width="20" height="2" rx="1"/>
+        <rect y="15" width="20" height="2" rx="1"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ================================================================
+     CONTENIDO
+================================================================ -->
+<main class="legal">
+  <header class="legal-head">
+    <h1>Términos de Servicio de LeadEra</h1>
+    <p class="legal-meta"><strong>Última actualización:</strong> 11 de septiembre de 2026</p>
+  </header>
+
+  <p>Estos Términos de Servicio ("Términos") regulan el uso de LeadEra
+    ("nosotros", "LeadEra"), un software desarrollado por
+    <strong>Mateo Camilion (DNI 46.639.525)</strong>.
+    Al crear una cuenta o usar la plataforma, aceptás estos Términos.</p>
+
+  <h2>1. Descripción del servicio</h2>
+  <p>LeadEra es un software de gestión comercial (CRM) diseñado para agentes y
+    agencias inmobiliarias, que permite administrar leads, propiedades,
+    operaciones, tareas y automatizaciones relacionadas con la actividad
+    inmobiliaria.</p>
+
+  <h2>2. Cuentas</h2>
+  <ul>
+    <li>Debés proporcionar información veraz al crear tu cuenta.</li>
+    <li>Sos responsable de mantener la confidencialidad de tu contraseña y de
+      toda actividad que ocurra bajo tu cuenta.</li>
+    <li>Debés notificarnos de inmediato ante cualquier uso no autorizado de tu
+      cuenta.</li>
+    <li>Si sos administrador de una agencia, sos responsable de gestionar los
+      accesos de los agentes que invites a tu equipo dentro de la plataforma.</li>
+  </ul>
+
+  <h2>3. Uso aceptable</h2>
+  <p>Al usar LeadEra, te comprometés a:</p>
+  <ul>
+    <li>No usar la plataforma para fines ilegales, o que violen los derechos de
+      terceros.</li>
+    <li>No cargar datos de personas sin una base legal adecuada para hacerlo
+      (ver la <a href="privacidad.html">Política de Privacidad</a>, sección 8).</li>
+    <li>No intentar acceder a datos de otras agencias/organizaciones que no sean
+      la tuya.</li>
+    <li>No usar la plataforma para enviar comunicaciones no solicitadas (spam) a
+      través de las integraciones disponibles (WhatsApp, email, etc.), y
+      respetar la normativa de protección de datos y comunicaciones aplicable
+      en tu jurisdicción.</li>
+    <li>No intentar vulnerar, sobrecargar o comprometer la seguridad del sistema.</li>
+  </ul>
+  <p>Nos reservamos el derecho de suspender o cancelar cuentas que violen estos
+    términos.</p>
+
+  <h2>4. Planes y pagos</h2>
+  <ul>
+    <li>LeadEra ofrece tres planes: Solo (1 usuario), Agencia Chica (hasta 5
+      usuarios) y Agencia Grande (usuarios ilimitados, con soporte
+      prioritario). Todos los planes incluyen 14 días de prueba gratuita sin
+      necesidad de tarjeta.</li>
+    <li>Los pagos de suscripción se procesan a través de Mercado Pago.</li>
+    <li>La suscripción es mensual y se renueva automáticamente. El precio está
+      expresado en pesos argentinos e indexado a la cotización del dólar MEP,
+      por lo que puede actualizarse periódicamente para reflejar esa
+      variación, incluso en suscripciones ya activas — te recomendamos
+      revisar el monto facturado en cada período. Si un cobro falla, tu
+      cuenta mantiene el acceso mientras Mercado Pago reintenta el cobro. No
+      ofrecemos reembolsos automáticos; casos excepcionales se evalúan
+      escribiendo a <a href="mailto:contacto@leadera.com.ar">contacto@leadera.com.ar</a>.</li>
+    <li>Podés cancelar tu suscripción en cualquier momento desde Perfil → Plan
+      y facturación. Al cancelar, mantenés el acceso hasta el final del
+      período que ya pagaste — después de esa fecha no se te vuelve a cobrar
+      y el acceso se desactiva.</li>
+  </ul>
+
+  <h2>5. Propiedad de los datos</h2>
+  <ul>
+    <li>Los datos que cargás en LeadEra (tus leads, propiedades, operaciones)
+      son tuyos. No reclamamos propiedad sobre ellos.</li>
+    <li>Podés exportar o solicitar una copia de tus datos en cualquier momento,
+      y solicitar la eliminación de tu cuenta y sus datos asociados (ver
+      <a href="privacidad.html">Política de Privacidad</a>, sección 9).</li>
+    <li>Nos das una licencia limitada para almacenar, procesar y mostrar esos
+      datos únicamente con el fin de brindarte el servicio.</li>
+  </ul>
+
+  <h2>6. Propiedad intelectual de LeadEra</h2>
+  <p>El software, diseño, marca y funcionalidades de LeadEra son propiedad de
+    <strong>Mateo Camilion (DNI 46.639.525)</strong>.
+    Estos Términos no te otorgan ningún derecho sobre ellos más allá del uso de la plataforma
+    conforme a lo aquí descripto.</p>
+
+  <h2>7. Disponibilidad del servicio</h2>
+  <p>Hacemos nuestro mejor esfuerzo para mantener LeadEra disponible de forma
+    continua, pero no garantizamos un funcionamiento ininterrumpido o libre de
+    errores. Podemos realizar mantenimientos programados, avisando cuando sea
+    posible.</p>
+
+  <h2>8. Integraciones con terceros</h2>
+  <p>LeadEra permite conectar servicios de terceros de forma opcional (Google
+    Calendar, WhatsApp Business, Mercado Pago). El uso de estas integraciones
+    está sujeto también a los términos y políticas de esos terceros. No somos
+    responsables por el funcionamiento, disponibilidad o políticas de esos
+    servicios externos.</p>
+
+  <h2>9. Limitación de responsabilidad</h2>
+  <p>LeadEra se brinda "tal cual" ("as is"). En la medida permitida por la ley
+    aplicable, no somos responsables por daños indirectos, pérdida de
+    ganancias, pérdida de datos, o interrupciones del negocio derivadas del uso
+    o imposibilidad de uso de la plataforma. Esto no limita responsabilidades
+    que no puedan excluirse legalmente (por ejemplo, por dolo o negligencia
+    grave).</p>
+
+  <h2>10. Cancelación</h2>
+  <p>Podés dejar de usar LeadEra y cancelar tu cuenta en cualquier momento.
+    Nosotros podemos suspender o cancelar tu acceso si violás estos Términos,
+    avisándote cuando sea razonablemente posible.</p>
+
+  <h2>11. Cambios a estos Términos</h2>
+  <p>Podemos actualizar estos Términos ocasionalmente. Ante cambios
+    significativos, te avisaremos por email o dentro de la plataforma. El uso
+    continuado de LeadEra después de un cambio implica la aceptación de los
+    Términos actualizados.</p>
+
+  <h2>12. Ley aplicable</h2>
+  <p>Estos Términos se rigen por las leyes de la República Argentina. Cualquier
+    disputa se resolverá ante los tribunales competentes de Mar del Plata,
+    Provincia de Buenos Aires.</p>
+
+  <h2>13. Contacto</h2>
+  <p>Ante cualquier consulta sobre estos Términos, escribinos a
+    <strong><a href="mailto:contacto@leadera.com.ar">contacto@leadera.com.ar</a></strong>.</p>
+</main>
+
+<!-- ================================================================
+     FOOTER
+================================================================ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-mark">
+        <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <polygon points="2,1 11,6 2,11" fill="white"/>
+        </svg>
+      </div>
+      Lead<span style="color:var(--teal-bright)">Era</span>
+    </div>
+    <div class="footer-copy">© LeadEra 2026 · Todos los derechos reservados</div>
+    <div class="footer-links">
+      <a href="https://app.leadera.com.ar/login">Iniciar sesión</a>
+      <a href="mailto:contacto@leadera.com.ar">Contacto</a>
+      <a href="terminos.html" aria-current="page">Términos</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="https://www.poyca.com.ar" class="footer-poyca" target="_blank" rel="noopener noreferrer">Un producto de Poyca Estudio</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ----------------------------------------------------------------
+     Mobile nav toggle — igual que index.html
+  ---------------------------------------------------------------- */
+  const ham = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+
+  ham.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    ham.setAttribute('aria-expanded', String(open));
+    ham.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  });
+
+  navLinks.addEventListener('click', e => {
+    if (e.target.closest('a')) {
+      navLinks.classList.remove('open');
+      ham.setAttribute('aria-expanded', 'false');
+      ham.setAttribute('aria-label', 'Abrir menú');
+    }
+  });
+</script>
+</body>
+</html>
