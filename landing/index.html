@@ -134,7 +134,9 @@
       width: 32px; height: 32px; background: var(--teal); border-radius: 8px;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .logo-mark svg { width: 14px; height: 14px; }
+    /* El isotipo es blanco sobre transparente: sobre el nav blanco
+       necesita la tesela teal para verse. */
+    .logo-mark img { width: 20px; height: auto; display: block; }
     .logo .accent { color: var(--teal); }
 
     .nav-links { display: flex; align-items: center; gap: 22px; list-style: none; }
@@ -227,6 +229,35 @@
     .btn-main:hover { background: var(--teal-dark); transform: translateY(-2px); box-shadow: var(--shadow-teal-h); }
     .btn-main:active { transform: translateY(0); }
 
+    /* Badge de Google Calendar: ícono en una tesela blanca, el nombre de
+       la integración y una etiqueta de estado. Es inline-flex para que
+       mida lo que su contenido y se centre solo cuando el hero se apila. */
+    .hero-highlight {
+      display: inline-flex; align-items: center; gap: 12px;
+      max-width: 100%; margin: -12px 0 28px;
+      padding: 8px 14px 8px 8px;
+      background: var(--teal-faint);
+      border: 1px solid rgba(var(--teal-rgb),.18);
+      border-radius: 14px;
+      text-align: left;
+    }
+    .hero-highlight-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #fff; color: var(--teal); border-radius: 10px;
+      box-shadow: var(--shadow-xs), 0 0 0 1px rgba(var(--teal-rgb),.10);
+    }
+    .hero-highlight-icon svg { width: 20px; height: 20px; }
+    .hero-highlight-text { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+    .hero-highlight-text strong { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.01em; }
+    .hero-highlight-text span { font-size: 12.5px; color: var(--text-2); }
+    .hero-highlight-tag {
+      flex-shrink: 0; align-self: center;
+      font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      color: #fff; background: var(--teal);
+      padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+    }
+
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 8px;
       background: transparent; color: var(--text);
@@ -252,141 +283,182 @@
     /* ============================================================
        HERO MOCKUP
     ============================================================ */
+    /* Recorte de la pantalla "Mi día": sidebar, las cuatro métricas del
+       día, tareas, leads prioritarios, coincidencias propiedad-comprador
+       y el estado de Google Calendar. Todo HTML+CSS; los íconos salen del sprite de la página.
+       Los colores de texto, borde y temperatura son los tokens de la app
+       (leadera-front/src/styles.css). */
     .hero-visual {
-      flex: 0 1 424px; min-width: 0;
-      display: flex; justify-content: flex-start; align-items: center;
+      --hm-text:     #16213B;
+      --hm-muted:    #5A6779;
+      --hm-border:   #E5E7EB;
+      --hm-caliente: #D85A30;
+      --hm-tibio:    #EF9F27;
+      flex: 1 1 0; min-width: 0; min-height: 440px;
+      display: flex; overflow: hidden;
+      background: #F5F7F9;
+      border-radius: 16px;
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: var(--shadow-lg);
+      text-align: left;
     }
 
-    /* Frame de vista rápida, no ventana de escritorio: vertical, de
-       esquinas muy redondeadas (radio de notificación, no de card) y
-       con un bisel blanco de 10px que hace de cuerpo del dispositivo.
-       El bisel además despega el frame del fondo, que comparte color
-       con la pantalla (ambos --bg).
-
-       El mockup vive a la izquierda: el eje de fuga se invierte
-       respecto de la composición original (rotateY pasa a positivo)
-       para que el borde que se aleja sea el exterior. */
-    .mockup-shell {
-      width: 100%; max-width: 424px;
-      background: #fff; border-radius: 30px; padding: 10px;
-      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(15,23,42,.07);
-      transform: perspective(1100px) rotateY(5deg) rotateX(2deg);
-      transition: transform .7s var(--ease);
+    /* ---- sidebar ---- */
+    .hm-side {
+      width: 152px; flex-shrink: 0;
+      display: flex; flex-direction: column; gap: 20px;
+      padding: 18px 10px;
+      background: linear-gradient(180deg, #0C5A4B 0%, #0A4539 100%);
+      color: #fff;
     }
-    .mockup-shell:hover { transform: perspective(1100px) rotateY(1.5deg) rotateX(.5deg); }
-
-    /* ------------------------------------------------------------
-       app body — recorte de la pantalla "Mi día" real: solo la tarjeta
-       de tareas del día, sin sidebar ni navegación. Se lee como una
-       lista de pendientes, no como un panel de métricas.
-       Los tokens de abajo son copia literal del design system de la
-       app (leadera-front/src/styles.css); no se inventa ningún color.
-    ------------------------------------------------------------ */
-    .mkbody {
-      --app-primary:        #0F6E5C;   /* --color-primary      */
-      --app-caliente:       #D85A30;   /* --color-caliente     */
-      --app-tibio:          #EF9F27;   /* --color-tibio        */
-      --app-text:           #16213B;   /* --color-text         */
-      --app-text-muted:     #5A6779;   /* --color-text-muted   */
-      --app-border:         #E5E7EB;   /* --color-border       */
-      --app-hero-grad:      linear-gradient(150deg,#0F6E5C,#0B5246 60%,#0A3D33); /* --hero-grad */
-      --app-hero-accent:    #EF9F27;   /* --hero-accent (= --color-tibio) */
-      background: var(--bg);
-      /* Radio concéntrico con el frame: 30px externos − 10px de bisel. */
-      border-radius: 20px;
-      padding: 16px 15px 20px;
+    .hm-brand {
+      display: flex; align-items: center; gap: 10px; padding: 0 8px;
+      font-size: 14px; font-weight: 700; letter-spacing: -.02em;
     }
-
-    /* Hero + stats embebidas: el hero reserva padding inferior y las
-       cards lo pisan con margen negativo, igual que .home-hero real. */
-    .mk-hero {
-      background: var(--app-hero-grad);
-      border-radius: 12px; padding: 18px 17px 38px;
-    }
-    .mk-hero h4 {
-      font-size: 19px; font-weight: 600; color: #fff;
-      line-height: 1.14; letter-spacing: -.4px; margin-bottom: 5px;
-    }
-    .mk-hero h4 span { color: var(--app-hero-accent); font-weight: 700; }
-    .mk-hero p { font-size: 11.5px; color: rgba(255,255,255,.85); }
-
-    .mk-stats {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 9px;
-      margin: -27px 11px 16px; position: relative;
-    }
-    .mk-stat {
-      background: #fff; border-radius: 10px; padding: 11px 12px 9px;
-      display: flex; flex-direction: column; gap: 3px;
-      box-shadow: 0 1px 0 rgba(22,33,59,.04), 0 6px 18px -8px rgba(22,33,59,.16);
-    }
-    .mk-stat-n { font-size: 21px; font-weight: 600; line-height: 1; }
-    .mk-stat-l { font-size: 8.5px; font-weight: 700; letter-spacing: .06em; color: var(--app-text-muted); }
-    .mk-stat.calientes    .mk-stat-n { color: var(--app-caliente); }
-    .mk-stat.nuevos       .mk-stat-n { color: var(--app-text-muted); }
-    .mk-stat.seguimientos .mk-stat-n { color: var(--app-tibio); }
-
-    .mk-progress {
-      background: #fff; border: 1px solid var(--app-border); border-radius: 12px;
-      padding: 12px 14px; margin-bottom: 18px;
-      box-shadow: 0 1px 0 rgba(22,33,59,.04), 0 6px 18px -8px rgba(22,33,59,.10);
-    }
-    .mk-progress-head {
-      display: flex; justify-content: space-between; gap: 10px;
-      font-size: 10.5px; font-weight: 600; color: #334155; margin-bottom: 9px;
-    }
-    .mk-progress-head b { color: var(--app-text); }
-    .mk-progress-bar { height: 6px; background: var(--app-border); border-radius: 10px; overflow: hidden; }
-    .mk-progress-fill { height: 100%; width: 30%; background: var(--app-primary); border-radius: 10px; }
-
-    /* ---- sección de leads prioritarios ---- */
-    .mk-sec-head { display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
-    .mk-sec-icon {
-      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: #fde8e0; color: var(--app-caliente);
-    }
-    .mk-sec-icon svg { width: 15px; height: 15px; }
-    .mk-sec-title { font-size: 13.5px; font-weight: 800; color: #1e293b; letter-spacing: -.25px; }
-    .mk-count {
-      font-size: 9.5px; font-weight: 600; padding: 3px 8px; border-radius: 999px;
-      white-space: nowrap; background: #fde8e0; color: var(--app-caliente);
-    }
-    .mk-sec-sub { font-size: 10px; color: var(--app-text-muted); margin-bottom: 10px; }
-
-    .mk-card {
-      background: #fff; border: 1px solid var(--app-border);
-      border-left: 3px solid transparent; border-radius: 9px;
-      padding: 9px 11px 9px 9px; margin-bottom: 8px;
+    .hm-logo { width: 20px; height: auto; flex-shrink: 0; display: block; }
+    .hm-nav { display: flex; flex-direction: column; gap: 2px; }
+    .hm-nav-item {
       display: flex; align-items: center; gap: 9px;
-      cursor: default; transition: box-shadow .15s;
+      padding: 8px; border-radius: 8px;
+      font-size: 12px; color: rgba(255,255,255,.78); white-space: nowrap;
     }
-    .mk-card:last-child { margin-bottom: 0; }
-    .mk-card:hover { box-shadow: 0 2px 8px rgba(22,33,59,.10); }
-    .mk-card.borde-caliente { border-left-color: var(--app-caliente); }
-    .mk-card.borde-tibio    { border-left-color: var(--app-tibio); }
+    .hm-nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .hm-nav-item.is-active { background: rgba(var(--teal-bright-rgb),.55); color: #fff; font-weight: 600; }
 
-    .mk-av {
-      width: 32px; height: 32px; border-radius: 50%;
+    /* ---- panel ---- */
+    .hm-main {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 16px 18px 18px;
+      container-type: inline-size;
+    }
+    .hm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .hm-title { font-size: 19px; font-weight: 700; color: var(--hm-text); letter-spacing: -.02em; line-height: 1.2; }
+    .hm-date  { font-size: 11px; color: var(--hm-muted); margin-top: 2px; }
+    .hm-gcal {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 10px 5px 8px; border-radius: 999px;
+      background: #fff; border: 1px solid var(--hm-border);
+      font-size: 10.5px; font-weight: 600; color: var(--hm-text); white-space: nowrap;
+    }
+    .hm-gcal svg { width: 13px; height: 13px; color: var(--teal); }
+    .hm-gcal-dot { width: 6px; height: 6px; border-radius: 50%; background: #22A06B; box-shadow: 0 0 0 3px rgba(34,160,107,.16); }
+
+    .hm-stats { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+    .hm-stat {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 5px; min-width: 0;
+      padding: 9px 10px; background: #fff;
+      border: 1px solid var(--hm-border); border-radius: 10px;
+    }
+    .hm-stat-icon {
+      width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; flex-shrink: 0;
     }
-    .av-caliente { background: #fde8e0; color: var(--app-caliente); }
-    .av-tibio    { background: #fef3c7; color: #92400e; }
+    .hm-stat-icon svg { width: 14px; height: 14px; }
+    .hm-stat-body { min-width: 0; }
+    .hm-stat-n { font-size: 17px; font-weight: 700; color: var(--hm-text); line-height: 1.1; }
+    .hm-stat-l { font-size: 10.5px; color: var(--hm-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hm-stat.is-prio   .hm-stat-icon { background: #fde8e0; color: var(--hm-caliente); }
+    .hm-stat.is-new    .hm-stat-icon { background: var(--teal-faint); color: var(--teal); }
+    .hm-stat.is-follow .hm-stat-icon { background: #fef3c7; color: #B7791F; }
+    .hm-stat.is-visit  .hm-stat-icon { background: #E6EEFB; color: #2F6FDB; }
 
-    .mk-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-    .mk-name { font-size: 12.5px; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .mk-detalle { font-size: 10px; color: var(--app-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    /* ---- cards ---- */
+    .hm-card { background: #fff; border: 1px solid var(--hm-border); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+    .hm-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+    .hm-card-title { font-size: 12.5px; font-weight: 700; color: var(--hm-text); }
+    .hm-count {
+      font-size: 9.5px; font-weight: 600; white-space: nowrap;
+      padding: 3px 8px; border-radius: 999px;
+      background: var(--teal-faint); color: var(--teal-darker);
+    }
+    /* Tareas de hoy y Leads prioritarios, lado a lado */
+    .hm-duo { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
 
-    .mk-pill { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 999px; flex-shrink: 0; white-space: nowrap; }
-    .pill-caliente { background: #fde8e0; color: var(--app-caliente); }
-    .pill-tibio    { background: #fef3c7; color: #92400e; }
+    .hm-row { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 6px 0; border-top: 1px solid #F1F3F5; }
+    .hm-card-head + .hm-row { border-top: 0; }
+    .hm-row:last-child { padding-bottom: 0; }
+    .hm-check { width: 12px; height: 12px; flex-shrink: 0; border: 1.5px solid #C5CCD6; border-radius: 3px; }
+    .hm-task { flex: 1; min-width: 0; font-size: 11px; color: var(--hm-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hm-prio { flex-shrink: 0; font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 999px; }
+    .hm-prio.alta  { background: #FDE2E1; color: #C53030; }
+    .hm-prio.media { background: #FEF3C7; color: #92400E; }
+    .hm-prio.baja  { background: #DCF5EC; color: #0F6E5C; }
 
-    /* Outline, no relleno sólido (igual que .lead-row-btn real) */
-    .mk-btn {
-      flex-shrink: 0; font-size: 10px; font-weight: 600;
-      padding: 5px 10px; border-radius: 7px;
-      border: 1px solid var(--app-border); background: #fff; color: #334155;
-      white-space: nowrap;
+    .hm-lead { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 6px 0; border-top: 1px solid #F1F3F5; }
+    .hm-card-head + .hm-lead { border-top: 0; }
+    .hm-lead:last-child { padding-bottom: 0; }
+    .hm-lead .hm-av { width: 24px; height: 24px; font-size: 9px; }
+    .hm-lead-meta { display: flex; align-items: center; gap: 5px; min-width: 0; margin-top: 1px; }
+
+    .hm-match {
+      display: grid; grid-template-columns: minmax(0,1fr) 16px minmax(0,1fr);
+      align-items: center; gap: 8px;
+      padding: 7px 0; border-top: 1px solid #F1F3F5;
+    }
+    .hm-card-head + .hm-match { border-top: 0; }
+    .hm-match:last-child { padding-bottom: 0; }
+    .hm-cell { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    /* Tesela de color en lugar de foto: el mockup no carga imágenes. */
+    .hm-thumb { width: 28px; height: 28px; flex-shrink: 0; border-radius: 7px; }
+    .hm-thumb.t1 { background: linear-gradient(135deg, #D8C7AE, #9C8468); }
+    .hm-thumb.t2 { background: linear-gradient(135deg, #B9CEDB, #62849A); }
+    .hm-av {
+      width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
+    }
+    .hm-av.caliente { background: #fde8e0; color: var(--hm-caliente); }
+    .hm-av.tibio    { background: #fef3c7; color: #92400e; }
+    .hm-av.frio     { background: #E6EEFB; color: #2F6FDB; }
+    .hm-txt  { min-width: 0; }
+    .hm-name { font-size: 11.5px; font-weight: 600; color: var(--hm-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hm-sub  { font-size: 10px; color: var(--hm-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hm-pill { display: inline-block; flex-shrink: 0; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 999px; }
+    .hm-pill.caliente { background: #fde8e0; color: var(--hm-caliente); }
+    .hm-pill.tibio    { background: #fef3c7; color: #92400e; }
+    .hm-pill.frio     { background: #E6EEFB; color: #2F6FDB; }
+    .hm-link { display: flex; justify-content: center; color: var(--teal); }
+    .hm-link svg { width: 14px; height: 14px; }
+
+    /* Grillas según el ancho del panel (container query), no del
+       viewport: el panel mide ~375px en desktop, ~230-490px entre 921 y
+       1180px (sin sidebar) y más de 500px con el hero apilado.
+       Debajo de 330px Tareas y Leads se apilan y la tercera tarea se
+       oculta; debajo de 320px cada coincidencia se apila. */
+    @container (width < 360px) {
+      .hm-stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @container (width < 330px) {
+      .hm-duo { grid-template-columns: minmax(0,1fr); }
+      .hm-row.is-extra { display: none; }
+    }
+    @container (width >= 360px) {
+      .hm-stats { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    }
+    @container (width < 320px) {
+      .hm-match { grid-template-columns: minmax(0,1fr); gap: 6px; }
+      .hm-link { display: none; }
+    }
+
+    /* Entre 921 y 1180px el hero sigue en dos columnas y el mockup mide
+       ~285-525px: no entra un sidebar de ancho fijo. Se muestra solo el
+       panel. */
+    @media (920px < width <= 1180px) {
+      .hm-side { display: none; }
+    }
+    /* Entre 1181 y 1239px la columna del mockup todavía no llega a su
+       ancho máximo: un sidebar algo más angosto deja el panel en 360px o
+       más, que es lo que piden las cuatro métricas en fila. */
+    @media (1180px < width < 1240px) {
+      .hm-side { width: 132px; }
+    }
+    /* Apilado: el mockup ocupa el ancho de la página. */
+    @media (max-width: 920px) {
+      .hero-visual { min-height: 0; }
+    }
+    @media (max-width: 768px) {
+      .hero-visual { display: none; }
     }
 
     /* ============================================================
@@ -1114,11 +1186,12 @@
       display: flex; align-items: center; gap: 8px;
       font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.4px;
     }
+    /* Sobre el footer oscuro el isotipo va directo, sin tesela. */
     .footer-logo-mark {
-      width: 27px; height: 27px; background: var(--teal-bright); border-radius: 7px;
+      width: 24px; height: 24px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
     }
-    .footer-logo-mark svg { width: 12px; height: 12px; }
+    .footer-logo-mark img { width: 22px; height: auto; display: block; }
     .footer-copy { font-size: 12.5px; color: var(--on-dark-dim); }
     .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
     .footer-links a { font-size: 12.5px; color: var(--on-dark-dim); transition: color .18s; }
@@ -1180,8 +1253,7 @@
       .hero-pill { margin-left: auto; margin-right: auto; }
       .cta-row { justify-content: center; }
       .social-proof { justify-content: center; }
-      .hero-visual { width: 100%; }
-      .mockup-shell { transform: none !important; }
+      .hero-visual { width: 100%; flex: none; }
 
       .sintomas { grid-template-columns: 1fr; }
       .sintoma-lead, .sintoma-wide { grid-column: span 1; }
@@ -1291,14 +1363,6 @@
           var(--dark)           97%);
       }
 
-      .mockup-shell { border-radius: 26px; padding: 8px; }
-      .mkbody { border-radius: 18px; padding: 14px 13px 17px; }
-      .mk-hero { padding: 15px 14px 34px; }
-      .mk-hero h4 { font-size: 17px; }
-      .mk-stats { margin: -25px 8px 14px; gap: 7px; }
-      .mk-stat { padding: 9px 10px 8px; }
-      .mk-stat-n { font-size: 19px; }
-      .mk-stat-l { font-size: 8px; }
       .sintoma { gap: 14px; }
       .sintoma-lead { gap: 16px; }
       .pcard-featured { flex-direction: column; text-align: center; }
@@ -1323,17 +1387,6 @@
       .footer-links a.footer-poyca {
         flex-basis: 100%; padding-left: 0; border-left: none;
       }
-    }
-
-    /* La fila de lead tiene 4 piezas fijas (avatar, badge, botón) más el
-       nombre elástico. Por debajo de ~400px se ajustan las fijas para que
-       el nombre no quede reducido a puntos suspensivos. */
-    @media (max-width: 400px) {
-      .mk-card { gap: 7px; padding: 8px 9px 8px 8px; }
-      .mk-av { width: 28px; height: 28px; font-size: 10px; }
-      .mk-pill { font-size: 8.5px; padding: 2px 6px; }
-      .mk-btn { font-size: 9px; padding: 4px 7px; }
-      .mk-sec-sub { margin-bottom: 8px; }
     }
 
     /* ============================================================
@@ -1408,7 +1461,6 @@
         transition-delay: 0s !important;
       }
       .reveal.visible, .reveal-pop.visible { transform: none !important; }
-      .mockup-shell, .mockup-shell:hover { transition: none !important; transform: none !important; }
       /* La colina no se ata al scroll: queda quieta en su estado final.
          El JS del fallback tampoco corre, ni siquiera engancha el
          listener. */
@@ -1492,9 +1544,7 @@
   <div class="nav-inner">
     <div class="logo">
       <div class="logo-mark">
-        <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <polygon points="2,1 12,7 2,13" fill="white"/>
-        </svg>
+        <img src="leadera-logo-icon.png" alt="" width="317" height="327">
       </div>
       <span>Lead<span class="accent">Era</span></span>
     </div>
@@ -1536,9 +1586,20 @@
       LeadEra ordena tu día solo: leads nuevos, seguimientos pendientes, contactos calientes sin respuesta. El dueño de la inmobiliaria ve en tiempo real qué hace cada agente. Sin planillas, sin WhatsApp perdido.
     </p>
 
+    <div class="hero-highlight">
+      <span class="hero-highlight-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg>
+      </span>
+      <span class="hero-highlight-text">
+        <strong>Integración con Google Calendar</strong>
+        <span>Tu agenda, sincronizada automáticamente</span>
+      </span>
+      <span class="hero-highlight-tag">Ya disponible</span>
+    </div>
+
     <div class="cta-row">
-      <a href="https://wa.me/542235827465?text=Hola!%20Quiero%20agendar%20una%20demo%20de%20LeadEra" class="btn-main">
-        Agendar demo
+      <a href="https://wa.me/542235827465?text=Hola!%20Quiero%20probar%20LeadEra%2014%20d%C3%ADas%20gratis" class="btn-main">
+        Prueba 14 días gratis — Sin tarjeta
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
           <path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -1564,67 +1625,145 @@
     </div>
   </div>
 
-  <!-- app mockup -->
-  <div class="hero-visual reveal d2">
-    <div class="mockup-shell">
-      <!-- app body — solo la tarjeta de "Mi día", sin sidebar -->
-      <div class="mkbody">
-        <div class="mk-hero">
-          <h4>Hoy te quedan <span>7</span> tareas</h4>
-          <p>Gestioná tus contactos y hacé crecer tu cartera</p>
+  <!-- app mockup — HTML+CSS, decorativo (fuera del árbol de accesibilidad) -->
+  <div class="hero-visual reveal d2" aria-hidden="true">
+    <div class="hm-side">
+      <div class="hm-brand"><img class="hm-logo" src="leadera-logo-icon.png" alt="" width="317" height="327">LeadEra</div>
+      <div class="hm-nav">
+        <div class="hm-nav-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-checklist"/></svg>Mi día</div>
+        <div class="hm-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-people"/></svg>Leads</div>
+        <div class="hm-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg>Propiedades</div>
+        <div class="hm-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-pipeline"/></svg>Operaciones</div>
+        <div class="hm-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-calendar"/></svg>Calendario</div>
+      </div>
+    </div>
+
+    <div class="hm-main">
+      <div class="hm-head">
+        <div>
+          <div class="hm-title">Mi día</div>
+          <div class="hm-date">Hoy te quedan 11 tareas</div>
+        </div>
+        <div class="hm-gcal"><span class="hm-gcal-dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-calendar"/></svg>Google Calendar conectado</div>
+      </div>
+
+      <div class="hm-stats">
+        <div class="hm-stat is-prio">
+          <div class="hm-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-warning"/></svg></div>
+          <div class="hm-stat-body">
+            <div class="hm-stat-n">5</div>
+            <div class="hm-stat-l">Prioritarios</div>
+          </div>
+        </div>
+        <div class="hm-stat is-new">
+          <div class="hm-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-people"/></svg></div>
+          <div class="hm-stat-body">
+            <div class="hm-stat-n">2</div>
+            <div class="hm-stat-l">Nuevos</div>
+          </div>
+        </div>
+        <div class="hm-stat is-follow">
+          <div class="hm-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bell"/></svg></div>
+          <div class="hm-stat-body">
+            <div class="hm-stat-n">3</div>
+            <div class="hm-stat-l">Seguimientos</div>
+          </div>
+        </div>
+        <div class="hm-stat is-visit">
+          <div class="hm-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg></div>
+          <div class="hm-stat-body">
+            <div class="hm-stat-n">1</div>
+            <div class="hm-stat-l">Visitas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hm-duo">
+        <div class="hm-card">
+          <div class="hm-card-head">
+            <div class="hm-card-title">Tareas de hoy</div>
+          </div>
+          <div class="hm-row">
+            <span class="hm-check"></span>
+            <span class="hm-task">Llamar a Juan</span>
+            <span class="hm-prio alta">Alta</span>
+          </div>
+          <div class="hm-row">
+            <span class="hm-check"></span>
+            <span class="hm-task">Coordinar visita</span>
+            <span class="hm-prio media">Media</span>
+          </div>
+          <div class="hm-row is-extra">
+            <span class="hm-check"></span>
+            <span class="hm-task">Actualizar estado</span>
+            <span class="hm-prio baja">Baja</span>
+          </div>
         </div>
 
-        <div class="mk-stats">
-          <div class="mk-stat calientes">
-            <div class="mk-stat-n">3</div>
-            <div class="mk-stat-l">CALIENTES</div>
+        <div class="hm-card">
+          <div class="hm-card-head">
+            <div class="hm-card-title">Leads prioritarios</div>
           </div>
-          <div class="mk-stat nuevos">
-            <div class="mk-stat-n">5</div>
-            <div class="mk-stat-l">NUEVOS</div>
+          <div class="hm-lead">
+            <div class="hm-av caliente">JG</div>
+            <div class="hm-txt" style="flex:1">
+              <div class="hm-name">Juan García</div>
+              <div class="hm-lead-meta">
+                <span class="hm-pill caliente">Caliente</span>
+                <span class="hm-sub">Sin contacto</span>
+              </div>
+            </div>
           </div>
-          <div class="mk-stat seguimientos">
-            <div class="mk-stat-n">8</div>
-            <div class="mk-stat-l">SEGUIM.</div>
+          <div class="hm-lead">
+            <div class="hm-av tibio">AS</div>
+            <div class="hm-txt" style="flex:1">
+              <div class="hm-name">Ana Soria</div>
+              <div class="hm-lead-meta">
+                <span class="hm-pill tibio">Tibio</span>
+                <span class="hm-sub">Pidió visita</span>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div class="mk-progress">
-          <div class="mk-progress-head">
-            <span>Progreso del día</span>
-            <span>Completaste <b>3</b> de 10</span>
-          </div>
-          <div class="mk-progress-bar"><div class="mk-progress-fill"></div></div>
+      <div class="hm-card">
+        <div class="hm-card-head">
+          <div class="hm-card-title">Coincidencias</div>
+          <div class="hm-count">2 nuevas</div>
         </div>
-
-        <div class="mk-sec">
-          <div class="mk-sec-head">
-            <div class="mk-sec-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg>
+        <div class="hm-match">
+          <div class="hm-cell">
+            <div class="hm-thumb t1"></div>
+            <div class="hm-txt">
+              <div class="hm-name">Alsina 3300</div>
+              <div class="hm-sub">Depto · USD 300</div>
             </div>
-            <div class="mk-sec-title">Leads prioritarios</div>
-            <div class="mk-count">2 urgentes</div>
           </div>
-          <div class="mk-sec-sub">Atención inmediata requerida por falta de contacto</div>
-
-          <div class="mk-card borde-caliente" id="mkc1" style="opacity:0;transform:translateY(10px)">
-            <div class="mk-av av-caliente">JG</div>
-            <div class="mk-info">
-              <div class="mk-name">Juan García</div>
-              <div class="mk-detalle">Sin interacciones registradas</div>
+          <div class="hm-link"><svg viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="hm-cell">
+            <div class="hm-av tibio">RP</div>
+            <div class="hm-txt">
+              <div class="hm-name">Rodrigo Paz</div>
+              <div class="hm-pill tibio">Tibio</div>
             </div>
-            <div class="mk-pill pill-caliente">Caliente</div>
-            <div class="mk-btn">Registrar</div>
           </div>
-
-          <div class="mk-card borde-tibio" id="mkc2" style="opacity:0;transform:translateY(10px)">
-            <div class="mk-av av-tibio">AS</div>
-            <div class="mk-info">
-              <div class="mk-name">Ana Soria</div>
-              <div class="mk-detalle">Sin interacciones registradas</div>
+        </div>
+        <div class="hm-match">
+          <div class="hm-cell">
+            <div class="hm-thumb t2"></div>
+            <div class="hm-txt">
+              <div class="hm-name">Belgrano 2450</div>
+              <div class="hm-sub">Depto · USD 180.000</div>
             </div>
-            <div class="mk-pill pill-tibio">Tibio</div>
-            <div class="mk-btn">Registrar</div>
+          </div>
+          <div class="hm-link"><svg viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="hm-cell">
+            <div class="hm-av frio">LM</div>
+            <div class="hm-txt">
+              <div class="hm-name">Laura Martínez</div>
+              <div class="hm-pill frio">Frío</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1875,11 +2014,9 @@
   <div class="footer-inner">
     <div class="footer-logo">
       <div class="footer-logo-mark">
-        <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
-          <polygon points="2,1 11,6 2,11" fill="white"/>
-        </svg>
+        <img src="leadera-logo-icon.png" alt="" width="317" height="327">
       </div>
-      Lead<span style="color:var(--teal-bright)">Era</span>
+      <span>Lead<span style="color:var(--teal-bright)">Era</span></span>
     </div>
     <div class="footer-copy">© LeadEra 2026 · Todos los derechos reservados</div>
     <div class="footer-links">
@@ -2090,30 +2227,6 @@
       ham.setAttribute('aria-label', 'Abrir menú');
     }
   });
-
-  /* ----------------------------------------------------------------
-     Mockup lead cards — staggered entry animation
-  ---------------------------------------------------------------- */
-  const cards = ['mkc1','mkc2'];
-  const mockupObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        cards.forEach((id, i) => {
-          const card = document.getElementById(id);
-          if (!card) return;
-          setTimeout(() => {
-            card.style.transition = reduceMotion ? 'opacity .01s linear' : 'opacity .42s ease, transform .42s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          }, reduceMotion ? 0 : 320 + i * 95);
-        });
-        mockupObserver.disconnect();
-      }
-    });
-  }, { threshold: 0.1 });
-
-  const shell = document.querySelector('.mockup-shell');
-  if (shell) mockupObserver.observe(shell);
 </script>
 </body>
 </html>

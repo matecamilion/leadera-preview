@@ -70,7 +70,9 @@
       width: 32px; height: 32px; background: var(--teal); border-radius: 8px;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .logo-mark svg { width: 14px; height: 14px; }
+    /* El isotipo es blanco sobre transparente: sobre el nav blanco
+       necesita la tesela teal para verse. */
+    .logo-mark img { width: 20px; height: auto; display: block; }
     .logo .accent { color: var(--teal); }
 
     .nav-links { display: flex; align-items: center; gap: 22px; list-style: none; }
@@ -168,11 +170,12 @@
       display: flex; align-items: center; gap: 8px;
       font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.4px;
     }
+    /* Sobre el footer oscuro el isotipo va directo, sin tesela. */
     .footer-logo-mark {
-      width: 27px; height: 27px; background: var(--teal-bright); border-radius: 7px;
+      width: 24px; height: 24px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
     }
-    .footer-logo-mark svg { width: 12px; height: 12px; }
+    .footer-logo-mark img { width: 22px; height: auto; display: block; }
     .footer-copy { font-size: 12.5px; color: var(--on-dark-dim); }
     .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
     .footer-links a { font-size: 12.5px; color: var(--on-dark-dim); transition: color .18s; }
@@ -239,9 +242,7 @@
   <div class="nav-inner">
     <a href="index.html" class="logo" aria-label="LeadEra — volver al inicio">
       <div class="logo-mark">
-        <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <polygon points="2,1 12,7 2,13" fill="white"/>
-        </svg>
+        <img src="leadera-logo-icon.png" alt="" width="317" height="327">
       </div>
       <span>Lead<span class="accent">Era</span></span>
     </a>
@@ -398,11 +399,9 @@
   <div class="footer-inner">
     <div class="footer-logo">
       <div class="footer-logo-mark">
-        <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
-          <polygon points="2,1 11,6 2,11" fill="white"/>
-        </svg>
+        <img src="leadera-logo-icon.png" alt="" width="317" height="327">
       </div>
-      Lead<span style="color:var(--teal-bright)">Era</span>
+      <span>Lead<span style="color:var(--teal-bright)">Era</span></span>
     </div>
     <div class="footer-copy">© LeadEra 2026 · Todos los derechos reservados</div>
     <div class="footer-links">
