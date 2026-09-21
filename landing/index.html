@@ -1509,6 +1509,798 @@
         will-change: auto;
       }
     }
+
+    /* ============================================================
+       DEMO NAVEGABLE — "Explorá LeadEra por dentro"
+
+       Recorte navegable del CRM en su propia sección. Los colores son
+       los tokens reales de la app (src/index.css): se declaran una sola
+       vez acá y nada de lo que sigue usa un hex suelto.
+
+       Las clases van con prefijo propio (dm-, ld-) y no tocan las hm-*
+       del mockup del hero, que queda como está.
+    ============================================================ */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+
+    #explorar { background: var(--bg-white); }
+    .demo-frame {
+      /* marca */
+      --c-primary:       #0f6e5c;
+      --c-primary-hover: #0c5a4b;
+      --c-primary-dark:  #0b5246;
+      --c-primary-soft:  #e6f2ef;
+      --c-brand-soft:    #e3efeb;
+      --c-brand-softer:  #f0f7f5;
+      /* superficies */
+      --c-bg:            #f7f8fa;
+      --c-surface:       #ffffff;
+      --c-surface-2:     #f3f4f6;
+      --c-border:        #e3e6ea;
+      /* texto */
+      --c-ink:           #1a1f24;
+      --c-ink-2:         #334155;
+      --c-ink-3:         #5a6779;
+      --c-ink-4:         #9ca3af;
+      /* temperatura */
+      --c-caliente:      #d85a30;
+      --c-tibio:         #ef9f27;
+      --c-frio:          #378add;
+      --c-inactivo:      #64748b;
+      --c-hot-soft:      #fdeee8;
+      --c-warm-soft:     #fef5e0;
+      --c-cool-soft:     #e8f1fc;
+      /* badges */
+      --c-badge-caliente-bg: #fde8e0;
+      --c-badge-tibio-bg:    #fef3c7;
+      --c-badge-tibio-ink:   #92400e;
+      --c-badge-frio-bg:     #dbeafe;
+      --c-badge-ganado-bg:   #d1fae5;
+      /* peligro y otros */
+      --c-peligro:       #ef4444;
+      --c-peligro-ink:   #b91c1c;
+      --c-peligro-borde: #fecaca;
+      --c-peligro-soft:  #fee2e2;
+      --c-info:          #2c6fb5;
+      --c-excel:         #16a34a;
+      /* sidebar */
+      --c-sidebar:        #0a4438;
+      --c-sidebar-hover:  #0f5a4a;
+      --c-sidebar-active: #14705c;
+      --c-sidebar-ink:    #a9c9c1;
+
+      margin-top: 40px; min-height: 560px;
+      position: relative;
+      display: flex; overflow: hidden;
+      background: var(--c-bg);
+      border-radius: 16px;
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: var(--shadow-lg);
+      color: var(--c-ink);
+      text-align: left;
+    }
+
+    /* ---- sidebar (barra fija verde oscuro) ---- */
+    .demo-side {
+      width: 200px; flex-shrink: 0;
+      display: flex; flex-direction: column; gap: 22px;
+      padding: 20px 12px;
+      background: var(--c-sidebar);
+      color: var(--c-sidebar-ink);
+    }
+    .demo-brand {
+      display: flex; align-items: center; gap: 10px; padding: 0 8px;
+      font-size: 15px; font-weight: 700; color: #fff; letter-spacing: -.02em;
+    }
+    .demo-brand img { width: 22px; height: auto; display: block; }
+    .demo-nav { display: flex; flex-direction: column; gap: 2px; }
+    .demo-nav-item {
+      display: flex; align-items: center; gap: 9px; width: 100%;
+      padding: 9px 10px; border-radius: 8px; border: 0;
+      font: inherit; font-size: 12.5px; text-align: left;
+      background: none; color: var(--c-sidebar-ink); cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .demo-nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .demo-nav-item:hover { background: var(--c-sidebar-hover); color: #fff; }
+    .demo-nav-item.is-active,
+    .demo-nav-item.is-active:hover { background: var(--c-sidebar-active); color: #fff; font-weight: 600; }
+    .demo-nav-item:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+    /* El panel imita la ventana de la app: alto acotado y scroll propio,
+       para que la pantalla completa de "Mi día" no estire la landing. */
+    .demo-main {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column;
+      padding: 20px 22px 22px;
+      container-type: inline-size;
+      max-height: 620px; overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    .demo-panel { flex: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+    .demo-panel[hidden] { display: none; }
+    .demo-panel:focus { outline: none; }
+
+    /* ============================================================
+       Piezas compartidas: badges y avatares
+    ============================================================ */
+    .bdg {
+      display: inline-block; border-radius: 4px; padding: 4px 10px;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; white-space: nowrap;
+    }
+    .bdg.sm { padding: 2px 8px; font-size: 9.5px; }
+    .bdg.caliente { background: var(--c-badge-caliente-bg); color: var(--c-caliente); }
+    .bdg.tibio    { background: var(--c-badge-tibio-bg); color: var(--c-badge-tibio-ink); }
+    .bdg.frio     { background: var(--c-badge-frio-bg); color: var(--c-frio); }
+    .bdg.inactivo { background: var(--c-bg); color: var(--c-inactivo); }
+    .bdg.nuevo    { background: var(--c-brand-soft); color: var(--c-primary); }
+    .bdg.ganado   { background: var(--c-badge-ganado-bg); color: var(--c-primary-dark); }
+
+    /* Rol: borde y fondo blanco, nunca relleno — así no se confunde con
+       la temperatura, que sí es sólida. */
+    .bdg-rol {
+      display: inline-block; border-radius: 4px; border: 1px solid;
+      background: var(--c-surface); padding: 3px 8px;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; white-space: nowrap;
+    }
+    .bdg-rol.comprador { border-color: rgba(44,111,181,.4); color: var(--c-info); }
+    .bdg-rol.vendedor  { border-color: rgba(15,110,92,.4); color: var(--c-primary-dark); }
+    .bdg-rol.ambos     { border-color: rgba(90,103,121,.4); color: var(--c-ink-2); }
+
+    .bdg-prop {
+      display: inline-block; border-radius: 999px; padding: 3px 10px;
+      font-size: .72rem; font-weight: 700; text-transform: uppercase; white-space: nowrap;
+    }
+    .bdg-prop.disponible { background: var(--c-badge-ganado-bg); color: var(--c-primary); }
+    .bdg-prop.reservada  { background: var(--c-badge-tibio-bg); color: var(--c-badge-tibio-ink); }
+    .bdg-prop.vendida    { background: var(--c-surface-2); color: var(--c-inactivo); }
+    .bdg-prop.alquilada  { background: var(--c-badge-frio-bg); color: var(--c-frio); }
+    .bdg-prop.pausada    { background: var(--c-hot-soft); color: var(--c-caliente); }
+
+    .bdg-op {
+      display: inline-block; border-radius: 999px; padding: 4px 10px;
+      font-size: .7rem; font-weight: 800; letter-spacing: .03em;
+      text-transform: uppercase; white-space: nowrap;
+    }
+    .bdg-op.publicada   { background: var(--c-badge-ganado-bg); color: var(--c-primary); }
+    .bdg-op.negociacion { background: var(--c-badge-tibio-bg); color: var(--c-badge-tibio-ink); }
+    .bdg-op.ganada      { background: var(--c-badge-ganado-bg); color: var(--c-primary-dark); }
+
+    .dm-av {
+      width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700;
+    }
+    .dm-av.caliente { background: var(--c-badge-caliente-bg); color: var(--c-caliente); }
+    .dm-av.tibio    { background: var(--c-badge-tibio-bg); color: var(--c-badge-tibio-ink); }
+    .dm-av.frio     { background: var(--c-badge-frio-bg); color: var(--c-frio); }
+    .dm-av.nuevo    { background: var(--c-brand-soft); color: var(--c-primary); }
+    .dm-av.inactivo { background: var(--c-surface-2); color: var(--c-inactivo); }
+    .dm-av.ganado   { background: var(--c-badge-ganado-bg); color: var(--c-primary-dark); }
+
+    /* chips de ícono de 28px, por tono */
+    .dm-chip {
+      width: 28px; height: 28px; flex-shrink: 0; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .dm-chip svg { width: 15px; height: 15px; }
+    .t-caliente { background: var(--c-hot-soft); color: var(--c-caliente); }
+    .t-brand    { background: var(--c-brand-soft); color: var(--c-primary); }
+    .t-tibio    { background: var(--c-warm-soft); color: var(--c-badge-tibio-ink); }
+    .t-frio     { background: var(--c-cool-soft); color: var(--c-frio); }
+    .t-neutro   { background: var(--c-surface-2); color: var(--c-ink-3); }
+
+    /* ============================================================
+       MI DÍA — sin banda de color: título plano sobre el fondo gris,
+       4 stat cards y secciones en pares de dos columnas.
+    ============================================================ */
+    .dm-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .dm-h1 { font-size: 1.4rem; font-weight: 700; color: var(--c-ink); line-height: 1.2; letter-spacing: -.01em; }
+    .dm-h1 span { color: var(--c-primary); }
+    .dm-sub { font-size: .85rem; color: var(--c-ink-3); margin-top: 3px; }
+    .dm-toplink { font-size: .82rem; font-weight: 600; color: var(--c-primary); white-space: nowrap; }
+
+    .dm-stats { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .dm-stat {
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 16px; padding: 14px; box-shadow: 0 1px 2px rgba(16,24,40,.05);
+      min-width: 0;
+    }
+    .dm-stat-l { font-size: .78rem; font-weight: 600; color: var(--c-ink-3); margin-bottom: 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dm-stat-row { display: flex; align-items: center; gap: 10px; }
+    .dm-stat-n { font-size: 1.4rem; font-weight: 700; line-height: 1; color: var(--c-ink); font-variant-numeric: tabular-nums; }
+
+    .dm-pair { display: grid; grid-template-columns: minmax(0,1fr); gap: 16px; align-items: start; }
+    .dm-card {
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 16px; padding: 14px; box-shadow: 0 1px 2px rgba(16,24,40,.05);
+      min-width: 0;
+    }
+    .dm-card-head { display: flex; align-items: center; gap: 8px; row-gap: 4px; min-width: 0; flex-wrap: wrap; }
+    .dm-card-title { font-size: .95rem; font-weight: 700; color: var(--c-ink); }
+    .dm-pill { border-radius: 999px; padding: 2px 10px; font-size: .7rem; font-weight: 700; white-space: nowrap; }
+    .dm-all { margin-left: auto; font-size: .78rem; font-weight: 600; color: var(--c-primary); white-space: nowrap; }
+    .dm-card-sub { font-size: .78rem; color: var(--c-ink-3); margin-top: 3px; margin-bottom: 6px; }
+
+    .dm-list > * + * { border-top: 1px solid var(--c-border); }
+    .dm-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; min-width: 0; }
+    .dm-body { flex: 1; min-width: 0; }
+    /* Todos estos son <span> dentro de contenedores flex: sin display
+       block no toman el recorte con puntos suspensivos. */
+    .dm-name, .dm-ctx, .dm-stat-l, .ld-lead-sub, .fi-name, .fi-contact,
+    .fi-idet, .ld-card-name, .dm-price { display: block; }
+    .dm-name { font-size: .9rem; font-weight: 600; color: var(--c-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dm-ctx { font-size: .74rem; color: var(--c-ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dm-act { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .dm-ico { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--c-ink-3); }
+    .dm-ico svg { width: 14px; height: 14px; }
+    .dm-mini {
+      border-radius: 8px; background: var(--c-brand-soft); color: var(--c-primary);
+      padding: 6px 10px; font-size: .74rem; font-weight: 600; white-space: nowrap;
+    }
+    .dm-right { text-align: right; flex-shrink: 0; }
+    .dm-time { font-size: .74rem; color: var(--c-ink-3); font-variant-numeric: tabular-nums; }
+    .dm-price { font-size: .82rem; font-weight: 600; color: var(--c-ink); font-variant-numeric: tabular-nums; }
+    .dm-done .dm-name { text-decoration: line-through; color: var(--c-ink-3); }
+    .dm-done .dm-chip { opacity: .5; }
+    .dm-thumb {
+      width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px;
+      background: var(--c-surface-2); color: var(--c-ink-4);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .dm-thumb svg { width: 17px; height: 17px; }
+
+    .dm-match { display: grid; grid-template-columns: minmax(0,15rem) auto minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 8px 0; }
+    .dm-cell { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .dm-cross { color: var(--c-ink-4); display: flex; }
+    .dm-cross svg { width: 16px; height: 16px; }
+    .dm-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--c-surface-2); color: var(--c-ink-3);
+      border-radius: 999px; padding: 2px 8px; font-size: .72rem; white-space: nowrap;
+    }
+    .dm-tag svg { width: 11px; height: 11px; }
+    .dm-score { font-size: .82rem; font-weight: 700; color: var(--c-primary); font-variant-numeric: tabular-nums; }
+    .dm-meta { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; }
+
+    /* ============================================================
+       LEADS — listado
+    ============================================================ */
+    .ld-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+    .ld-kicker { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--c-primary); }
+    .ld-h1 { font-size: 1.6rem; font-weight: 700; color: var(--c-ink); line-height: 1.15; margin-top: 3px; }
+    .ld-count { font-size: .85rem; color: var(--c-ink-3); margin-top: 4px; }
+    .ld-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .ld-search {
+      display: flex; align-items: center; gap: 7px; min-width: 170px;
+      border: 1px solid var(--c-border); background: var(--c-surface); border-radius: 8px;
+      padding: 8px 10px; font-size: .82rem; color: var(--c-ink-3);
+    }
+    .ld-search svg { width: 14px; height: 14px; }
+    .ld-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 6px; padding: 9px 16px; font-size: .82rem; font-weight: 600; white-space: nowrap;
+    }
+    .ld-btn.primary { background: var(--c-primary); color: #fff; }
+    .ld-btn.ghost { border: 1px solid var(--c-border); background: var(--c-surface); color: var(--c-ink-2); padding: 8px 12px; }
+    .ld-btn.ghost svg { width: 14px; height: 14px; color: var(--c-excel); }
+
+    .ld-filters { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .ld-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ld-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid var(--c-border); background: var(--c-surface); color: var(--c-ink);
+      border-radius: 999px; padding: 7px 16px;
+      font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .ld-chip:hover { background: var(--c-bg); }
+    .ld-chip:focus-visible, .ld-seg button:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 2px; }
+    .ld-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .ld-chip[data-temp="todos"]    .ld-dot { background: var(--c-primary); }
+    .ld-chip[data-temp="caliente"] .ld-dot { background: var(--c-caliente); }
+    .ld-chip[data-temp="tibio"]    .ld-dot { background: var(--c-tibio); }
+    .ld-chip[data-temp="frio"]     .ld-dot { background: var(--c-frio); }
+    .ld-chip[data-temp="inactivo"] .ld-dot { background: var(--c-inactivo); }
+    .ld-chip.is-on { color: #fff; border-color: transparent; }
+    .ld-chip.is-on .ld-dot { background: rgba(255,255,255,.7); }
+    .ld-chip.is-on[data-temp="todos"]    { background: var(--c-primary); }
+    .ld-chip.is-on[data-temp="caliente"] { background: var(--c-caliente); }
+    .ld-chip.is-on[data-temp="tibio"]    { background: var(--c-tibio); }
+    .ld-chip.is-on[data-temp="frio"]     { background: var(--c-frio); }
+    .ld-chip.is-on[data-temp="inactivo"] { background: var(--c-inactivo); }
+
+    .ld-seg { display: inline-flex; border: 1px solid var(--c-border); background: var(--c-surface); border-radius: 999px; padding: 2px; }
+    .ld-seg button {
+      font: inherit; font-size: .8rem; font-weight: 600; color: var(--c-ink-3);
+      background: none; border: 0; border-radius: 999px; padding: 6px 13px; cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .ld-seg button:hover { background: var(--c-bg); color: var(--c-ink); }
+    .ld-seg button.is-on, .ld-seg button.is-on:hover { background: var(--c-ink); color: #fff; }
+
+    .ld-tablecard {
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 16px; padding: 16px; overflow-x: auto;
+    }
+    .ld-table { width: 100%; min-width: 56rem; table-layout: fixed; border-collapse: collapse; font-size: .88rem; }
+    /* Encabezado sin fondo gris (a diferencia de Propiedades): sólo línea. */
+    .ld-table th {
+      text-align: left; padding: 0 14px 10px;
+      font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+      color: var(--c-ink-3); border-bottom: 1px solid var(--c-border);
+      overflow-wrap: anywhere;
+    }
+    .ld-table td { padding: 14px; border-bottom: 1px solid var(--c-border); color: var(--c-ink-2); vertical-align: middle; }
+    .ld-table tbody tr { cursor: pointer; transition: background .15s; }
+    .ld-table tbody tr:hover { background: var(--c-bg); }
+    .ld-table tbody tr:focus-visible { outline: 2px solid var(--c-primary); outline-offset: -2px; }
+    .ld-lead { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .ld-lead strong { font-weight: 700; color: var(--c-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ld-lead .bdg-rol { flex-shrink: 0; }
+    .ld-lead-sub { font-size: .78rem; color: var(--c-ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ld-venc { font-weight: 700; color: var(--c-caliente); }
+    .ld-muted { color: var(--c-ink-4); }
+    .ld-actions { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; }
+    .ld-a {
+      height: 32px; display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px; padding: 0 12px; font: inherit; font-size: .78rem; font-weight: 600;
+      cursor: pointer; border: 1px solid transparent; white-space: nowrap;
+    }
+    .ld-a.primary { background: var(--c-primary); color: #fff; }
+    .ld-a.primary:hover { background: var(--c-primary-hover); }
+    .ld-a.ghost { border-color: var(--c-primary); background: var(--c-surface); color: var(--c-primary); }
+    .ld-a.ghost:hover { background: var(--c-primary-soft); }
+    .ld-a.ico { width: 32px; padding: 0; color: var(--c-ink-3); background: none; }
+    .ld-a.ico:hover { background: var(--c-brand-softer); color: var(--c-primary); }
+    .ld-a.ico svg { width: 15px; height: 15px; }
+    .ld-a.del { width: 32px; padding: 0; border-color: var(--c-peligro-borde); color: var(--c-peligro-ink); background: var(--c-surface); }
+    .ld-a.del:hover { background: var(--c-peligro-soft); }
+    .ld-a.del svg { width: 15px; height: 15px; }
+    .ld-a:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 2px; }
+
+    /* cards de mobile */
+    .ld-cards { display: none; flex-direction: column; gap: 16px; }
+    .ld-card {
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 16px; padding: 16px; width: 100%; text-align: left;
+      font: inherit; color: inherit; cursor: pointer;
+    }
+    .ld-card:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 2px; }
+    .ld-card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .ld-card-name { font-size: 1.1rem; font-weight: 700; color: var(--c-ink); }
+    .ld-card-del { margin-left: auto; }
+    .ld-card-line { display: flex; align-items: center; gap: 7px; min-width: 0; overflow-wrap: anywhere; font-size: .85rem; color: var(--c-ink-2); margin-top: 8px; }
+    .ld-card-line svg { width: 14px; height: 14px; color: var(--c-ink-3); flex-shrink: 0; }
+    .ld-card-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: .8rem; color: var(--c-ink-3); margin-top: 10px; }
+    .ld-card-meta span { display: inline-flex; align-items: center; gap: 5px; }
+    .ld-card-meta svg { width: 13px; height: 13px; }
+    .ld-card-last { border: 1px solid var(--c-border); background: var(--c-bg); border-radius: 4px; padding: 12px; font-size: .82rem; color: var(--c-ink-2); margin-top: 12px; }
+    .ld-card-last b { color: var(--c-ink); }
+    .ld-card-counts { display: flex; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--c-border); }
+    .ld-card-count { min-width: 86px; border: 1px solid var(--c-border); background: var(--c-bg); border-radius: 6px; padding: 10px 12px; }
+    .ld-card-count span { display: block; font-size: .72rem; color: var(--c-ink-3); }
+    .ld-card-count b { font-size: 1.2rem; font-weight: 700; color: var(--c-ink); font-variant-numeric: tabular-nums; }
+    .ld-card-btns { display: flex; gap: 10px; margin-top: 12px; }
+    .ld-card-btns .ld-a { flex: 1; }
+
+    .ld-empty {
+      border: 1px dashed var(--c-border); background: var(--c-surface-2);
+      border-radius: 14px; padding: 24px 16px; text-align: center;
+      font-size: .88rem; font-style: italic; color: var(--c-ink-3);
+    }
+
+    /* ============================================================
+       PROPIEDADES — listado
+    ============================================================ */
+    .pr-filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .pr-ctl {
+      font: inherit; font-size: .92rem; color: var(--c-ink-2);
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 8px; padding: 9px 13px;
+    }
+    .pr-ctl:focus-visible { outline: none; border-color: var(--c-primary); }
+    input.pr-ctl { flex: 1; min-width: 15rem; }
+    input.pr-ctl::placeholder { color: var(--c-ink-3); }
+    select.pr-ctl, button.pr-ctl { cursor: pointer; }
+    .pr-more { display: inline-flex; align-items: center; gap: 8px; }
+    .pr-more svg { width: 13px; height: 13px; transition: transform .15s; }
+    .pr-more[aria-expanded="true"] svg { transform: rotate(180deg); }
+    .pr-more-n {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--c-primary); color: #fff;
+      font-size: .7rem; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .pr-adv {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      border: 1px solid var(--c-border); background: var(--c-surface-2);
+      border-radius: 8px; padding: 12px;
+    }
+    .pr-adv input.pr-ctl { width: 144px; flex: none; min-width: 0; }
+    /* display: flex/inline-flex pisan el atributo hidden. */
+    .pr-adv[hidden], .pr-more-n[hidden] { display: none; }
+
+    .pr-tablecard {
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 12px; box-shadow: 0 1px 2px rgba(16,24,40,.05);
+      overflow-x: auto;
+    }
+    .pr-table { width: 100%; min-width: 52rem; border-collapse: collapse; font-size: .93rem; }
+    /* Al revés que en Leads, acá el encabezado sí lleva fondo gris. */
+    .pr-table th {
+      background: var(--c-surface-2); text-align: left; padding: 12px 16px;
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .04em; color: var(--c-ink-2);
+    }
+    .pr-table th.num { text-align: right; }
+    .pr-table td { padding: 14px 16px; border-bottom: 1px solid var(--c-surface-2); color: var(--c-ink-2); }
+    .pr-table tbody tr { transition: background .15s; }
+    .pr-table tbody tr:hover { background: var(--c-surface-2); }
+    .pr-dir { display: block; font-weight: 600; color: var(--c-ink); }
+    .pr-zona { display: block; margin-top: 2px; font-size: .78rem; font-weight: 400; color: var(--c-ink-3); }
+    .pr-precio { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .pr-owner { font-weight: 600; color: var(--c-primary); }
+    .pr-ver { font-size: .88rem; font-weight: 600; color: var(--c-primary-dark); white-space: nowrap; }
+
+    .pr-cards { display: none; flex-direction: column; gap: 12px; }
+    .pr-card {
+      display: flex; align-items: stretch; gap: 16px;
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 16px; padding: 16px; transition: background .15s;
+    }
+    .pr-card:hover { background: var(--c-bg); }
+    .pr-thumb {
+      width: 80px; height: 80px; flex-shrink: 0; border-radius: 8px;
+      background: var(--c-surface-2); color: var(--c-ink-4);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pr-thumb svg { width: 28px; height: 28px; }
+    .pr-cbody { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
+    .pr-cdir { display: block; font-weight: 700; color: var(--c-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pr-cmeta { display: block; margin-top: 3px; font-size: .82rem; color: var(--c-ink-3); }
+    .pr-cowner { display: block; margin-top: 2px; font-size: .78rem; color: var(--c-ink-4); }
+    .pr-cfoot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .pr-cprice { font-weight: 700; color: var(--c-ink); font-variant-numeric: tabular-nums; }
+
+    .pr-empty {
+      border: 1px dashed var(--c-border); background: var(--c-surface-2);
+      border-radius: 12px; padding: 40px 20px; text-align: center;
+      font-size: .9rem; color: var(--c-ink-3);
+    }
+    .pr-pager { display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .pr-page {
+      min-width: 30px; height: 30px; border-radius: 8px;
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      color: var(--c-ink-2); font-size: .8rem; font-weight: 600;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .pr-page.is-on { background: var(--c-primary); color: #fff; border-color: transparent; }
+
+    /* ============================================================
+       OPERACIONES — tablero kanban
+    ============================================================ */
+    .kb-toggle { display: inline-flex; border: 1px solid var(--c-border); border-radius: 8px; overflow: hidden; }
+    .kb-toggle button {
+      font: inherit; font-size: .82rem; font-weight: 600;
+      padding: 8px 14px; border: 0; cursor: pointer;
+      background: var(--c-surface); color: var(--c-ink-3);
+    }
+    .kb-toggle button.is-on { background: var(--c-primary); color: #fff; }
+    .kb-toggle button:focus-visible { outline: 2px solid var(--c-primary); outline-offset: -2px; }
+
+    .kb-board { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 16px; align-items: start; }
+    .kb-col {
+      min-width: 0; border: 1px solid var(--c-border); border-top: 4px solid;
+      background: var(--c-surface-2); border-radius: 8px; padding: 12px;
+      transition: background .15s, box-shadow .15s;
+    }
+    .kb-col.publicada   { border-top-color: var(--c-primary); }
+    .kb-col.reservada,
+    .kb-col.negociacion { border-top-color: var(--c-tibio); }
+    .kb-col.ganada      { border-top-color: var(--c-primary-dark); }
+    .kb-col.cancelada   { border-top-color: var(--c-caliente); }
+    /* columna destino mientras se arrastra por encima */
+    .kb-col.is-over { background: var(--c-brand-soft); box-shadow: inset 0 0 0 2px var(--c-primary); }
+
+    .kb-col-head { border-bottom: 1px solid var(--c-border); padding-bottom: 12px; margin-bottom: 10px; }
+    .kb-col-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .kb-col-name { min-width: 0; font-size: .9rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--c-ink-2); }
+    .kb-col-n { border-radius: 999px; background: var(--c-surface); padding: 2px 10px; font-size: .75rem; font-weight: 600; color: var(--c-ink-2); }
+    /* USD y ARS van separados: nunca se suman entre sí. */
+    .kb-col-mont { display: flex; flex-direction: column; gap: 1px; margin-top: 7px; font-size: .78rem; font-weight: 700; color: var(--c-ink-2); font-variant-numeric: tabular-nums; }
+    .kb-col-mont .none { color: var(--c-ink-4); }
+
+    .kb-body { min-height: 200px; display: flex; flex-direction: column; gap: 10px; }
+    .kb-card {
+      position: relative; overflow: hidden; cursor: grab;
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 12px; padding-left: 12px; box-shadow: 0 1px 2px rgba(16,24,40,.05);
+    }
+    .kb-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
+    .kb-card.venta::before    { background: var(--c-primary); }
+    .kb-card.compra::before   { background: var(--c-frio); }
+    .kb-card.alquiler::before { background: var(--c-tibio); }
+    .kb-card.busqueda::before { background: var(--c-info); }
+    .kb-card.stale { border-color: var(--c-tibio); }
+    .kb-card.is-drag { opacity: .5; box-shadow: 0 6px 16px rgba(16,24,40,.16); cursor: grabbing; }
+    .kb-card-body { padding: 12px; }
+    .kb-monto { font-size: 1.15rem; font-weight: 700; color: var(--c-ink); font-variant-numeric: tabular-nums; }
+    .kb-lead { font-size: .85rem; font-weight: 600; color: var(--c-ink-2); margin-top: 2px; }
+    .kb-tit { font-size: .78rem; color: var(--c-ink-3); margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .kb-stale {
+      display: inline-flex; align-items: center; gap: 5px; margin-top: 8px;
+      background: var(--c-warm-soft); color: var(--c-badge-tibio-ink);
+      border-radius: 999px; padding: 3px 8px;
+      font-size: .68rem; font-weight: 700; text-transform: uppercase;
+    }
+    .kb-stale svg { width: 11px; height: 11px; }
+    .kb-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-top: 1px solid var(--c-border); padding: 8px 12px; }
+    .kb-foot-ico { display: flex; gap: 4px; }
+    .kb-ico { display: flex; padding: 6px; border-radius: 6px; color: var(--c-ink-3); }
+    .kb-ico:hover { background: var(--c-brand-softer); color: var(--c-primary); }
+    .kb-ico svg { width: 14px; height: 14px; }
+    .kb-ver { font-size: .78rem; font-weight: 600; color: var(--c-primary); }
+    .kb-more {
+      display: block; text-align: center; border: 1px solid var(--c-border);
+      background: var(--c-surface); border-radius: 8px; padding: 8px 12px;
+      font-size: .8rem; font-weight: 600; color: var(--c-primary);
+    }
+    .kb-empty { border: 1px dashed var(--c-border); border-radius: 12px; padding: 24px 12px; text-align: center; }
+    .kb-empty svg { width: 28px; height: 28px; color: var(--c-ink-4); }
+    .kb-empty p { font-size: .82rem; color: var(--c-ink-3); margin-top: 8px; }
+    .kb-empty small { display: block; font-size: .75rem; color: var(--c-ink-4); margin-top: 3px; }
+
+    /* aviso rojo arriba del tablero, como cuando el servidor rechaza el movimiento */
+    .kb-alert {
+      border: 1px solid var(--c-peligro-borde); background: var(--c-peligro-soft);
+      color: var(--c-peligro-ink); border-radius: 8px; padding: 10px 12px;
+      font-size: .82rem; font-weight: 600;
+    }
+    .kb-alert[hidden] { display: none; }
+
+    .kb-modal {
+      position: absolute; inset: 0; z-index: 5; padding: 20px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(15,23,42,.45);
+    }
+    .kb-modal[hidden] { display: none; }
+    .kb-dialog {
+      width: 100%; max-width: 340px; background: var(--c-surface);
+      border-radius: 14px; padding: 20px; box-shadow: 0 12px 32px rgba(16,24,40,.22);
+    }
+    .kb-dialog h4 { font-size: 1rem; font-weight: 700; color: var(--c-ink); }
+    .kb-dialog p { font-size: .85rem; color: var(--c-ink-3); margin-top: 6px; }
+    .kb-dialog-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+    /* Con cinco columnas en un panel de menos de 1000px, "En negociación"
+       no entra a .9rem. */
+    @container (width < 1000px) {
+      .kb-col-name { font-size: .78rem; letter-spacing: .03em; }
+      .kb-monto { font-size: 1rem; }
+      .kb-card-body { padding: 10px; }
+    }
+
+    /* Teléfono: el tablero pasa a ser una fila con scroll y snap. */
+    @container (width < 760px) {
+      .kb-board {
+        display: flex; overflow-x: auto; gap: 12px; padding-bottom: 6px;
+        scroll-snap-type: x mandatory;
+      }
+      .kb-col { flex: 0 0 85%; scroll-snap-align: center; }
+    }
+
+    /* ============================================================
+       CALENDARIO — vista mensual + panel del día
+    ============================================================ */
+    .cal-nav { display: inline-flex; align-items: center; gap: 4px; }
+    .cal-nav button {
+      width: 30px; height: 30px; border-radius: 8px;
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      font: inherit; font-size: 1rem; color: var(--c-ink-2); cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .cal-nav button:hover { background: var(--c-bg); }
+    .cal-nav button:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 2px; }
+    .cal-mes { min-width: 10rem; text-align: center; font-size: .95rem; font-weight: 700; color: var(--c-ink); }
+
+    .cal-wrap { display: grid; gap: 20px; grid-template-columns: minmax(0,1fr); align-items: start; }
+    .cal-grid { overflow: hidden; border: 1px solid var(--c-border); background: var(--c-surface); border-radius: 16px; }
+    .cal-dows, .cal-days { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); }
+    .cal-dows {
+      background: var(--c-surface-2); border-bottom: 1px solid var(--c-border);
+      font-size: .68rem; font-weight: 700; text-transform: uppercase; color: var(--c-ink-3);
+    }
+    .cal-dows span { padding: 8px 6px; text-align: center; }
+    .cal-dows .corto { display: none; }
+    .cal-day {
+      min-height: 86px; padding: 6px; border-right: 1px solid var(--c-border);
+      border-bottom: 1px solid var(--c-border); background: none;
+      font: inherit; text-align: left; cursor: pointer; min-width: 0;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .cal-day:hover { background: var(--c-bg); }
+    .cal-day:focus-visible { outline: 2px solid var(--c-primary); outline-offset: -2px; }
+    .cal-day.otro { background: rgba(243,244,246,.6); }
+    .cal-day.otro .cal-n { color: var(--c-ink-4); }
+    .cal-day.sel { box-shadow: inset 0 0 0 2px var(--c-primary); }
+    .cal-n {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; color: var(--c-ink-2); font-variant-numeric: tabular-nums;
+    }
+    .cal-day.hoy .cal-n { background: var(--c-primary); color: #fff; font-weight: 700; }
+    .cal-chips { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .cal-chip {
+      border-radius: 4px; padding: 1px 4px; font-size: .66rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .cal-chip.tarea       { background: var(--c-brand-soft); color: var(--c-primary-dark); }
+    .cal-chip.seguimiento { background: var(--c-cool-soft); color: var(--c-frio); }
+    .cal-chip.visita      { background: var(--c-warm-soft); color: var(--c-badge-tibio-ink); }
+    .cal-chip.listo { text-decoration: line-through; opacity: .6; }
+    .cal-mas { font-size: .64rem; color: var(--c-ink-3); }
+    .cal-dots { display: none; align-items: center; gap: 3px; flex-wrap: wrap; }
+    .cal-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .cal-dot.tarea { background: var(--c-primary); }
+    .cal-dot.seguimiento { background: var(--c-frio); }
+    .cal-dot.visita { background: var(--c-tibio); }
+
+    .cal-panel { border: 1px solid var(--c-border); background: var(--c-surface); border-radius: 16px; padding: 18px; }
+    .cal-panel-tit { font-size: .95rem; font-weight: 700; color: var(--c-ink); margin-bottom: 12px; }
+    .cal-block + .cal-block { margin-top: 16px; }
+    .cal-block-tit {
+      display: flex; align-items: center; gap: 7px; margin-bottom: 6px;
+      font-size: .72rem; font-weight: 700; text-transform: uppercase; color: var(--c-ink-3);
+    }
+    .cal-item { display: flex; align-items: flex-start; gap: 9px; padding: 8px 0; min-width: 0; }
+    .cal-item + .cal-item { border-top: 1px solid var(--c-border); }
+    .cal-check { width: 15px; height: 15px; margin-top: 2px; flex-shrink: 0; border: 1.5px solid var(--c-ink-4); border-radius: 3px; }
+    .cal-check.listo { background: var(--c-primary); border-color: var(--c-primary); }
+    .cal-body { flex: 1; min-width: 0; }
+    .cal-tit { font-size: .85rem; font-weight: 600; color: var(--c-ink); }
+    .cal-tit.listo { text-decoration: line-through; color: var(--c-ink-3); }
+    .cal-desc { font-size: .78rem; color: var(--c-ink-3); margin-top: 2px; }
+    .cal-hora { font-size: .78rem; color: var(--c-ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .cal-sq {
+      width: 28px; height: 28px; flex-shrink: 0; border-radius: 8px;
+      background: var(--c-warm-soft); color: var(--c-badge-tibio-ink);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cal-sq svg { width: 15px; height: 15px; }
+    .cal-visita-foot { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .cal-visita-foot .ld-a { flex: 1 1 auto; min-width: 0; padding: 0 10px; font-size: .74rem; }
+    .cal-vacio {
+      border: 1px dashed var(--c-border); background: var(--c-surface-2);
+      border-radius: 12px; padding: 28px 16px; text-align: center;
+      font-size: .85rem; color: var(--c-ink-3);
+    }
+
+    @container (width >= 900px) {
+      .cal-wrap { grid-template-columns: minmax(0,1fr) 360px; }
+    }
+    /* Teléfono: los chips del día se reemplazan por puntitos. */
+    @container (width < 620px) {
+      .cal-dows .largo { display: none; }
+      .cal-dows .corto { display: inline; }
+      .cal-day { min-height: 62px; padding: 4px; }
+      .cal-chips { display: none; }
+      .cal-dots { display: flex; }
+    }
+
+    /* ============================================================
+       Ficha de lead (drill-down desde el listado)
+    ============================================================ */
+    .demo-back {
+      align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+      font: inherit; font-size: .82rem; font-weight: 600; color: var(--c-primary);
+      background: none; border: 0; padding: 2px; cursor: pointer;
+    }
+    .demo-back svg { width: 13px; height: 13px; }
+    .demo-back:hover { color: var(--c-primary-hover); text-decoration: underline; }
+    .demo-back:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 2px; border-radius: 4px; }
+    .fi-head {
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 16px; padding: 18px;
+    }
+    .fi-head .dm-av { width: 58px; height: 58px; font-size: 1.25rem; }
+    .fi-id { flex: 1; min-width: 0; }
+    .fi-name { font-size: 1.35rem; font-weight: 700; color: var(--c-ink); line-height: 1.2; }
+    .fi-contact { font-size: .82rem; color: var(--c-ink-3); margin-top: 3px; overflow-wrap: anywhere; }
+    .fi-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,2fr); gap: 16px; align-items: start; }
+    .fi-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+    .fi-title { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--c-primary); margin-bottom: 8px; }
+    .fi-text { font-size: .9rem; line-height: 1.6; color: var(--c-ink-2); }
+    .fi-dl { display: flex; flex-direction: column; }
+    .fi-dl > div { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; font-size: .82rem; }
+    .fi-dl > div + div { border-top: 1px solid var(--c-border); }
+    .fi-dl dt { color: var(--c-ink-3); }
+    .fi-dl dd { color: var(--c-ink); font-weight: 600; text-align: right; }
+    .fi-dl dd.venc { color: var(--c-peligro-ink); }
+    .fi-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .fi-chip { font-size: .78rem; color: var(--c-ink-2); background: var(--c-bg); border: 1px solid var(--c-border); border-radius: 999px; padding: 4px 10px; }
+    .fi-inter { display: flex; flex-direction: column; }
+    .fi-inter > div { display: flex; gap: 10px; padding: 9px 0; min-width: 0; }
+    .fi-inter > div + div { border-top: 1px solid var(--c-border); }
+    .fi-round { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; background: var(--c-brand-softer); color: var(--c-primary); display: flex; align-items: center; justify-content: center; }
+    .fi-round svg { width: 14px; height: 14px; }
+    .fi-itop { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+    .fi-itype { font-size: .85rem; font-weight: 600; color: var(--c-ink-2); }
+    .fi-idate { font-size: .78rem; color: var(--c-ink-4); white-space: nowrap; }
+    .fi-idet { font-size: .82rem; color: var(--c-ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fi-task { display: flex; align-items: center; gap: 9px; padding: 7px 0; }
+    .fi-task + .fi-task { border-top: 1px solid var(--c-border); }
+    .fi-check { width: 14px; height: 14px; border: 1.5px solid var(--c-ink-4); border-radius: 3px; flex-shrink: 0; }
+    .fi-tasktxt { flex: 1; min-width: 0; font-size: .85rem; color: var(--c-ink-2); }
+    .fi-prio { flex-shrink: 0; font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+    .fi-prio.alta  { background: var(--c-peligro-soft); color: var(--c-peligro-ink); }
+    .fi-prio.media { background: var(--c-badge-tibio-bg); color: var(--c-badge-tibio-ink); }
+    .fi-prio.baja  { background: var(--c-badge-ganado-bg); color: var(--c-primary-dark); }
+
+    /* ============================================================
+       Adaptación por ancho del panel (container queries) y mobile
+    ============================================================ */
+    @container (width >= 640px) {
+      .dm-stats { grid-template-columns: repeat(4, minmax(0,1fr)); }
+      .dm-pair  { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @container (width < 640px) {
+      .dm-match { grid-template-columns: minmax(0,1fr); gap: 6px; }
+      .dm-cross { display: none; }
+      .fi-grid { grid-template-columns: minmax(0,1fr); }
+    }
+    /* Panel angosto (teléfono): el encabezado de cada sección baja de
+       renglón y la fila de lead se queda con lo esencial. */
+    @container (width < 420px) {
+      .dm-card-head { flex-wrap: wrap; }
+      .dm-all { margin-left: 0; }
+      .dm-mini { display: none; }
+      .fi-head { row-gap: 10px; }
+      .fi-head .ld-actions { flex-basis: 100%; }
+      .pr-cfoot { flex-wrap: wrap; row-gap: 6px; }
+      .pr-card { gap: 12px; }
+    }
+    /* Teléfonos chicos: los filtros de Leads se aprietan para no
+       desbordar el panel. */
+    @container (width < 340px) {
+      .ld-chip { padding: 6px 12px; font-size: .8rem; }
+      .ld-seg button { padding: 6px 9px; font-size: .74rem; }
+      input.pr-ctl { min-width: 0; flex-basis: 100%; }
+      .pr-adv input.pr-ctl { width: 100%; }
+    }
+    @container (width < 260px) {
+      .ld-seg { width: 100%; justify-content: center; }
+      .ld-card-btns { flex-direction: column; }
+    }
+
+    /* Debajo de ~44rem la tabla de Leads deja lugar a las cards. */
+    @container (width < 700px) {
+      .ld-tablecard, .pr-tablecard { display: none; }
+      .ld-cards, .pr-cards { display: flex; }
+      .ld-h1 { font-size: 1.35rem; }
+    }
+
+    .demo-picker { display: none; }
+    @media (max-width: 768px) {
+      .demo-frame { flex-direction: column; min-height: 0; margin-top: 28px; }
+      .demo-side { display: none; }
+      .demo-picker {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 14px; color: #fff; background: var(--c-sidebar);
+      }
+      .demo-picker img { width: 20px; height: auto; display: block; }
+      .demo-picker select {
+        flex: 1; font: inherit; font-size: 13px; font-weight: 600;
+        padding: 8px 10px; border-radius: 8px; color: #fff;
+        background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28);
+      }
+      .demo-picker select option { color: #16213B; background: #fff; }
+      .demo-main { padding: 14px; max-height: 70vh; }
+      .demo-panel { gap: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -1532,6 +2324,17 @@
     <g id="i-home"><path d="M3.5 10.2 12 3.6l8.5 6.6V19.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/><path d="M9.5 20.5V14h5v6.5"/></g>
     <g id="i-pipeline"><rect x="3" y="4" width="5" height="16" rx="1.6"/><rect x="9.5" y="4" width="5" height="10.5" rx="1.6"/><rect x="16" y="4" width="5" height="13.5" rx="1.6"/></g>
     <g id="i-record"><path d="M14 3.5H7a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5Z"/><path d="M14 3.5v5h5"/><path d="M8.5 13.5h7M8.5 17h4"/></g>
+    <g id="i-boxes"><rect x="3" y="12.5" width="8" height="8" rx="1.2"/><rect x="13" y="12.5" width="8" height="8" rx="1.2"/><rect x="8" y="3.5" width="8" height="8" rx="1.2"/></g>
+    <g id="i-chevron-down"><path d="M6 9.5 12 15.5 18 9.5"/></g>
+    <g id="i-star"><path d="M12 3.2 14.3 9l6.2.4-4.8 4 1.6 6-5.3-3.4L6.7 19.4l1.6-6-4.8-4L9.7 9Z"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></g>
+    <g id="i-trash"><path d="M4 6.5h16M9.5 6.5V4.8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.7"/><path d="M6.5 6.5 7.4 19a1.4 1.4 0 0 0 1.4 1.3h6.4a1.4 1.4 0 0 0 1.4-1.3l.9-12.5"/><path d="M10.5 10.5v6M13.5 10.5v6"/></g>
+    <g id="i-cross"><path d="M3 7h5l7 10h6M3 17h5l7-10h6"/><path d="M18.5 4.5 21 7l-2.5 2.5M18.5 14.5 21 17l-2.5 2.5"/></g>
+    <g id="i-person-plus"><circle cx="10" cy="7.5" r="3.5"/><path d="M3.5 20v-1.4A4.6 4.6 0 0 1 8.1 14h3.8a4.6 4.6 0 0 1 4.3 3"/><path d="M18 15.5v5M15.5 18h5"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></g>
+    <g id="i-arrow-right"><path d="M4 12h15M13 6l6 6-6 6"/></g>
+    <g id="i-arrow-left"><path d="M20 12H5M11 6l-6 6 6 6"/></g>
+    <g id="i-phone"><path d="M6.8 3.5h3l1.5 3.8-2 1.4a11 11 0 0 0 5.2 5.2l1.4-2 3.8 1.5v3a1.6 1.6 0 0 1-1.8 1.6A15.5 15.5 0 0 1 5.2 5.3 1.6 1.6 0 0 1 6.8 3.5Z"/></g>
     <!-- ícono del mockup (equivalente lineal al Material Symbol de la app) -->
     <g id="i-warning"><path d="M10.3 4.3 2.2 18.4A2 2 0 0 0 3.9 21.4h16.2a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"/><path d="M12 9.6v4.2"/><path d="M12 17.4h.01"/></g>
   </defs>
@@ -1985,6 +2788,538 @@
 </section>
 
 <!-- ================================================================
+     DEMO NAVEGABLE
+================================================================ -->
+<section id="explorar">
+  <div class="inner">
+    <div class="head-ruled reveal">
+      <h2 class="section-h2">Explorá LeadEra por dentro</h2>
+      <span class="head-rule"></span>
+    </div>
+    <p class="section-lead reveal d1">Recorré el CRM desde acá: elegí una sección en el menú y abrí la ficha de cualquier lead. Los datos son de ejemplo.</p>
+
+    <div class="demo-frame reveal d2">
+      <!-- teléfono: el sidebar se reemplaza por un desplegable -->
+      <div class="demo-picker">
+        <img src="leadera-logo-icon.png" alt="" width="317" height="327">
+        <label class="sr-only" for="demoPicker">Sección del demo</label>
+        <select id="demoPicker">
+            <option value="midia">Mi día</option>
+            <option value="leads">Leads</option>
+            <option value="propiedades">Propiedades</option>
+            <option value="operaciones">Operaciones</option>
+            <option value="calendario">Calendario</option>
+        </select>
+      </div>
+
+      <div class="demo-side">
+        <div class="demo-brand"><img src="leadera-logo-icon.png" alt="" width="317" height="327">LeadEra</div>
+        <nav class="demo-nav" aria-label="Secciones del demo">
+          <button type="button" class="demo-nav-item is-active" data-target="midia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg>Mi día</button>
+          <button type="button" class="demo-nav-item" data-target="leads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-people"/></svg>Leads</button>
+          <button type="button" class="demo-nav-item" data-target="propiedades"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg>Propiedades</button>
+          <button type="button" class="demo-nav-item" data-target="operaciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pipeline"/></svg>Operaciones</button>
+          <button type="button" class="demo-nav-item" data-target="calendario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg>Calendario</button>
+        </nav>
+      </div>
+
+      <div class="demo-main">
+        <div class="demo-panel" data-panel="midia">
+          <div class="dm-head">
+            <div>
+              <h3 class="dm-h1">Hoy te quedan <span>11</span> tareas</h3>
+              <p class="dm-sub">Gestioná tus contactos y hacé crecer tu cartera</p>
+            </div>
+            <span class="dm-toplink">Ver contactados hoy →</span>
+          </div>
+
+          <div class="dm-stats">
+            <div class="dm-stat">
+              <div class="dm-stat-l">Prioritarios</div>
+              <div class="dm-stat-row"><span class="dm-chip t-caliente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg></span><span class="dm-stat-n">5</span></div>
+            </div>
+            <div class="dm-stat">
+              <div class="dm-stat-l">Nuevos</div>
+              <div class="dm-stat-row"><span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-person-plus"/></svg></span><span class="dm-stat-n">2</span></div>
+            </div>
+            <div class="dm-stat">
+              <div class="dm-stat-l">Seguimientos</div>
+              <div class="dm-stat-row"><span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="dm-stat-n">3</span></div>
+            </div>
+            <div class="dm-stat">
+              <div class="dm-stat-l">Visitas hoy</div>
+              <div class="dm-stat-row"><span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span><span class="dm-stat-n">1</span></div>
+            </div>
+          </div>
+
+          <div class="dm-pair">
+            <div class="dm-card">
+          <div class="dm-card-head">
+            <span class="dm-chip t-caliente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg></span>
+            <span class="dm-card-title">Leads prioritarios</span>
+            <span class="dm-pill t-caliente">2 urgentes</span>
+            <span class="dm-all">Ver todos (5) →</span>
+          </div>
+          <p class="dm-card-sub">Calientes o con el seguimiento vencido</p>
+              <div class="dm-list">
+            <div class="dm-row">
+              <span class="dm-av caliente">JG</span>
+              <span class="dm-body">
+                <span class="dm-name">Juan García</span>
+                <span class="dm-ctx">223 478-2214 · hace 2 días</span>
+              </span>
+              <span class="dm-act">
+                <span class="bdg caliente sm">Caliente</span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                <span class="dm-mini">Interacción</span>
+              </span>
+            </div>
+            <div class="dm-row">
+              <span class="dm-av caliente">MB</span>
+              <span class="dm-body">
+                <span class="dm-name">Martina Beltrán</span>
+                <span class="dm-ctx">223 545-1180 · hace 5 horas</span>
+              </span>
+              <span class="dm-act">
+                <span class="bdg caliente sm">Caliente</span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                <span class="dm-mini">Interacción</span>
+              </span>
+            </div>
+              </div>
+            </div>
+            <div class="dm-card">
+          <div class="dm-card-head">
+            <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-person-plus"/></svg></span>
+            <span class="dm-card-title">Nuevos leads</span>
+            <span class="dm-pill t-brand">2 nuevos</span>
+            <span class="dm-all">Ver todos (2) →</span>
+          </div>
+          <p class="dm-card-sub">Todavía no tuvieron un primer contacto</p>
+              <div class="dm-list">
+            <div class="dm-row">
+              <span class="dm-av nuevo">IS</span>
+              <span class="dm-body">
+                <span class="dm-name">Ignacio Sosa</span>
+                <span class="dm-ctx">Todavía sin contactar</span>
+              </span>
+              <span class="dm-act">
+                <span class="bdg nuevo sm">Nuevo</span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                <span class="dm-mini">Interacción</span>
+              </span>
+            </div>
+            <div class="dm-row">
+              <span class="dm-av nuevo">PC</span>
+              <span class="dm-body">
+                <span class="dm-name">Paula Cordero</span>
+                <span class="dm-ctx">Todavía sin contactar</span>
+              </span>
+              <span class="dm-act">
+                <span class="bdg nuevo sm">Nuevo</span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                <span class="dm-mini">Interacción</span>
+              </span>
+            </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dm-pair">
+            <div class="dm-card">
+          <div class="dm-card-head">
+            <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span>
+            <span class="dm-card-title">Seguimientos</span>
+            <span class="dm-pill t-tibio">3 hoy</span>
+            <span class="dm-all">Ver todos (3) →</span>
+          </div>
+          <p class="dm-card-sub">Contactos que necesitan un recordatorio hoy</p>
+              <div class="dm-list">
+            <div class="dm-row">
+              <span class="dm-av tibio">CV</span>
+              <span class="dm-body">
+                <span class="dm-name">Carolina Vega</span>
+                <span class="dm-ctx">223 566-9021 · hace 8 días</span>
+              </span>
+              <span class="dm-act">
+                <span class="bdg tibio sm">Tibio</span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                <span class="dm-mini">Interacción</span>
+              </span>
+            </div>
+            <div class="dm-row">
+              <span class="dm-av tibio">AS</span>
+              <span class="dm-body">
+                <span class="dm-name">Ana Soria</span>
+                <span class="dm-ctx">223 533-6047 · hace 6 días</span>
+              </span>
+              <span class="dm-act">
+                <span class="bdg tibio sm">Tibio</span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                <span class="dm-mini">Interacción</span>
+              </span>
+            </div>
+              </div>
+            </div>
+            <div class="dm-card">
+          <div class="dm-card-head">
+            <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg></span>
+            <span class="dm-card-title">Agenda de hoy</span>
+            <span class="dm-pill t-frio">4 eventos</span>
+            <span class="dm-all">Ver todos (4) →</span>
+          </div>
+          <p class="dm-card-sub">Tareas, seguimientos y visitas del día</p>
+              <div class="dm-list">
+                <div class="dm-row">
+                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Llamar a Juan García</span><span class="dm-ctx">Tarea</span></span>
+                  <span class="dm-time">10:00</span>
+                </div>
+                <div class="dm-row">
+                  <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Seguimiento a Carolina Vega</span><span class="dm-ctx">Seguimiento</span></span>
+                  <span class="dm-time">11:30</span>
+                </div>
+                <div class="dm-row">
+                  <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Visita a Alsina 3300</span><span class="dm-ctx">Visita</span></span>
+                  <span class="dm-time">16:00</span>
+                </div>
+                <div class="dm-row dm-done">
+                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Actualizar estado de Belgrano 2450</span><span class="dm-ctx">Tarea</span></span>
+                  <span class="dm-time">09:00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dm-card">
+          <div class="dm-card-head">
+            <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-star"/></svg></span>
+            <span class="dm-card-title">Coincidencias encontradas</span>
+            <span class="dm-pill t-tibio">2 nuevas</span>
+            <span class="dm-all">Ver todas (2) →</span>
+          </div>
+          <p class="dm-card-sub">Interesados de tu cartera que buscan propiedades como las tuyas</p>
+            <div class="dm-list">
+              <div class="dm-match">
+                <span class="dm-cell">
+                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Alsina 3300</span><span class="dm-ctx">Centro · USD 95.000</span></span>
+                </span>
+                <span class="dm-cross"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cross"/></svg></span>
+                <span class="dm-cell">
+                  <span class="dm-body">
+                    <span class="dm-meta"><span class="dm-name">Martina Beltrán</span><span class="bdg caliente sm">Caliente</span></span>
+                    <span class="dm-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>Busca depto en Centro</span>
+                  </span>
+                </span>
+                <span class="dm-score">92%</span>
+              </div>
+              <div class="dm-match">
+                <span class="dm-cell">
+                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Belgrano 2450</span><span class="dm-ctx">Belgrano · USD 180.000</span></span>
+                </span>
+                <span class="dm-cross"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cross"/></svg></span>
+                <span class="dm-cell">
+                  <span class="dm-body">
+                    <span class="dm-meta"><span class="dm-name">Rodrigo Paz</span><span class="bdg tibio sm">Tibio</span></span>
+                    <span class="dm-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>Busca renta en Centro</span>
+                  </span>
+                </span>
+                <span class="dm-score">78%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dm-pair">
+            <div class="dm-card">
+          <div class="dm-card-head">
+            <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+            <span class="dm-card-title">Propiedades recientes</span>
+            
+            <span class="dm-all">Ver todas (12) →</span>
+          </div>
+          <p class="dm-card-sub">Lo último que sumaste a la cartera</p>
+              <div class="dm-list">
+                <div class="dm-row">
+                  <span class="dm-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Alsina 3300</span><span class="dm-ctx">Departamento · Centro</span></span>
+                  <span class="dm-right">
+                    <span class="dm-price">USD 95.000</span><br>
+                    <span class="bdg-prop disponible">Disponible</span>
+                  </span>
+                </div>
+                <div class="dm-row">
+                  <span class="dm-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Güemes 2915</span><span class="dm-ctx">Departamento · Güemes</span></span>
+                  <span class="dm-right">
+                    <span class="dm-price">USD 140.000</span><br>
+                    <span class="bdg-prop reservada">Reservada</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="dm-card">
+          <div class="dm-card-head">
+            <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span>
+            <span class="dm-card-title">Actividad reciente</span>
+            
+            <span class="dm-all">Ver toda →</span>
+          </div>
+          <p class="dm-card-sub">Lo último que registraste</p>
+              <div class="dm-list">
+                <div class="dm-row">
+                  <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Interacción con Juan García</span><span class="dm-ctx">Llamada · sin respuesta</span></span>
+                  <span class="dm-time">hace 2 h</span>
+                </div>
+                <div class="dm-row">
+                  <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Visita realizada</span><span class="dm-ctx">Alsina 3300 con Martina Beltrán</span></span>
+                  <span class="dm-time">ayer</span>
+                </div>
+                <div class="dm-row">
+                  <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Propiedad creada</span><span class="dm-ctx">Güemes 2915</span></span>
+                  <span class="dm-time">hace 3 d</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dm-card">
+          <div class="dm-card-head">
+            <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pipeline"/></svg></span>
+            <span class="dm-card-title">Operaciones en curso</span>
+            
+            <span class="dm-all">Ver todas (4) →</span>
+          </div>
+          <p class="dm-card-sub">Todavía no están cerradas ni canceladas</p>
+            <div class="dm-list">
+              <div class="dm-row">
+                <span class="dm-body"><span class="dm-name">Venta Alsina 3300</span><span class="dm-ctx">Venta · Martina Beltrán</span></span>
+                <span class="dm-right">
+                  <span class="dm-price">USD 95.000</span><br>
+                  <span class="bdg-op publicada">Publicada</span>
+                </span>
+              </div>
+              <div class="dm-row">
+                <span class="dm-body"><span class="dm-name">Alquiler Belgrano 2450</span><span class="dm-ctx">Alquiler · Carolina Vega</span></span>
+                <span class="dm-right">
+                  <span class="dm-price">ARS 380.000</span><br>
+                  <span class="bdg-op negociacion">En negociación</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-panel" data-panel="leads" hidden>
+          <div class="ld-head">
+            <div>
+              <div class="ld-kicker">Gestión de leads</div>
+              <h3 class="ld-h1">Todos los leads</h3>
+              <p class="ld-count" id="ldCount">9 leads encontrados</p>
+            </div>
+            <div class="ld-tools">
+              <span class="ld-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>Buscar leads...</span>
+              <span class="ld-btn primary">+ Nuevo Lead</span>
+              <span class="ld-btn ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-sheet"/></svg>Exportar Excel</span>
+            </div>
+          </div>
+
+          <div class="ld-filters">
+            <div class="ld-chips" id="ldChips">
+              <button type="button" class="ld-chip is-on" data-temp="todos"><span class="ld-dot"></span>Todos (9)</button>
+              <button type="button" class="ld-chip" data-temp="caliente"><span class="ld-dot"></span>Calientes</button>
+              <button type="button" class="ld-chip" data-temp="tibio"><span class="ld-dot"></span>Tibios</button>
+              <button type="button" class="ld-chip" data-temp="frio"><span class="ld-dot"></span>Frios</button>
+              <button type="button" class="ld-chip" data-temp="inactivo"><span class="ld-dot"></span>Inactivos</button>
+            </div>
+            <div class="ld-seg" id="ldSeg" role="group" aria-label="Filtrar por rol">
+              <button type="button" class="is-on" data-rol="todos">Todos</button>
+              <button type="button" data-rol="comprador">Compradores</button>
+              <button type="button" data-rol="vendedor">Vendedores</button>
+            </div>
+          </div>
+
+          <div class="ld-tablecard">
+            <table class="ld-table">
+              <colgroup>
+                <col style="width:26%"><col style="width:11%"><col style="width:11%">
+                <col style="width:13%"><col style="width:13%"><col style="width:26%">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">Lead</th>
+                  <th scope="col">Temperatura</th>
+                  <th scope="col">Origen</th>
+                  <th scope="col">Último contacto</th>
+                  <th scope="col">Próx. seguimiento</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="ldRows"></tbody>
+            </table>
+          </div>
+
+          <div class="ld-cards" id="ldCards"></div>
+        </div>
+
+        <!-- Propiedades -->
+        <div class="demo-panel" data-panel="propiedades" hidden>
+          <div class="ld-head">
+            <div>
+              <div class="ld-kicker">Propiedades</div>
+              <h3 class="ld-h1">Propiedades</h3>
+              <p class="ld-count" id="prCount">8 propiedades en tu cartera.</p>
+            </div>
+            <div class="ld-tools">
+              <span class="ld-btn primary">+ Nueva Propiedad</span>
+            </div>
+          </div>
+
+          <div class="pr-filters">
+            <input class="pr-ctl" id="prSearch" type="search" placeholder="Buscar por dirección o zona..." aria-label="Buscar propiedades">
+            <select class="pr-ctl" id="prEstado" aria-label="Estado">
+              <option value="">Todos los estados</option>
+              <option value="disponible">Disponible</option>
+              <option value="reservada">Reservada</option>
+              <option value="vendida">Vendida</option>
+              <option value="alquilada">Alquilada</option>
+              <option value="pausada">Pausada</option>
+            </select>
+            <button type="button" class="pr-ctl pr-more" id="prMore" aria-expanded="false" aria-controls="prAdv">
+              Más filtros <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chevron-down"/></svg><span class="pr-more-n" id="prMoreN" hidden>0</span>
+            </button>
+          </div>
+
+          <div class="pr-adv" id="prAdv" hidden>
+            <select class="pr-ctl" id="prTipo" aria-label="Tipo de propiedad">
+              <option value="">Todos los tipos</option>
+              <option value="Departamento">Departamento</option>
+              <option value="Casa">Casa</option>
+              <option value="PH">PH</option>
+              <option value="Local">Local</option>
+              <option value="Terreno">Terreno</option>
+            </select>
+            <input class="pr-ctl" id="prMin" type="number" min="0" placeholder="Precio mín." aria-label="Precio mínimo">
+            <input class="pr-ctl" id="prMax" type="number" min="0" placeholder="Precio máx." aria-label="Precio máximo">
+            <input class="pr-ctl" id="prAmb" type="number" min="0" placeholder="Ambientes mín." aria-label="Ambientes mínimos">
+          </div>
+
+          <div class="pr-tablecard">
+            <table class="pr-table">
+              <thead>
+                <tr>
+                  <th scope="col">Dirección</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col" class="num">Precio</th>
+                  <th scope="col">Propietario</th>
+                  <th scope="col"><span class="sr-only">Detalle</span></th>
+                </tr>
+              </thead>
+              <tbody id="prRows"></tbody>
+            </table>
+          </div>
+
+          <div class="pr-cards" id="prCards"></div>
+
+          <div class="pr-pager">
+            <span class="pr-page">‹</span>
+            <span class="pr-page is-on">1</span>
+            <span class="pr-page">2</span>
+            <span class="pr-page">›</span>
+          </div>
+        </div>
+
+        <!-- Operaciones (kanban) -->
+        <div class="demo-panel" data-panel="operaciones" hidden>
+          <div class="ld-head">
+            <div>
+              <div class="ld-kicker">Operaciones</div>
+              <h3 class="ld-h1">Tablero</h3>
+              <p class="ld-count">Arrastrá una operación para cambiarle el estado.</p>
+            </div>
+            <div class="ld-tools">
+              <span class="kb-toggle">
+                <button type="button" data-view="lista">Lista</button>
+                <button type="button" class="is-on" data-view="tablero">Tablero</button>
+              </span>
+              <span class="ld-btn primary">+ Nueva Operación</span>
+            </div>
+          </div>
+
+          <div class="kb-alert" id="kbAlert" role="status" hidden></div>
+          <div class="kb-board" id="kbBoard"></div>
+        </div>
+
+        <!-- Calendario -->
+        <div class="demo-panel" data-panel="calendario" hidden>
+          <div class="ld-head">
+            <div>
+              <div class="ld-kicker">Agenda</div>
+              <h3 class="ld-h1">Calendario</h3>
+              <p class="ld-count">Tu agenda: tus tareas, tus visitas y tus seguimientos de leads.</p>
+            </div>
+            <div class="ld-tools">
+              <span class="cal-nav">
+                <button type="button" id="calPrev" aria-label="Mes anterior">‹</button>
+                <span class="cal-mes" id="calMes">Septiembre de 2026</span>
+                <button type="button" id="calNext" aria-label="Mes siguiente">›</button>
+              </span>
+              <span class="ld-btn primary">+ Nueva tarea</span>
+              <span class="ld-btn ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg>Agendar visita</span>
+            </div>
+          </div>
+
+          <div class="cal-wrap">
+            <div class="cal-grid">
+              <div class="cal-dows">
+                <span><span class="largo">Lun</span><span class="corto">L</span></span>
+                <span><span class="largo">Mar</span><span class="corto">M</span></span>
+                <span><span class="largo">Mié</span><span class="corto">M</span></span>
+                <span><span class="largo">Jue</span><span class="corto">J</span></span>
+                <span><span class="largo">Vie</span><span class="corto">V</span></span>
+                <span><span class="largo">Sáb</span><span class="corto">S</span></span>
+                <span><span class="largo">Dom</span><span class="corto">D</span></span>
+              </div>
+              <div class="cal-days" id="calDays"></div>
+            </div>
+            <div class="cal-panel" id="calPanel"></div>
+          </div>
+        </div>
+
+        <!-- Ficha de lead -->
+        <div class="demo-panel" data-panel="ficha" hidden tabindex="-1" id="demoFicha"></div>
+
+      </div>
+
+      <div class="kb-modal" id="kbModal" hidden>
+        <div class="kb-dialog" role="dialog" aria-modal="true" aria-labelledby="kbModalTitle">
+          <h4 id="kbModalTitle">Confirmar cambio</h4>
+          <p id="kbModalText"></p>
+          <div class="kb-dialog-btns">
+            <button type="button" class="ld-a ghost" data-kb="cancel">Cancelar</button>
+            <button type="button" class="ld-a primary" data-kb="ok">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
      CTA FINAL
 ================================================================ -->
 <section id="cta-final">
@@ -2227,6 +3562,699 @@
       ham.setAttribute('aria-label', 'Abrir menú');
     }
   });
+</script>
+<script>
+/* ------------------------------------------------------------------
+   DEMO NAVEGABLE — cambio de panel, filtros del listado y drill-down
+   a la ficha. Sin backend: los datos de abajo son fijos.
+------------------------------------------------------------------ */
+(() => {
+  const frame = document.querySelector('.demo-frame');
+  if (!frame) return;
+
+  const TEMP = { caliente: 'Caliente', tibio: 'Tibio', frio: 'Frio', inactivo: 'Inactivo', nuevo: 'Nuevo' };
+  const ROL  = { comprador: 'Comprador', vendedor: 'Vendedor', ambos: 'Compra y vende' };
+  const icon = (id) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-' + id + '"/></svg>';
+
+  const LEADS = [
+    {
+      ini: 'MB', name: 'Martina Beltrán', phone: '223 545-1180', mail: 'martina.beltran@mail.com',
+      temp: 'caliente', rol: 'comprador', origen: 'Web', ultimo: 'hace 5 horas', prox: '22/09', vencido: false,
+      detalle: 'Llamada · confirmó la visita del jueves', interacciones: 7, ventas: 0, compras: 2, desde: '04/08/2026',
+      about: 'Busca un dos ambientes en el centro para mudarse con su pareja antes de fin de año. Trabaja a seis cuadras de Alsina 3300 y quiere dejar de usar el auto todos los días.',
+      buscaLabel: 'Qué busca', busca: ['2 ambientes', 'Centro', 'Hasta USD 95.000', 'Entrega inmediata'],
+      inter: [
+        { icon: 'phone', title: 'Llamada', when: 'Hoy 11:30', note: 'Confirmó la visita del jueves a Alsina 3300.' },
+        { icon: 'chat', title: 'WhatsApp', when: 'Ayer', note: 'Pidió fotos del contrafrente y del palier.' },
+        { icon: 'mail', title: 'Email', when: 'Hace 4 días', note: 'Le mandamos cuatro fichas del centro.' }
+      ],
+      tasks: [['Confirmar visita del jueves 16:00', 'alta'], ['Pasarle la ficha de Belgrano 2450', 'media']]
+    },
+    {
+      ini: 'JG', name: 'Juan García', phone: '223 478-2214', mail: 'juan.garcia@mail.com',
+      temp: 'caliente', rol: 'comprador', origen: 'Portal inmobiliario', ultimo: 'hace 2 días', prox: 'Vencido', vencido: true,
+      detalle: 'WhatsApp · preguntó por las expensas', interacciones: 4, ventas: 0, compras: 1, desde: '12/08/2026',
+      about: 'Entró por el aviso de Alsina 3300. Tiene la plata disponible y decide rápido, pero hace dos días que no contesta: es el lead más urgente de la cartera.',
+      buscaLabel: 'Qué busca', busca: ['2 o 3 ambientes', 'Centro o Güemes', 'Hasta USD 110.000', 'Con cochera'],
+      inter: [
+        { icon: 'chat', title: 'WhatsApp', when: 'Hace 2 días', note: 'Preguntó por las expensas. Sin respuesta desde entonces.' },
+        { icon: 'home', title: 'Visita', when: 'Hace 5 días', note: 'Recorrió Alsina 3300. Le gustó el frente.' }
+      ],
+      tasks: [['Llamar hoy antes de las 18:00', 'alta'], ['Mandar comparativa de expensas', 'media']]
+    },
+    {
+      ini: 'CV', name: 'Carolina Vega', phone: '223 566-9021', mail: 'caro.vega@mail.com',
+      temp: 'tibio', rol: 'vendedor', origen: 'Referido', ultimo: 'hace 8 días', prox: '25/09', vencido: false,
+      detalle: 'Nota · pidió no publicar la dirección', interacciones: 3, ventas: 1, compras: 0, desde: '28/07/2026',
+      about: 'Quiere vender el departamento de Belgrano 2450, que hoy tiene alquilado. El contrato vence en marzo y recién ahí puede mostrarlo sin aviso previo.',
+      buscaLabel: 'Qué vende', busca: ['Depto 3 ambientes', 'Belgrano 2450', 'USD 180.000', 'Alquilado hasta marzo'],
+      inter: [
+        { icon: 'note', title: 'Nota', when: 'Hace 3 días', note: 'Pide no publicar la dirección exacta por el inquilino.' },
+        { icon: 'phone', title: 'Llamada', when: 'Hace 1 semana', note: 'Acordamos tasación para la semana que viene.' }
+      ],
+      tasks: [['Coordinar tasación', 'media'], ['Pedir el plano y la escritura', 'baja']]
+    },
+    {
+      ini: 'AS', name: 'Ana Soria', phone: '223 533-6047', mail: 'ana.soria@mail.com',
+      temp: 'tibio', rol: 'vendedor', origen: 'Web', ultimo: 'hace 6 días', prox: '24/09', vencido: false,
+      detalle: 'WhatsApp · pidió visita, sin confirmar', interacciones: 2, ventas: 1, compras: 0, desde: '30/07/2026',
+      about: 'Heredó una casa en Los Troncos y todavía no decide si vender o alquilar. Pidió una visita para que le demos un número antes de resolver.',
+      buscaLabel: 'Qué vende', busca: ['Casa 4 ambientes', 'Los Troncos', 'A tasar', 'Sucesión en trámite'],
+      inter: [
+        { icon: 'chat', title: 'WhatsApp', when: 'Ayer', note: 'Pidió visita, falta confirmar el día.' },
+        { icon: 'mail', title: 'Email', when: 'Hace 6 días', note: 'Mandó fotos de la casa y la documentación.' }
+      ],
+      tasks: [['Confirmar día de la visita', 'alta'], ['Armar valuación comparativa', 'media']]
+    },
+    {
+      ini: 'RP', name: 'Rodrigo Paz', phone: '223 491-3385', mail: 'rodrigo.paz@mail.com',
+      temp: 'tibio', rol: 'ambos', origen: 'Referido', ultimo: 'hace 2 días', prox: '30/09', vencido: false,
+      detalle: 'Email · le pasamos la renta estimada', interacciones: 5, ventas: 1, compras: 2, desde: '15/06/2026',
+      about: 'Inversor. Compra para alquilar y vende lo que ya no le renta: le importa el número, no el estado del departamento ni la vista.',
+      buscaLabel: 'Qué busca', busca: ['Monoambiente', 'Centro', 'Renta sobre 7%', 'Paga contado'],
+      inter: [
+        { icon: 'mail', title: 'Email', when: 'Hace 2 días', note: 'Le pasamos la renta estimada de Alsina 3300.' },
+        { icon: 'phone', title: 'Llamada', when: 'Hace 9 días', note: 'Quiere ver dos o tres opciones juntas.' }
+      ],
+      tasks: [['Armar planilla con tres unidades', 'media'], ['Avisarle si entra algo en el centro', 'baja']]
+    },
+    {
+      ini: 'AR', name: 'Agustina Ríos', phone: '223 502-8890', mail: 'agus.rios@mail.com',
+      temp: 'frio', rol: 'comprador', origen: 'Portal inmobiliario', ultimo: 'hace 3 semanas', prox: '', vencido: false,
+      detalle: 'Llamada · espera vender lo suyo primero', interacciones: 2, ventas: 0, compras: 1, desde: '20/01/2026',
+      about: 'Consultó en enero por un tres ambientes y frenó la búsqueda hasta vender su departamento actual. Volver a contactarla cuando lo tenga resuelto.',
+      buscaLabel: 'Qué busca', busca: ['3 ambientes', 'Zona sur', 'Hasta USD 130.000', 'Sin apuro'],
+      inter: [
+        { icon: 'phone', title: 'Llamada', when: 'Hace 3 semanas', note: 'Sigue esperando vender lo suyo.' },
+        { icon: 'note', title: 'Nota', when: 'Hace 1 mes', note: 'Retomar el contacto en dos meses.' }
+      ],
+      tasks: [['Recontactar en octubre', 'baja']]
+    },
+    {
+      ini: 'LM', name: 'Laura Martínez', phone: '223 560-1129', mail: 'laura.martinez@mail.com',
+      temp: 'frio', rol: 'vendedor', origen: 'Cartel', ultimo: 'hace 2 semanas', prox: '01/11', vencido: false,
+      detalle: 'WhatsApp · exclusividad hasta noviembre', interacciones: 1, ventas: 1, compras: 0, desde: '02/09/2026',
+      about: 'Tiene un local en Av. Colón 1200 publicado con otra inmobiliaria. La exclusividad vence en noviembre y quedó en avisarnos.',
+      buscaLabel: 'Qué vende', busca: ['Local comercial', 'Av. Colón 1200', 'USD 250.000', 'Exclusividad hasta noviembre'],
+      inter: [
+        { icon: 'chat', title: 'WhatsApp', when: 'Hace 2 semanas', note: 'Confirmó la fecha en que se libera.' }
+      ],
+      tasks: [['Volver a llamar en noviembre', 'baja']]
+    },
+    {
+      ini: 'IS', name: 'Ignacio Sosa', phone: '223 410-7732', mail: 'ignacio.sosa@mail.com',
+      temp: 'nuevo', rol: 'comprador', origen: 'Web', ultimo: '', prox: 'Hoy', vencido: false,
+      detalle: 'Sin interacciones registradas', interacciones: 0, ventas: 0, compras: 0, desde: '20/09/2026',
+      about: 'Entró hace dos horas por el formulario de la web. Todavía no lo contactó nadie del equipo.',
+      buscaLabel: 'Qué busca', busca: ['Sin definir', 'Consultó por Belgrano 2450'],
+      inter: [{ icon: 'mail', title: 'Formulario web', when: 'Hoy 09:40', note: 'Consultó por Belgrano 2450.' }],
+      tasks: [['Primer contacto', 'alta']]
+    },
+    {
+      ini: 'PC', name: 'Paula Cordero', phone: '223 588-4410', mail: 'paula.cordero@mail.com',
+      temp: 'nuevo', rol: 'comprador', origen: 'Instagram', ultimo: '', prox: 'Hoy', vencido: false,
+      detalle: 'Sin interacciones registradas', interacciones: 0, ventas: 0, compras: 0, desde: '20/09/2026',
+      about: 'Escribió por Instagram preguntando por alquileres en Güemes. Todavía no tuvo un primer contacto.',
+      buscaLabel: 'Qué busca', busca: ['Alquiler', 'Güemes', 'Hasta ARS 420.000'],
+      inter: [{ icon: 'chat', title: 'Mensaje', when: 'Hoy 08:15', note: 'Preguntó por alquileres en Güemes.' }],
+      tasks: [['Primer contacto', 'alta']]
+    }
+  ];
+
+
+  const PROPS = [
+    { dir: 'Alsina 3300',        zona: 'Centro',      tipo: 'Departamento', estado: 'disponible', moneda: 'USD', precio: 95000,  dueno: 'Martina Beltrán', amb: 2, m2: 48 },
+    { dir: 'Güemes 2915',        zona: 'Güemes',      tipo: 'Departamento', estado: 'reservada',  moneda: 'USD', precio: 140000, dueno: null,              amb: 3, m2: 72 },
+    { dir: 'Belgrano 2450',      zona: 'Belgrano',    tipo: 'Departamento', estado: 'alquilada',  moneda: 'USD', precio: 180000, dueno: 'Carolina Vega',   amb: 3, m2: 78 },
+    { dir: 'Av. Colón 1200',     zona: 'Centro',      tipo: 'Local',        estado: 'disponible', moneda: 'USD', precio: 250000, dueno: 'Laura Martínez',  amb: 0, m2: 120 },
+    { dir: 'Rodríguez Peña 3480', zona: 'Los Troncos', tipo: 'Casa',        estado: 'pausada',    moneda: null,  precio: null,   dueno: 'Ana Soria',       amb: 4, m2: 165 },
+    { dir: 'San Luis 1750',      zona: 'Centro',      tipo: 'PH',           estado: 'disponible', moneda: 'USD', precio: 78000,  dueno: null,              amb: 2, m2: 55 },
+    { dir: 'Falucho 2210',       zona: 'Plaza Mitre', tipo: 'Departamento', estado: 'vendida',    moneda: 'USD', precio: 112000, dueno: 'Rodrigo Paz',     amb: 2, m2: 51 },
+    { dir: 'Matheu 4120',        zona: 'Zona sur',    tipo: 'Terreno',      estado: 'disponible', moneda: 'USD', precio: 64000,  dueno: null,              amb: 0, m2: 300 }
+  ];
+  const EST = { disponible: 'Disponible', reservada: 'Reservada', vendida: 'Vendida', alquilada: 'Alquilada', pausada: 'Pausada' };
+  const money = (p) => p.precio == null ? null : `${p.moneda} ${p.precio.toLocaleString('es-AR')}`;
+
+  const panels    = [...frame.querySelectorAll('.demo-panel')];
+  const navBtns   = [...frame.querySelectorAll('[data-target]')];
+  const picker    = frame.querySelector('#demoPicker');
+  const rows      = frame.querySelector('#ldRows');
+  const cards     = frame.querySelector('#ldCards');
+  const counter   = frame.querySelector('#ldCount');
+  const chips     = [...frame.querySelectorAll('#ldChips .ld-chip')];
+  const segs      = [...frame.querySelectorAll('#ldSeg button')];
+  const ficha     = frame.querySelector('#demoFicha');
+  const SECTIONS  = { midia: 'midia', leads: 'leads', propiedades: 'propiedades', operaciones: 'operaciones', calendario: 'calendario' };
+
+  let fTemp = 'todos';
+  let fRol  = 'todos';
+
+  const badge    = (l, sm) => `<span class="bdg ${l.temp}${sm ? ' sm' : ''}">${TEMP[l.temp]}</span>`;
+  const badgeRol = (l) => `<span class="bdg-rol ${l.rol}">${ROL[l.rol]}</span>`;
+
+  function showPanel(name) {
+    panels.forEach(p => { p.hidden = p.dataset.panel !== name; });
+  }
+
+  function goTo(target) {
+    const btn = navBtns.find(b => b.dataset.target === target);
+    navBtns.forEach(b => {
+      const on = b === btn;
+      b.classList.toggle('is-active', on);
+      if (on) b.setAttribute('aria-current', 'true');
+      else b.removeAttribute('aria-current');
+    });
+    if (picker) picker.value = target;
+
+    if (SECTIONS[target]) {
+      showPanel(SECTIONS[target]);
+    } else {
+      showPanel('midia');
+    }
+  }
+
+  function visibles() {
+    return LEADS.filter(l =>
+      (fTemp === 'todos' || l.temp === fTemp) &&
+      (fRol === 'todos' || l.rol === fRol || l.rol === 'ambos'));
+  }
+
+  function renderLeads() {
+    const list = visibles();
+    const corte = fRol === 'comprador' ? ' · compradores' : fRol === 'vendedor' ? ' · vendedores' : '';
+    counter.textContent = `${list.length} lead${list.length === 1 ? '' : 's'} encontrado${list.length === 1 ? '' : 's'}${corte}`;
+
+    rows.innerHTML = list.length ? list.map(l => `
+      <tr tabindex="0" data-lead="${LEADS.indexOf(l)}">
+        <td>
+          <span class="ld-lead"><strong>${l.name}</strong>${badgeRol(l)}</span>
+          <span class="ld-lead-sub">${l.detalle}</span>
+        </td>
+        <td>${badge(l)}</td>
+        <td>${l.origen}</td>
+        <td>${l.ultimo || '<span class="ld-muted">—</span>'}</td>
+        <td>${l.vencido ? '<span class="ld-venc">Vencido</span>' : (l.prox || '<span class="ld-muted">—</span>')}</td>
+        <td>
+          <span class="ld-actions">
+            <span class="ld-a primary">Registrar</span>
+            <span class="ld-a ghost" data-lead="${LEADS.indexOf(l)}">Ver</span>
+            <span class="ld-a ico">${icon('phone')}</span>
+            <span class="ld-a ico">${icon('chat')}</span>
+            <span class="ld-a del">${icon('trash')}</span>
+          </span>
+        </td>
+      </tr>`).join('')
+      : `<tr><td colspan="6"><div class="ld-empty">No hay leads que coincidan con el filtro.</div></td></tr>`;
+
+    cards.innerHTML = list.length ? list.map(l => `
+      <button type="button" class="ld-card" data-lead="${LEADS.indexOf(l)}">
+        <span class="ld-card-top">
+          <span class="ld-card-name">${l.name}</span>
+          ${badge(l)}${badgeRol(l)}
+          <span class="ld-a del ld-card-del">${icon('trash')}</span>
+        </span>
+        <span class="ld-card-line">${icon('phone')}${l.phone}</span>
+        <span class="ld-card-line">${icon('mail')}${l.mail}</span>
+        <span class="ld-card-meta">
+          <span>${icon('clock')}${l.ultimo || 'sin contacto'}</span>
+          <span>${icon('chat')}${l.interacciones} interacciones</span>
+        </span>
+        <span class="ld-card-last"><b>Última:</b> ${l.detalle}</span>
+        <span class="ld-card-counts">
+          <span class="ld-card-count"><span>Venta</span><b>${l.ventas}</b></span>
+          <span class="ld-card-count"><span>Compra</span><b>${l.compras}</b></span>
+        </span>
+        <span class="ld-card-btns">
+          <span class="ld-a primary">+ Interacción</span>
+          <span class="ld-a ghost">Ver detalle</span>
+        </span>
+      </button>`).join('')
+      : `<div class="ld-empty">No hay leads que coincidan con el filtro.</div>`;
+  }
+
+  function openFicha(i) {
+    const l = LEADS[i];
+    ficha.innerHTML = `
+      <button type="button" class="demo-back" data-back>${icon('arrow-left')}Volver a Leads</button>
+      <div class="fi-head">
+        <span class="dm-av ${l.temp}">${l.ini}</span>
+        <span class="fi-id">
+          <span class="ld-kicker">Ficha de lead</span>
+          <span class="fi-name">${l.name}</span>
+          <span class="fi-contact">${l.phone} · ${l.mail}</span>
+        </span>
+        <span class="ld-actions">${badge(l)}${badgeRol(l)}</span>
+      </div>
+      <div class="fi-grid">
+        <div class="fi-col">
+          <div class="dm-card">
+            <div class="fi-title">Información de contacto</div>
+            <dl class="fi-dl">
+              <div><dt>Origen</dt><dd>${l.origen}</dd></div>
+              <div><dt>Desde</dt><dd>${l.desde}</dd></div>
+              <div><dt>Asignado a</dt><dd>Bautista Camilion</dd></div>
+            </dl>
+          </div>
+          <div class="dm-card">
+            <div class="fi-title">Seguimiento</div>
+            <dl class="fi-dl">
+              <div><dt>Último contacto</dt><dd>${l.ultimo || 'Todavía sin contactar'}</dd></div>
+              <div><dt>Próximo seguimiento</dt><dd class="${l.vencido ? 'venc' : ''}">${l.vencido ? 'Vencido' : (l.prox || 'Sin programar')}</dd></div>
+              <div><dt>Interacciones</dt><dd>${l.interacciones}</dd></div>
+            </dl>
+          </div>
+          <div class="dm-card">
+            <div class="fi-title">${l.buscaLabel}</div>
+            <div class="fi-chips">${l.busca.map(w => `<span class="fi-chip">${w}</span>`).join('')}</div>
+          </div>
+        </div>
+        <div class="fi-col">
+          <div class="dm-card">
+            <div class="fi-title">Sobre el lead</div>
+            <p class="fi-text">${l.about}</p>
+          </div>
+          <div class="dm-card">
+            <div class="fi-title">Últimas interacciones</div>
+            <div class="fi-inter">
+              ${l.inter.map(x => `
+              <div>
+                <span class="fi-round">${icon(x.icon)}</span>
+                <span class="dm-body">
+                  <span class="fi-itop"><span class="fi-itype">${x.title}</span><span class="fi-idate">${x.when}</span></span>
+                  <span class="fi-idet">${x.note}</span>
+                </span>
+              </div>`).join('')}
+            </div>
+          </div>
+          <div class="dm-card">
+            <div class="fi-title">Tareas del lead</div>
+            ${l.tasks.map(([t, pr]) => `
+            <div class="fi-task">
+              <span class="fi-check"></span>
+              <span class="fi-tasktxt">${t}</span>
+              <span class="fi-prio ${pr}">${pr[0].toUpperCase() + pr.slice(1)}</span>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>`;
+    showPanel('ficha');
+    ficha.focus({ preventScroll: true });
+  }
+
+  navBtns.forEach(b => b.addEventListener('click', () => goTo(b.dataset.target)));
+  if (picker) picker.addEventListener('change', () => goTo(picker.value));
+
+  chips.forEach(c => c.addEventListener('click', () => {
+    fTemp = c.dataset.temp;
+    chips.forEach(x => x.classList.toggle('is-on', x === c));
+    renderLeads();
+  }));
+  segs.forEach(b => b.addEventListener('click', () => {
+    fRol = b.dataset.rol;
+    segs.forEach(x => x.classList.toggle('is-on', x === b));
+    renderLeads();
+  }));
+
+  const openFrom = (e) => {
+    const el = e.target.closest('[data-lead]');
+    if (el) openFicha(+el.dataset.lead);
+  };
+  rows.addEventListener('click', openFrom);
+  cards.addEventListener('click', openFrom);
+  rows.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('tr[data-lead]')) {
+      e.preventDefault();
+      openFicha(+e.target.closest('tr[data-lead]').dataset.lead);
+    }
+  });
+  ficha.addEventListener('click', e => {
+    if (e.target.closest('[data-back]')) {
+      goTo('leads');
+      const first = rows.querySelector('tr[data-lead]') || cards.querySelector('.ld-card');
+      if (first) first.focus({ preventScroll: true });
+    }
+  });
+
+  renderLeads();
+
+  /* ---- Propiedades ---- */
+  const prSearch = frame.querySelector('#prSearch');
+  const prEstado = frame.querySelector('#prEstado');
+  const prTipo   = frame.querySelector('#prTipo');
+  const prMin    = frame.querySelector('#prMin');
+  const prMax    = frame.querySelector('#prMax');
+  const prAmb    = frame.querySelector('#prAmb');
+  const prMore   = frame.querySelector('#prMore');
+  const prMoreN  = frame.querySelector('#prMoreN');
+  const prAdv    = frame.querySelector('#prAdv');
+  const prRows   = frame.querySelector('#prRows');
+  const prCards  = frame.querySelector('#prCards');
+  const prCount  = frame.querySelector('#prCount');
+
+  function renderProps() {
+    const q = (prSearch.value || '').trim().toLowerCase();
+    const min = prMin.value ? +prMin.value : null;
+    const max = prMax.value ? +prMax.value : null;
+    const amb = prAmb.value ? +prAmb.value : null;
+
+    const avanzados = [prTipo.value, prMin.value, prMax.value, prAmb.value].filter(Boolean).length;
+    prMoreN.hidden = avanzados === 0;
+    prMoreN.textContent = avanzados;
+
+    const list = PROPS.filter(p =>
+      (!q || (p.dir + ' ' + p.zona).toLowerCase().includes(q)) &&
+      (!prEstado.value || p.estado === prEstado.value) &&
+      (!prTipo.value || p.tipo === prTipo.value) &&
+      (min == null || (p.precio != null && p.precio >= min)) &&
+      (max == null || (p.precio != null && p.precio <= max)) &&
+      (amb == null || p.amb >= amb));
+
+    prCount.textContent = `${list.length} propiedad${list.length === 1 ? '' : 'es'} en tu cartera.`;
+
+    prRows.innerHTML = list.length ? list.map(p => `
+      <tr>
+        <td><span class="pr-dir">${p.dir}</span><span class="pr-zona">${p.zona}</span></td>
+        <td>${p.tipo}</td>
+        <td><span class="bdg-prop ${p.estado}">${EST[p.estado]}</span></td>
+        <td class="pr-precio">${money(p) || '<span class="ld-muted">—</span>'}</td>
+        <td>${p.dueno ? `<span class="pr-owner">${p.dueno}</span>` : '<span class="ld-muted">—</span>'}</td>
+        <td><span class="pr-ver">Ver detalle →</span></td>
+      </tr>`).join('')
+      : `<tr><td colspan="6"><div class="pr-empty">No hay propiedades para mostrar.</div></td></tr>`;
+
+    prCards.innerHTML = list.length ? list.map(p => {
+      const meta = [p.tipo, p.zona, p.amb ? `${p.amb} amb.` : null, p.m2 ? `${p.m2} m²` : null].filter(Boolean).join(' · ');
+      return `
+      <div class="pr-card">
+        <span class="pr-thumb">${icon('home')}</span>
+        <span class="pr-cbody">
+          <span>
+            <span class="pr-cdir">${p.dir}</span>
+            <span class="pr-cmeta">${meta}</span>
+            ${p.dueno ? `<span class="pr-cowner">${p.dueno}</span>` : ''}
+          </span>
+          <span class="pr-cfoot">
+            <span class="pr-cprice">${money(p) || '—'}</span>
+            <span class="bdg-prop ${p.estado}">${EST[p.estado]}</span>
+          </span>
+        </span>
+      </div>`;
+    }).join('')
+      : `<div class="pr-empty">No hay propiedades para mostrar.</div>`;
+  }
+
+  prMore.addEventListener('click', () => {
+    const open = prMore.getAttribute('aria-expanded') === 'true';
+    prMore.setAttribute('aria-expanded', String(!open));
+    prAdv.hidden = open;
+  });
+  [prSearch, prEstado, prTipo, prMin, prMax, prAmb].forEach(el => {
+    el.addEventListener('input', renderProps);
+    el.addEventListener('change', renderProps);
+  });
+  renderProps();
+
+  /* ---- Operaciones (kanban) ---- */
+  const COLS = [
+    { key: 'publicada',   label: 'Publicada' },
+    { key: 'reservada',   label: 'Reservada' },
+    { key: 'negociacion', label: 'En negociación' },
+    { key: 'ganada',      label: 'Cerrada ganada' },
+    { key: 'cancelada',   label: 'Cancelada' }
+  ];
+  const FINALES = { ganada: 'cerrada ganada', cancelada: 'cancelada' };
+
+  const OPS = [
+    { id: 1, col: 'publicada',   tipo: 'venta',    moneda: 'USD', monto: 95000,  lead: 'Martina Beltrán', tit: 'Venta Alsina 3300 · depto 2 ambientes en el centro', dias: 0 },
+    { id: 2, col: 'publicada',   tipo: 'alquiler', moneda: 'ARS', monto: 380000, lead: 'Carolina Vega',   tit: 'Alquiler Belgrano 2450 · contrato hasta marzo',      dias: 0 },
+    { id: 3, col: 'publicada',   tipo: 'venta',    moneda: 'USD', monto: 250000, lead: 'Laura Martínez',  tit: 'Venta local Av. Colón 1200',                         dias: 12 },
+    { id: 4, col: 'reservada',   tipo: 'venta',    moneda: 'USD', monto: 140000, lead: null,              tit: 'Reserva Güemes 2915 · seña recibida',                dias: 0 },
+    { id: 5, col: 'negociacion', tipo: 'venta',    moneda: 'USD', monto: 180000, lead: 'Rodrigo Paz',     tit: 'Venta Falucho 2210 · contraoferta en revisión',      dias: 9 },
+    { id: 6, col: 'negociacion', tipo: 'compra',   moneda: 'USD', monto: 110000, lead: 'Juan García',     tit: 'Compra depto en el centro · busca con cochera',      dias: 0 },
+    { id: 7, col: 'ganada',      tipo: 'venta',    moneda: 'USD', monto: 78000,  lead: 'Ana Soria',       tit: 'Venta San Luis 1750 · escritura firmada',            dias: 0 },
+    { id: 8, col: 'cancelada',   tipo: 'busqueda', moneda: 'ARS', monto: 420000, lead: 'Paula Cordero',   tit: 'Búsqueda alquiler Güemes · se mudó a otra zona',     dias: 0 }
+  ];
+
+  const board = frame.querySelector('#kbBoard');
+  const alerta = frame.querySelector('#kbAlert');
+  const modal = frame.querySelector('#kbModal');
+  const modalText = frame.querySelector('#kbModalText');
+  let pendiente = null;
+
+  const plata = (m, n) => `${m} ${n.toLocaleString('es-AR')}`;
+
+  function totales(ops) {
+    const usd = ops.filter(o => o.moneda === 'USD').reduce((a, o) => a + o.monto, 0);
+    const ars = ops.filter(o => o.moneda === 'ARS').reduce((a, o) => a + o.monto, 0);
+    const out = [];
+    if (usd) out.push(plata('USD', usd));
+    if (ars) out.push(plata('ARS', ars));
+    return out.length ? out.map(t => `<span>${t}</span>`).join('') : '<span class="none">Sin montos</span>';
+  }
+
+  function cardHTML(o) {
+    return `
+      <article class="kb-card ${o.tipo}${o.dias >= 7 ? ' stale' : ''}" draggable="true" data-op="${o.id}">
+        <div class="kb-card-body">
+          <div class="kb-monto">${plata(o.moneda, o.monto)}</div>
+          <div class="kb-lead">${o.lead || 'Sin vincular'}</div>
+          <p class="kb-tit">${o.tit}</p>
+          ${o.dias >= 7 ? `<span class="kb-stale">${icon('clock')}${o.dias} días sin mover</span>` : ''}
+        </div>
+        <div class="kb-foot">
+          <span class="kb-foot-ico"><span class="kb-ico">${icon('phone')}</span><span class="kb-ico">${icon('chat')}</span></span>
+          <span class="kb-ver">Ver →</span>
+        </div>
+      </article>`;
+  }
+
+  function renderBoard() {
+    board.innerHTML = COLS.map(c => {
+      const ops = OPS.filter(o => o.col === c.key);
+      const visibles = ops.slice(0, 5);
+      return `
+        <section class="kb-col ${c.key}" data-col="${c.key}">
+          <header class="kb-col-head">
+            <div class="kb-col-top">
+              <h4 class="kb-col-name">${c.label}</h4>
+              <span class="kb-col-n">${ops.length}</span>
+            </div>
+            <div class="kb-col-mont">${totales(ops)}</div>
+          </header>
+          <div class="kb-body">
+            ${visibles.length ? visibles.map(cardHTML).join('') : `
+            <div class="kb-empty">
+              ${icon('boxes')}
+              <p>Sin operaciones acá</p>
+              <small>Arrastrá una card para moverla</small>
+            </div>`}
+            ${ops.length > 5 ? `<span class="kb-more">Ver todas (${ops.length})</span>` : ''}
+          </div>
+        </section>`;
+    }).join('');
+  }
+
+  function mover(id, destino) {
+    const op = OPS.find(o => o.id === id);
+    if (!op || op.col === destino) return;
+    op.col = destino;
+    op.dias = 0;
+    renderBoard();
+  }
+
+  board.addEventListener('dragstart', e => {
+    const card = e.target.closest('.kb-card');
+    if (!card) return;
+    card.classList.add('is-drag');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', card.dataset.op);
+  });
+  board.addEventListener('dragend', e => {
+    const card = e.target.closest('.kb-card');
+    if (card) card.classList.remove('is-drag');
+    board.querySelectorAll('.kb-col').forEach(c => c.classList.remove('is-over'));
+  });
+  board.addEventListener('dragover', e => {
+    const col = e.target.closest('.kb-col');
+    if (!col) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    board.querySelectorAll('.kb-col').forEach(c => c.classList.toggle('is-over', c === col));
+  });
+  board.addEventListener('dragleave', e => {
+    const col = e.target.closest('.kb-col');
+    if (col && !col.contains(e.relatedTarget)) col.classList.remove('is-over');
+  });
+  board.addEventListener('drop', e => {
+    const col = e.target.closest('.kb-col');
+    if (!col) return;
+    e.preventDefault();
+    board.querySelectorAll('.kb-col').forEach(c => c.classList.remove('is-over'));
+    const id = +e.dataTransfer.getData('text/plain');
+    const destino = col.dataset.col;
+    const op = OPS.find(o => o.id === id);
+    if (!op || op.col === destino) return;
+
+    // Las dos columnas finales piden confirmación; si se cancela, la card
+    // se queda donde estaba.
+    if (FINALES[destino]) {
+      pendiente = { id, destino };
+      modalText.textContent = `Vas a marcar esta operación como ${FINALES[destino]}. ¿Confirmás?`;
+      modal.hidden = false;
+    } else {
+      mover(id, destino);
+    }
+  });
+
+  modal.addEventListener('click', e => {
+    const btn = e.target.closest('[data-kb]');
+    if (!btn) return;
+    if (btn.dataset.kb === 'ok' && pendiente) mover(pendiente.id, pendiente.destino);
+    pendiente = null;
+    modal.hidden = true;
+  });
+
+  renderBoard();
+
+  /* ---- Calendario ---- */
+  const HOY = '2026-09-20';
+  const AGENDA = {
+    '2026-09-16': [
+      { tipo: 'tarea', hora: '10:00', tit: 'Llamar a Juan García', desc: 'Preguntó por las expensas' },
+      { tipo: 'seguimiento', hora: '11:30', tit: 'Seguimiento a Carolina Vega', desc: 'Tasación de Belgrano 2450' }
+    ],
+    '2026-09-18': [
+      { tipo: 'visita', hora: '16:00', tit: 'Alsina 3300', lead: 'Martina Beltrán', notas: 'Mostrar el contrafrente' }
+    ],
+    '2026-09-20': [
+      { tipo: 'tarea', hora: '09:00', tit: 'Actualizar estado de Belgrano 2450', desc: 'Pasó a alquilada', listo: true },
+      { tipo: 'tarea', hora: '10:00', tit: 'Llamar a Juan García', desc: 'Segundo intento, no contesta hace 2 días' },
+      { tipo: 'tarea', hora: '18:00', tit: 'Armar comparativa de expensas', desc: 'Para Juan García' },
+      { tipo: 'seguimiento', hora: '11:30', tit: 'Seguimiento a Carolina Vega', desc: 'Confirmar día de tasación' },
+      { tipo: 'visita', hora: '16:00', tit: 'Alsina 3300', lead: 'Martina Beltrán', notas: 'Segunda visita, viene con la pareja' }
+    ],
+    '2026-09-22': [
+      { tipo: 'tarea', hora: '09:30', tit: 'Confirmar visita del jueves', desc: 'Martina Beltrán' },
+      { tipo: 'seguimiento', hora: '12:00', tit: 'Seguimiento a Martina Beltrán', desc: '' }
+    ],
+    '2026-09-24': [{ tipo: 'seguimiento', hora: '10:00', tit: 'Seguimiento a Ana Soria', desc: 'Valuación de la casa' }],
+    '2026-09-25': [
+      { tipo: 'seguimiento', hora: '15:00', tit: 'Seguimiento a Carolina Vega', desc: '' },
+      { tipo: 'visita', hora: '17:00', tit: 'Güemes 2915', lead: null, notas: 'Coordinar con el encargado' }
+    ],
+    '2026-09-28': [{ tipo: 'tarea', hora: '11:00', tit: 'Recontactar a Agustina Ríos', desc: 'Retomar en octubre' }],
+    '2026-09-30': [{ tipo: 'seguimiento', hora: '10:30', tit: 'Seguimiento a Rodrigo Paz', desc: 'Planilla de tres unidades' }]
+  };
+  const TIPO_LABEL = { tarea: 'Tareas', seguimiento: 'Seguimientos', visita: 'Visitas' };
+  const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+  const iso = (y, m, d) => `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+  const calDays  = frame.querySelector('#calDays');
+  const calPanel = frame.querySelector('#calPanel');
+  const calMes   = frame.querySelector('#calMes');
+  let mesActual = new Date(2026, 8, 1);
+  let seleccion = HOY;
+
+  function renderCalendario() {
+    const y = mesActual.getFullYear();
+    const m = mesActual.getMonth();
+    calMes.textContent = cap(`${MESES[m]} de ${y}`);
+
+    const primero = new Date(y, m, 1);
+    // la semana arranca el lunes
+    const offset = (primero.getDay() + 6) % 7;
+    const inicio = new Date(y, m, 1 - offset);
+
+    let html = '';
+    for (let i = 0; i < 42; i++) {
+      const f = new Date(inicio.getFullYear(), inicio.getMonth(), inicio.getDate() + i);
+      const key = iso(f.getFullYear(), f.getMonth(), f.getDate());
+      const evs = (AGENDA[key] || []).slice().sort((a, b) => a.hora.localeCompare(b.hora));
+      const clases = ['cal-day'];
+      if (f.getMonth() !== m) clases.push('otro');
+      if (key === HOY) clases.push('hoy');
+      if (key === seleccion) clases.push('sel');
+      html += `
+        <button type="button" class="${clases.join(' ')}" data-fecha="${key}" title="Doble click para agendar una tarea">
+          <span class="cal-n">${f.getDate()}</span>
+          <span class="cal-chips">
+            ${evs.slice(0, 3).map(e => `<span class="cal-chip ${e.tipo}${e.listo ? ' listo' : ''}">${e.hora} ${e.tit}</span>`).join('')}
+            ${evs.length > 3 ? `<span class="cal-mas">+${evs.length - 3} más</span>` : ''}
+          </span>
+          <span class="cal-dots">
+            ${evs.slice(0, 3).map(e => `<span class="cal-dot ${e.tipo}"></span>`).join('')}
+            ${evs.length > 3 ? `<span class="cal-mas">+${evs.length - 3}</span>` : ''}
+          </span>
+        </button>`;
+    }
+    calDays.innerHTML = html;
+    renderDia();
+  }
+
+  function renderDia() {
+    const [y, m, d] = seleccion.split('-').map(Number);
+    const f = new Date(y, m - 1, d);
+    const titulo = cap(`${DIAS[f.getDay()]}, ${d} de ${MESES[m - 1]}`);
+    const evs = AGENDA[seleccion] || [];
+
+    let cuerpo = '';
+    for (const tipo of ['tarea', 'seguimiento', 'visita']) {
+      const items = evs.filter(e => e.tipo === tipo).sort((a, b) => a.hora.localeCompare(b.hora));
+      if (!items.length) continue;
+      cuerpo += `
+        <div class="cal-block">
+          <div class="cal-block-tit"><span class="cal-dot ${tipo}"></span>${TIPO_LABEL[tipo]} (${items.length})</div>
+          ${items.map(e => tipo === 'visita' ? `
+          <div class="cal-item">
+            <span class="cal-sq">${icon('home')}</span>
+            <span class="cal-body">
+              <span class="cal-tit">${e.tit}</span>
+              <span class="cal-desc">${e.lead || 'Sin lead asignado'}${e.notas ? ' · ' + e.notas : ''}</span>
+              <span class="cal-visita-foot">
+                <span class="ld-a primary">✓ Marcar realizada</span>
+                <span class="ld-a ghost">✕ Cancelar</span>
+              </span>
+            </span>
+            <span class="cal-hora">${e.hora}<br><span class="bdg tibio sm">Agendada</span></span>
+          </div>` : `
+          <div class="cal-item">
+            <span class="cal-check${e.listo ? ' listo' : ''}"></span>
+            <span class="cal-body">
+              <span class="cal-tit${e.listo ? ' listo' : ''}">${e.tit}</span>
+              ${e.desc ? `<span class="cal-desc">${e.desc}</span>` : ''}
+            </span>
+            <span class="cal-hora">${e.hora}</span>
+            <span class="ld-a ico">${icon('trash')}</span>
+          </div>`).join('')}
+        </div>`;
+    }
+
+    calPanel.innerHTML = `
+      <div class="cal-panel-tit">${titulo}</div>
+      ${cuerpo || '<div class="cal-vacio">No hay nada agendado para este día.</div>'}`;
+  }
+
+  calDays.addEventListener('click', e => {
+    const b = e.target.closest('[data-fecha]');
+    if (!b) return;
+    seleccion = b.dataset.fecha;
+    renderCalendario();
+  });
+  frame.querySelector('#calPrev').addEventListener('click', () => {
+    mesActual = new Date(mesActual.getFullYear(), mesActual.getMonth() - 1, 1);
+    seleccion = iso(mesActual.getFullYear(), mesActual.getMonth(), 1);
+    renderCalendario();
+  });
+  frame.querySelector('#calNext').addEventListener('click', () => {
+    mesActual = new Date(mesActual.getFullYear(), mesActual.getMonth() + 1, 1);
+    seleccion = iso(mesActual.getFullYear(), mesActual.getMonth(), 1);
+    renderCalendario();
+  });
+
+  renderCalendario();
+})();
 </script>
 </body>
 </html>
