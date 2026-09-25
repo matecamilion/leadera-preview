@@ -9,6 +9,18 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="canonical" href="https://leadera.com.ar/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://leadera.com.ar/">
+  <meta property="og:title" content="LeadEra — CRM para inmobiliarias que funciona">
+  <meta property="og:description" content="El CRM para agentes inmobiliarios que te dice exactamente qué hacer cada día. Agendá una demo sin cargo.">
+  <meta property="og:image" content="https://leadera.com.ar/types-of-real-estate-overview-scaled.jpg">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:site_name" content="LeadEra">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LeadEra — CRM para inmobiliarias que funciona">
+  <meta name="twitter:description" content="El CRM para agentes inmobiliarios que te dice exactamente qué hacer cada día. Agendá una demo sin cargo.">
+  <meta name="twitter:image" content="https://leadera.com.ar/types-of-real-estate-overview-scaled.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1142,6 +1154,74 @@
     .t-caliente .fan-av, .t-caliente .fan-pill { background: #fde8e0; color: var(--app-caliente); }
     .t-tibio    .fan-av, .t-tibio    .fan-pill { background: #fef3c7; color: #92400e; }
     .t-frio     .fan-av, .t-frio     .fan-pill { background: #eef2f7; color: var(--app-text-muted); }
+
+    /* ============================================================
+       PRECIOS
+
+       Mismas tarjetas que features (blanco, borde, radio 16). La
+       destacada se marca con borde teal doble y el distintivo con
+       texto "Recomendado": no depende solo del color.
+    ============================================================ */
+    #precios { background: var(--bg); }
+    .plan-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 18px; margin-top: 52px; align-items: stretch;
+    }
+    .plan {
+      position: relative; min-width: 0;
+      display: flex; flex-direction: column;
+      background: #fff; border: 1px solid var(--border); border-radius: 16px;
+      padding: 30px 26px 26px;
+    }
+    .plan.featured {
+      border: 2px solid var(--teal);
+      box-shadow: var(--shadow-md);
+      padding: 29px 25px 25px;
+    }
+    .plan-badge {
+      position: absolute; top: -12px; left: 24px;
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      color: #fff; background: var(--teal);
+      padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+    }
+    .plan-badge svg { width: 12px; height: 12px; display: block; }
+    .plan h3 { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -.3px; margin-bottom: 4px; }
+    .plan-desc { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+    .plan-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; margin: 20px 0 20px; }
+    .plan-amount {
+      font-size: 38px; font-weight: 900; letter-spacing: -.04em; line-height: 1;
+      color: var(--text); font-variant-numeric: tabular-nums;
+    }
+    .plan-period { font-size: 13.5px; color: var(--text-muted); }
+    .plan-feats {
+      list-style: none; display: flex; flex-direction: column; gap: 10px;
+      padding-top: 20px; border-top: 1px solid var(--border-faint);
+      margin-bottom: 26px;
+    }
+    .plan-feats li {
+      display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start;
+      font-size: 13.5px; color: var(--text-2); line-height: 1.55;
+    }
+    .plan-feats svg { width: 18px; height: 18px; margin-top: 1px; color: var(--teal); }
+    .plan .btn-main, .plan .btn-ghost { margin-top: auto; justify-content: center; width: 100%; }
+
+    .plan-notes {
+      margin-top: 36px; text-align: center;
+      display: flex; flex-direction: column; gap: 6px;
+      font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    }
+    .plan-notes a {
+      color: var(--teal); font-weight: 600;
+      text-decoration: underline; text-underline-offset: 3px;
+      text-decoration-color: rgba(var(--teal-rgb),.4);
+      transition: text-decoration-color .18s;
+    }
+    .plan-notes a:hover { text-decoration-color: var(--teal); }
+
+    @media (max-width: 920px) {
+      .plan-grid { grid-template-columns: 1fr; gap: 30px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    }
 
     /* ============================================================
        CTA FINAL
@@ -2306,6 +2386,23 @@
       .demo-panel { gap: 12px; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "LeadEra",
+    "description": "El CRM para agentes inmobiliarios que te dice exactamente qué hacer cada día. Agendá una demo sin cargo.",
+    "url": "https://leadera.com.ar",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "image": "https://leadera.com.ar/types-of-real-estate-overview-scaled.jpg",
+    "provider": {
+      "@type": "Organization",
+      "name": "LeadEra",
+      "url": "https://leadera.com.ar"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -2353,7 +2450,7 @@
   <div class="nav-inner">
     <div class="logo">
       <div class="logo-mark">
-        <img src="leadera-logo-icon.png" alt="" width="317" height="327">
+        <img src="leadera-logo-icon.png" alt="LeadEra" width="317" height="327">
       </div>
       <span>Lead<span class="accent">Era</span></span>
     </div>
@@ -2361,6 +2458,7 @@
       <li><a href="#problema">El problema</a></li>
       <li><a href="#como-funciona">Cómo funciona</a></li>
       <li><a href="#features">Funcionalidades</a></li>
+      <li><a href="#precios">Precios</a></li>
       <li><a href="https://app.leadera.com.ar/login" class="nav-login">Iniciar sesión</a></li>
       <li><a href="https://wa.me/542235827465?text=Hola!%20Quiero%20agendar%20una%20demo%20de%20LeadEra" class="nav-cta">Agendar demo</a></li>
     </ul>
@@ -2437,7 +2535,7 @@
   <!-- app mockup — HTML+CSS, decorativo (fuera del árbol de accesibilidad) -->
   <div class="hero-visual reveal d2" aria-hidden="true">
     <div class="hm-side">
-      <div class="hm-brand"><img class="hm-logo" src="leadera-logo-icon.png" alt="" width="317" height="327">LeadEra</div>
+      <div class="hm-brand"><img class="hm-logo" src="leadera-logo-icon.png" alt="LeadEra" width="317" height="327">LeadEra</div>
       <div class="hm-nav">
         <div class="hm-nav-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-checklist"/></svg>Mi día</div>
         <div class="hm-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-people"/></svg>Leads</div>
@@ -2828,7 +2926,7 @@
     <div class="demo-frame reveal d2">
       <!-- teléfono: el sidebar se reemplaza por un desplegable -->
       <div class="demo-picker">
-        <img src="leadera-logo-icon.png" alt="" width="317" height="327">
+        <img src="leadera-logo-icon.png" alt="LeadEra" width="317" height="327">
         <label class="sr-only" for="demoPicker">Sección del demo</label>
         <select id="demoPicker">
             <option value="midia">Mi día</option>
@@ -2840,7 +2938,7 @@
       </div>
 
       <div class="demo-side">
-        <div class="demo-brand"><img src="leadera-logo-icon.png" alt="" width="317" height="327">LeadEra</div>
+        <div class="demo-brand"><img src="leadera-logo-icon.png" alt="LeadEra" width="317" height="327">LeadEra</div>
         <nav class="demo-nav" aria-label="Secciones del demo">
           <button type="button" class="demo-nav-item is-active" data-target="midia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg>Mi día</button>
           <button type="button" class="demo-nav-item" data-target="leads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-people"/></svg>Leads</button>
@@ -3347,6 +3445,71 @@
 </section>
 
 <!-- ================================================================
+     PRECIOS
+================================================================ -->
+<!-- Espejo de DETALLE_PLAN en leadera-v2 (src/lib/api/suscripcion.ts) y de los precios en USD de planes_precio. Si cambian allá, actualizar acá. -->
+<section id="precios" aria-labelledby="precios-titulo">
+  <div class="inner">
+    <div class="head-ruled reveal">
+      <h2 class="section-h2" id="precios-titulo">Planes y precios</h2>
+      <span class="head-rule"></span>
+    </div>
+    <p class="section-lead reveal d1">14 días gratis para probar, sin tarjeta. Después, elegí el plan que le sirve a tu inmobiliaria.</p>
+
+    <div class="plan-grid">
+      <article class="plan reveal d1" aria-labelledby="plan-solo">
+        <h3 id="plan-solo">Solo</h3>
+        <p class="plan-desc">Para el agente que trabaja por su cuenta.</p>
+        <p class="plan-price"><span class="plan-amount">US$ 15</span> <span class="plan-period">por mes</span></p>
+        <ul class="plan-feats">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>1 agente + hasta 2 asistentes</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hasta 200 leads, 60 propiedades y 100 operaciones activas</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Agenda sincronizada con Google Calendar</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Matching automático entre compradores y propiedades</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reporte semanal por email para arrancar la semana ordenado</li>
+        </ul>
+        <a href="https://app.leadera.com.ar/signup" class="btn-ghost" aria-describedby="plan-solo">Empezar prueba gratis</a>
+      </article>
+
+      <article class="plan featured reveal d2" aria-labelledby="plan-chica">
+        <span class="plan-badge"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-star"/></svg>Recomendado</span>
+        <h3 id="plan-chica">Agencia Chica</h3>
+        <p class="plan-desc">Para el equipo que recién arranca.</p>
+        <p class="plan-price"><span class="plan-amount">US$ 25</span> <span class="plan-period">por mes</span></p>
+        <ul class="plan-feats">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hasta 5 agentes, con hasta 2 asistentes cada uno</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hasta 1.000 leads, 300 propiedades y 300 operaciones activas</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Estadísticas de rendimiento por agente</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Cada agente con su propia carga de trabajo, ordenada</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reporte semanal por email para arrancar la semana ordenado</li>
+        </ul>
+        <a href="https://app.leadera.com.ar/signup" class="btn-main" aria-describedby="plan-chica">Empezar prueba gratis</a>
+      </article>
+
+      <article class="plan reveal d3" aria-labelledby="plan-grande">
+        <h3 id="plan-grande">Agencia Grande</h3>
+        <p class="plan-desc">Para la inmobiliaria con varios agentes.</p>
+        <p class="plan-price"><span class="plan-amount">US$ 40</span> <span class="plan-period">por mes</span></p>
+        <ul class="plan-feats">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Agentes y asistentes sin límite</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Leads, propiedades y operaciones sin límite</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Todo lo de Agencia Chica</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Soporte prioritario</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Pensado para equipos con alto volumen de operaciones</li>
+        </ul>
+        <a href="https://app.leadera.com.ar/signup" class="btn-ghost" aria-describedby="plan-grande">Empezar prueba gratis</a>
+      </article>
+    </div>
+
+    <div class="plan-notes reveal">
+      <p>Los precios están en dólares y se cobran en pesos, con la cotización del dólar MEP, que se actualiza una vez por semana.</p>
+      <p>El pago es por transferencia. Cancelás cuando quieras.</p>
+      <p>¿Preferís que te lo mostremos? <a href="https://wa.me/542235827465?text=Hola!%20Vi%20la%20landing%20de%20LeadEra%20y%20quiero%20ver%20una%20demo." target="_blank" rel="noopener noreferrer">Coordiná una demo de 20 minutos</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
      CTA FINAL
 ================================================================ -->
 <section id="cta-final">
@@ -3376,7 +3539,7 @@
   <div class="footer-inner">
     <div class="footer-logo">
       <div class="footer-logo-mark">
-        <img src="leadera-logo-icon.png" alt="" width="317" height="327">
+        <img src="leadera-logo-icon.png" alt="LeadEra" width="317" height="327">
       </div>
       <span>Lead<span style="color:var(--teal-bright)">Era</span></span>
     </div>
