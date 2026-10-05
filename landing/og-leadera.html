@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- Fuente de og-leadera.png (1200×630). Para regenerar:
+     chrome --headless=new --hide-scrollbars --window-size=1200,630 --screenshot=og-leadera.png og-leadera.html -->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<title>LeadEra OG</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&family=Schibsted+Grotesk:wght@800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #F7F8FA; font-family: 'Public Sans', sans-serif; color: #0f172a; position: relative; }
+  .band { position: absolute; left: 0; right: 0; bottom: 0; height: 170px; background: #083E34; }
+  .copy { position: absolute; left: 72px; top: 70px; width: 600px; }
+  .logo { display: flex; align-items: center; gap: 12px; font-family: 'Schibsted Grotesk'; font-weight: 800; font-size: 30px; letter-spacing: -.02em; }
+  .logo b { width: 46px; height: 46px; border-radius: 11px; background: #0F6E5C; display: grid; place-items: center; }
+  .logo img { width: 28px; }
+  .logo span { color: #0F6E5C; }
+  h1 { font-family: 'Schibsted Grotesk'; font-weight: 800; font-size: 78px; line-height: .98; letter-spacing: -.035em; margin-top: 44px; }
+  h1 em { font-style: normal; color: #0F6E5C; white-space: nowrap; }
+  .foot { position: absolute; left: 72px; bottom: 58px; color: #C9DFD9; font-size: 24px; }
+  .foot strong { color: #fff; font-weight: 600; }
+  .card { position: absolute; right: 64px; top: 64px; width: 430px; background: #F5F7F9; border: 1px solid #e3e6ea; border-radius: 18px; padding: 22px; box-shadow: 0 24px 60px -20px rgba(15,23,42,.35); }
+  .t { font-family: 'Schibsted Grotesk'; font-weight: 800; font-size: 26px; color: #16213B; }
+  .d { font-size: 15px; color: #5A6779; margin-top: 2px; }
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; }
+  .s { background: #fff; border: 1px solid #E5E7EB; border-radius: 12px; padding: 12px 14px; }
+  .n { font-size: 30px; font-weight: 700; color: #16213B; line-height: 1.1; }
+  .s.p .n { color: #C2410C; }
+  .l { font-size: 14px; color: #5A6779; }
+  .leads { margin-top: 10px; background: #fff; border: 1px solid #E5E7EB; border-radius: 12px; padding: 4px 14px; }
+  .lead { display: flex; align-items: center; gap: 12px; padding: 11px 0; }
+  .lead + .lead { border-top: 1px solid #F1F3F5; }
+  .av { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; background: #fde8e0; color: #C2410C; }
+  .nm { font-weight: 600; font-size: 16px; color: #16213B; }
+  .sb { font-size: 13px; color: #5A6779; }
+  .pill { margin-left: auto; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: #fde8e0; color: #C2410C; }
+</style>
+</head>
+<body>
+  <div class="band"></div>
+  <div class="copy">
+    <div class="logo"><b><img src="leadera-logo-icon.png" alt=""></b><i style="font-style:normal">Lead<span>Era</span></i></div>
+    <h1>Entrás y ya<br>sabés <em>qué hacer.</em></h1>
+  </div>
+  <p class="foot"><strong>CRM para inmobiliarias.</strong> Probalo 14 días gratis, sin tarjeta.</p>
+  <div class="card">
+    <div class="t">Mi día</div>
+    <div class="d">Hoy te quedan 11 tareas</div>
+    <div class="stats">
+      <div class="s p"><div class="n">5</div><div class="l">Prioritarios</div></div>
+      <div class="s"><div class="n">2</div><div class="l">Nuevos</div></div>
+      <div class="s"><div class="n">3</div><div class="l">Seguimientos</div></div>
+      <div class="s"><div class="n">1</div><div class="l">Visitas</div></div>
+    </div>
+    <div class="leads">
+      <div class="lead"><span class="av">JG</span><div><div class="nm">Juan García</div><div class="sb">Sin contacto hace 2 días</div></div><span class="pill">Caliente</span></div>
+      <div class="lead"><span class="av">MB</span><div><div class="nm">Martina Beltrán</div><div class="sb">Pidió visita</div></div><span class="pill">Caliente</span></div>
+    </div>
+  </div>
+</body>
+</html>
