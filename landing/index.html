@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F7F8FA">
   <title>LeadEra — CRM para inmobiliarias que funciona</title>
   <meta name="description" content="El CRM para agentes inmobiliarios que te dice exactamente qué hacer cada día. Probá LeadEra 14 días gratis, sin tarjeta.">
   <!-- Antes que cualquier hoja: marca que hay JS. Las animaciones de
@@ -35,6 +36,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Schibsted Grotesk (titulares: la voz del aviso clasificado) +
        Public Sans (cuerpo). Sólo los pesos que la hoja usa. -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@700;800&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@700;800&display=swap" rel="stylesheet">
   <style>
     /* ============================================================
@@ -109,6 +111,7 @@
       --z-float:   30;   /* ficha flotante de Martina              */
       --z-nav:     40;   /* barra sticky                           */
       --z-menu:    45;   /* menú desplegable de mobile             */
+      --z-modal:   60;   /* hojas y diálogos de la demo en teléfono */
 
       --max-w: 1200px;
       --ease: cubic-bezier(.4,0,.2,1);
@@ -250,14 +253,6 @@
        la duración en 0s y con un timeline de scroll eso salta. */
     @supports (animation-timeline: view()) {
       @media (prefers-reduced-motion: no-preference) {
-        /* El mockup del hero baja más lento que la página al irse. */
-        @media (min-width: 921px) {
-          .hero-visual {
-            animation-name: heroDrift; animation-duration: auto; animation-fill-mode: both;
-            animation-timing-function: linear;
-            animation-timeline: view(); animation-range: exit 0% exit 100%;
-          }
-        }
         /* La bisagra se escribe de izquierda a derecha mientras bajás. */
         .js .bridge-line.reveal {
           opacity: 1; transform: none; transition: none;
@@ -281,12 +276,13 @@
           animation-timeline: view(); animation-range: entry 0% cover 38%;
         }
         @media (max-width: 768px) { .js .demo-frame.reveal { animation-name: frameRiseFlat; } }
+        @media (max-width: 768px) { .js .story-case { animation-name: caseRiseFlat; animation-range: entry 0% cover 20%; } }
       }
     }
-    @keyframes heroDrift  { from { transform: none; } to { transform: translateY(90px); } }
     @keyframes bridgeWipe { from { clip-path: inset(-10% 100% -10% 0); } to { clip-path: inset(-10% 0 -10% 0); } }
     @keyframes caseRise   { from { opacity: .35; transform: translateY(56px) scale(.95); } to { opacity: 1; transform: none; } }
     @keyframes frameRise  { from { opacity: .4; transform: perspective(1400px) rotateX(14deg) translateY(40px) scale(.93); } to { opacity: 1; transform: none; } }
+    @keyframes caseRiseFlat { from { opacity: .5; transform: translateY(20px) scale(.98); } to { opacity: 1; transform: none; } }
     @keyframes frameRiseFlat { from { opacity: .4; transform: translateY(36px) scale(.95); } to { opacity: 1; transform: none; } }
 
     /* ============================================================
@@ -353,43 +349,73 @@
     }
 
     /* ============================================================
-       HERO
+       HERO — del ruido a la claridad
+
+       Sin capturas del producto: el producto aparece más abajo, en la
+       historia y en la demo. Acá se cuenta la promesa. El día de un
+       agente es ruido: chats, mails, una llamada perdida, la planilla,
+       la agenda, cada uno con su globito de pendientes. Los globitos se
+       atienden, el ruido se apaga alrededor del titular y queda una
+       sola cosa nítida: tu próximo paso.
+
+       Los estados escritos acá son los FINALES (ruido apagado, chapa a
+       la vista): es lo que se ve sin JS y con reduced motion. La
+       coreografía vive más abajo, en "HERO — coreografía".
     ============================================================ */
-    /* row-reverse en lugar de reordenar el DOM: el <h1> sigue siendo
-       el primer contenido del hero para lectores de pantalla y para
-       el orden de tabulación, pero se pinta a la derecha. */
     .hero-wrap {
-      max-width: var(--max-w); margin: 0 auto;
-      padding: 72px 24px 72px;
-      display: flex; flex-direction: row-reverse;
-      align-items: center; justify-content: space-between; gap: 56px;
+      position: relative; overflow: clip;
+      display: grid; place-items: center;
+      padding: 88px 24px 96px;
       /* Topeado: en una ventana muy alta el hero no se estira a un
          cuadro vacío. */
-      min-height: min(calc(100vh - 64px), 860px);
-      min-height: min(calc(100svh - 64px), 860px);
+      min-height: min(calc(100vh - 64px), 900px);
+      min-height: min(calc(100svh - 64px), 900px);
+      view-timeline-name: --hero;
+      view-timeline-axis: block;
     }
-    .hero-copy { flex: 1 1 520px; min-width: 0; max-width: 660px; }
+    .hero-copy {
+      position: relative; z-index: var(--z-raised);
+      width: 100%; max-width: 980px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
 
     .hero-h1 {
-      font-size: var(--fs-3xl);
-      font-weight: 800; line-height: .98; letter-spacing: -.035em;
-      color: var(--text); margin-bottom: 22px;
+      font-size: clamp(2.6rem, 1rem + 5.6vw, 6rem);
+      font-weight: 800; line-height: .96; letter-spacing: -.035em;
+      color: var(--text); margin-bottom: 26px;
     }
     .hero-h1 em { font-style: normal; color: var(--teal); position: relative; display: inline-block; }
     .hero-h1 em::after {
       content: ''; position: absolute; left: 0; right: 0; bottom: -.06em; height: .06em;
       background: var(--teal); transform-origin: left;
     }
-    .js .hero-h1 em::after { transform: scaleX(0); animation: underlineArrival .7s .65s var(--ease-out-expo) forwards; }
-    @keyframes underlineArrival { to { transform: scaleX(1); } }
+    @keyframes underlineArrival { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* La chapa: lo único nítido y con color de marca en la escena. */
+    .hero-paso {
+      display: inline-flex; align-items: center; gap: 12px;
+      max-width: 100%; margin: 0 0 28px;
+      padding: 10px 18px 10px 10px;
+      background: #fff; border: 1px solid rgba(var(--teal-rgb),.22); border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(15,23,42,.05), 0 14px 32px -14px rgba(15,23,42,.30);
+      text-align: left;
+    }
+    .hero-paso-check {
+      width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%;
+      display: grid; place-items: center; background: var(--teal); color: #fff;
+    }
+    .hero-paso-check svg { width: 18px; height: 18px; stroke-dasharray: 24; stroke-dashoffset: 0; }
+    .hero-paso-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+    .hero-paso-k { font-size: var(--fs-xs); color: var(--text-muted); }
+    .hero-paso-t { font-size: 16px; font-weight: 600; color: var(--text); }
 
     .hero-sub {
       font-size: var(--fs-md); color: var(--text-2);
-      line-height: 1.7; margin-bottom: 28px; max-width: 46ch;
+      line-height: 1.7; margin: 0 auto 28px; max-width: 52ch;
     }
 
-    .cta-row { display: flex; flex-wrap: wrap; gap: 11px; align-items: center; margin-bottom: 10px; }
-    .trial-note { color: var(--text-muted); font-size: var(--fs-xs); margin-bottom: 24px; }
+    .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 11px; align-items: center; margin-bottom: 12px; }
+    .trial-note { color: var(--text-muted); font-size: var(--fs-xs); margin: 0 auto 26px; }
 
     .btn-main {
       display: inline-flex; align-items: center; gap: 8px;
@@ -412,220 +438,160 @@
       cursor: pointer; transition: border-color .18s, color .18s, background .18s; text-decoration: none;
     }
     .btn-ghost:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-faint); }
+    .hero-copy .btn-ghost { background: rgba(255,255,255,.7); }
 
-    /* Integración con Google Calendar: una línea, sin caja. */
-    .hero-highlight { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; margin: 0 0 26px; text-align: left; }
-    .hero-highlight-icon {
-      width: 32px; height: 32px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--teal-faint); color: var(--teal); border-radius: 9px;
+    /* Cercanía + integración: una línea de datos, sin cajas. */
+    .hero-meta {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px;
+      font-size: 14px; color: var(--text-2); max-width: none;
     }
-    .hero-highlight-icon svg { width: 18px; height: 18px; }
-    .hero-highlight-text { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-    .hero-highlight-text strong { font-size: 14px; font-weight: 600; color: var(--text); }
-    .hero-highlight-text span { font-size: var(--fs-xs); color: var(--text-2); }
-
-    /* Cercanía: reemplaza la prueba social genérica. Hecho acá, por
-       alguien con quien se puede hablar. */
-    .hero-near {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding-top: 20px; border-top: 1px solid var(--border);
-      font-size: 14px; color: var(--text-2);
-    }
-    .hero-near-pin { width: 18px; height: 18px; color: var(--teal); flex-shrink: 0; margin-top: 3px; }
-    .hero-near > span { flex: 1; min-width: 0; }
-    .hero-near strong { color: var(--text); font-weight: 600; }
-    .hero-near a {
+    .hero-meta > span { display: inline-flex; align-items: center; gap: 7px; }
+    .hero-meta svg { width: 17px; height: 17px; color: var(--teal); flex-shrink: 0; }
+    .hero-meta strong { color: var(--text); font-weight: 600; }
+    .hero-meta a {
       color: var(--teal); font-weight: 600;
       text-decoration: underline; text-underline-offset: 3px;
       text-decoration-color: rgba(var(--teal-rgb),.4);
     }
-    .hero-near a:hover { text-decoration-color: var(--teal); }
+    .hero-meta a:hover { text-decoration-color: var(--teal); }
 
-    /* Mini "Mi día" sólo para teléfono: 4 métricas + 2 leads. */
-    .hero-mini { display: none; }
+    /* ---- el ruido ----
+       Teselas de íconos con globitos de notificación: el día de un
+       agente, sin una palabra para leer. Tres capas por elemento,
+       cada una con un solo trabajo:
+         .frag    posición en la escena y dispersión al scrollear
+         .frag-p  parallax del mouse (transform) y flotación (translate)
+         .frag-c  la tesela: entrada, profundidad y "apagado"
+       --z es la profundidad (1 atrás, 3 adelante) y define el lado
+       de la tesela (--t). */
+    .hero-ruido { position: absolute; inset: 0; pointer-events: none; }
+    .frag {
+      position: absolute;
+      left: var(--x, auto); right: var(--rx, auto); top: var(--y);
+    }
+    .frag[data-z="1"] { --z: 1; --t: 44px; --o: .6;  --b: 1.2px; }
+    .frag[data-z="2"] { --z: 2; --t: 56px; --o: .85; --b: .3px; }
+    .frag[data-z="3"] { --z: 3; --t: 68px; --o: 1;   --b: 0px; }
+    .frag-c {
+      /* Estado final: el ruido apagado y en orden, sin desaparecer. */
+      opacity: calc(var(--o) * .45);
+      filter: saturate(.2) blur(var(--b));
+    }
 
+    .tile {
+      position: relative; display: grid; place-items: center;
+      width: var(--t); height: var(--t); border-radius: calc(var(--t) * .3);
+      background: #fff; border: 1px solid var(--border); color: var(--teal-darker);
+      box-shadow: 0 1px 2px rgba(15,23,42,.06), 0 14px 26px -14px rgba(15,23,42,.38);
+    }
+    .tile svg { width: calc(var(--t) * .42); height: calc(var(--t) * .42); }
+    .tile.is-alert { background: #FDE2E1; border-color: #FBCFCF; color: #B91C1C; }
+    /* El globito: notificación pendiente. En el estado final ya se
+       atendió (no se ve); la coreografía lo muestra y lo resuelve. */
+    .badge {
+      position: absolute; top: -7px; right: -7px;
+      min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px;
+      background: #DC2626; color: #fff; border: 2px solid #fff;
+      font: 700 11px/18px var(--font); text-align: center; font-variant-numeric: tabular-nums;
+      opacity: 0; scale: 0;
+    }
+
+    /* Teléfono y tablet: el ruido es una franja arriba del titular,
+       recortada por los bordes. */
+    @media (max-width: 1000px) {
+      .hero-wrap { display: flex; flex-direction: column; padding: 8px 16px 48px; min-height: auto; }
+      .hero-ruido { position: relative; inset: auto; width: calc(100% + 32px); height: 150px; margin: 0 -16px 10px; }
+      .frag { left: var(--xm, auto); right: var(--rxm, auto); top: var(--ym); }
+      .frag:not(.en-movil) { display: none; }
+      .frag[data-z="3"] { --t: 50px; }
+      .frag[data-z="2"] { --t: 42px; }
+      .badge { min-width: 20px; height: 20px; border-radius: 10px; line-height: 16px; font-size: 10px; top: -6px; right: -6px; }
+      .hero-paso-t { font-size: 15px; }
+      .hero-meta { flex-direction: column; align-items: center; }
+    }
+    /* Entre tablet y escritorio ancho: sin la capa de atrás. */
+    @media (1001px <= width < 1200px) {
+      .frag[data-z="1"] { display: none; }
+      .frag { left: var(--xt, var(--x, auto)); right: var(--rxt, var(--rx, auto)); top: var(--yt, var(--y)); }
+      .hero-meta { flex-direction: column; align-items: center; }
+    }
 
     /* ============================================================
-       HERO MOCKUP
+       HERO — coreografía
+
+         0–800 ms     las teselas entran escalonadas, con sus globitos
+         450–1300 ms  el titular, palabra por palabra
+         1.4–2 s      los globitos se atienden uno por uno (--bi)
+         2 s          el ruido se apaga y se endereza; sube la chapa
+                      "Tu próximo paso" y su check se dibuja
+         siempre      flotación lenta + parallax del mouse (JS)
+         al bajar     el ruido se dispersa y el titular se queda atrás
+
+       Se dispara con .visible sobre .hero-wrap (mismo observer que el
+       resto de la página), así que se repite cada vez que el hero
+       vuelve a pantalla.
     ============================================================ */
-    /* Recorte de la pantalla "Mi día": sidebar, las cuatro métricas del
-       día, tareas, leads prioritarios, coincidencias propiedad-comprador
-       y el estado de Google Calendar. Todo HTML+CSS; los íconos salen del sprite de la página.
-       Los colores de texto, borde y temperatura son los tokens de la app
-       (leadera-front/src/styles.css). */
-    .hero-visual {
-      --hm-text:     #16213B;
-      --hm-muted:    #5A6779;
-      --hm-border:   #E5E7EB;
-      --hm-caliente: #D85A30;
-      --hm-tibio:    #EF9F27;
-      flex: 1 1 0; min-width: 0; min-height: 440px;
-      display: flex; overflow: hidden;
-      background: #F5F7F9;
-      border-radius: 16px;
-      border: 1px solid rgba(15,23,42,.08);
-      box-shadow: var(--shadow-lg);
-      text-align: left;
-    }
+    @media (prefers-reduced-motion: no-preference) {
+      .js .hero-h1 { --split-delay: 450ms; }
+      .js .hero-wrap.visible .hero-h1 em::after { animation: underlineArrival .7s 1.25s var(--ease-out-expo) both; }
+      .js .hero-wrap:not(.visible) .hero-h1 em::after { transform: scaleX(0); }
 
-    /* ---- sidebar ---- */
-    .hm-side {
-      width: 152px; flex-shrink: 0;
-      display: flex; flex-direction: column; gap: 20px;
-      padding: 18px 10px;
-      background: linear-gradient(180deg, #0C5A4B 0%, #0A4539 100%);
-      color: #fff;
-    }
-    .hm-brand {
-      display: flex; align-items: center; gap: 10px; padding: 0 8px;
-      font-size: 14px; font-weight: 700; letter-spacing: -.02em;
-    }
-    .hm-logo { width: 20px; height: auto; flex-shrink: 0; display: block; }
-    .hm-nav { display: flex; flex-direction: column; gap: 2px; }
-    .hm-nav-item {
-      display: flex; align-items: center; gap: 9px;
-      padding: 8px; border-radius: 8px;
-      font-size: 12px; color: rgba(255,255,255,.78); white-space: nowrap;
-    }
-    .hm-nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
-    .hm-nav-item.is-active { background: rgba(var(--teal-bright-rgb),.55); color: #fff; font-weight: 600; }
+      .js .hero-wrap:not(.visible) .frag-c,
+      .js .hero-wrap:not(.visible) .hero-paso,
+      .js .hero-wrap:not(.visible) .hero-resto { opacity: 0; }
 
-    /* ---- panel ---- */
-    .hm-main {
-      flex: 1; min-width: 0;
-      display: flex; flex-direction: column; gap: 10px;
-      padding: 16px 18px 18px;
-      container-type: inline-size;
+      .js .hero-wrap.visible .frag-c {
+        animation:
+          fragIn .8s var(--ease-out-expo) calc(var(--i) * 60ms) both,
+          fragCalma 1s var(--ease-out-expo) 2s forwards;
+      }
+      .js .hero-wrap.visible .badge {
+        animation:
+          badgeIn .45s var(--ease-out-expo) calc(var(--i) * 60ms + 260ms) both,
+          badgeOut .35s cubic-bezier(.5,0,.75,0) calc(1.4s + var(--bi, 0) * 95ms) forwards;
+      }
+      .js .frag-p {
+        transform: translate3d(calc(var(--mx, 0) * var(--z) * -9px), calc(var(--my, 0) * var(--z) * -7px), 0);
+        animation: fragFlota var(--fd, 12s) ease-in-out calc(var(--i) * -1.3s) infinite alternate;
+      }
+      .js .hero-wrap.visible .hero-paso { animation: pasoIn .9s var(--ease-out-expo) 2.05s both; }
+      .js .hero-wrap.visible .hero-paso-check svg { animation: checkDraw .6s var(--ease-out-expo) 2.4s both; }
+      .js .hero-wrap.visible .hero-resto { animation: restoIn .8s var(--ease-out-expo) .95s both; }
     }
-    .hm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-    .hm-title { font-size: 19px; font-weight: 700; color: var(--hm-text); letter-spacing: -.02em; line-height: 1.2; }
-    .hm-date  { font-size: 11px; color: var(--hm-muted); margin-top: 2px; }
-    .hm-gcal {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 5px 10px 5px 8px; border-radius: 999px;
-      background: #fff; border: 1px solid var(--hm-border);
-      font-size: 10.5px; font-weight: 600; color: var(--hm-text); white-space: nowrap;
+    @keyframes fragIn {
+      from { opacity: 0; filter: saturate(1) blur(8px); scale: .8; rotate: var(--r, 0deg); }
+      to   { opacity: var(--o); filter: saturate(1) blur(var(--b)); scale: 1; rotate: var(--r, 0deg); }
     }
-    .hm-gcal svg { width: 13px; height: 13px; color: var(--teal); }
-    .hm-gcal-dot { width: 6px; height: 6px; border-radius: 50%; background: #22A06B; box-shadow: 0 0 0 3px rgba(34,160,107,.16); }
+    @keyframes fragCalma {
+      from { opacity: var(--o); filter: saturate(1) blur(var(--b)); rotate: var(--r, 0deg); }
+      to   { opacity: calc(var(--o) * .45); filter: saturate(.2) blur(var(--b)); rotate: 0deg; }
+    }
+    @keyframes badgeIn  { from { opacity: 0; scale: .4; } to { opacity: 1; scale: 1; } }
+    @keyframes badgeOut { from { opacity: 1; scale: 1; } to { opacity: 0; scale: 0; } }
+    @keyframes fragFlota { from { translate: 0 0; } to { translate: var(--fx, 6px) var(--fy, -10px); } }
+    @keyframes pasoIn    { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
+    @keyframes checkDraw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+    @keyframes restoIn   { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
-    .hm-stats { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
-    .hm-stat {
-      display: flex; flex-direction: column; align-items: flex-start; gap: 5px; min-width: 0;
-      padding: 9px 10px; background: #fff;
-      border: 1px solid var(--hm-border); border-radius: 10px;
+    /* Al bajar: el ruido se va hacia los costados y el titular se
+       queda un poco atrás. Reversible: al volver se acomoda. */
+    @supports (animation-timeline: view()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .js .frag {
+          animation-name: fragAway; animation-duration: auto; animation-fill-mode: both;
+          animation-timing-function: linear;
+          animation-timeline: --hero; animation-range: exit 0% exit 75%;
+        }
+        .js .hero-copy {
+          animation-name: heroLift; animation-duration: auto; animation-fill-mode: both;
+          animation-timing-function: linear;
+          animation-timeline: --hero; animation-range: exit 0% exit 100%;
+        }
+      }
     }
-    .hm-stat-icon {
-      width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .hm-stat-icon svg { width: 14px; height: 14px; }
-    .hm-stat-body { min-width: 0; }
-    .hm-stat-n { font-size: 17px; font-weight: 700; color: var(--hm-text); line-height: 1.1; }
-    .hm-stat-l { font-size: 10.5px; color: var(--hm-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .hm-stat.is-prio   .hm-stat-icon { background: #fde8e0; color: var(--hm-caliente); }
-    .hm-stat.is-new    .hm-stat-icon { background: var(--teal-faint); color: var(--teal); }
-    .hm-stat.is-follow .hm-stat-icon { background: #fef3c7; color: #B7791F; }
-    .hm-stat.is-visit  .hm-stat-icon { background: #E6EEFB; color: #2F6FDB; }
+    @keyframes fragAway { to { transform: translate(calc(var(--dx, 1) * 140px), -60px); opacity: 0; } }
+    @keyframes heroLift { to { transform: translateY(140px); opacity: .25; } }
 
-    /* ---- cards ---- */
-    .hm-card { background: #fff; border: 1px solid var(--hm-border); border-radius: 10px; padding: 10px 12px; min-width: 0; }
-    .hm-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
-    .hm-card-title { font-size: 12.5px; font-weight: 700; color: var(--hm-text); }
-    .hm-count {
-      font-size: 9.5px; font-weight: 600; white-space: nowrap;
-      padding: 3px 8px; border-radius: 999px;
-      background: var(--teal-faint); color: var(--teal-darker);
-    }
-    /* Tareas de hoy y Leads prioritarios, lado a lado */
-    .hm-duo { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
-
-    .hm-row { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 6px 0; border-top: 1px solid #F1F3F5; }
-    .hm-card-head + .hm-row { border-top: 0; }
-    .hm-row:last-child { padding-bottom: 0; }
-    .hm-check { width: 12px; height: 12px; flex-shrink: 0; border: 1.5px solid #C5CCD6; border-radius: 3px; }
-    .hm-task { flex: 1; min-width: 0; font-size: 11px; color: var(--hm-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .hm-prio { flex-shrink: 0; font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 999px; }
-    .hm-prio.alta  { background: #FDE2E1; color: #C53030; }
-    .hm-prio.media { background: #FEF3C7; color: #92400E; }
-    .hm-prio.baja  { background: #DCF5EC; color: #0F6E5C; }
-
-    .hm-lead { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 6px 0; border-top: 1px solid #F1F3F5; }
-    .hm-card-head + .hm-lead { border-top: 0; }
-    .hm-lead:last-child { padding-bottom: 0; }
-    .hm-lead .hm-av { width: 24px; height: 24px; font-size: 9px; }
-    .hm-lead-meta { display: flex; align-items: center; gap: 5px; min-width: 0; margin-top: 1px; }
-
-    .hm-match {
-      display: grid; grid-template-columns: minmax(0,1fr) 16px minmax(0,1fr);
-      align-items: center; gap: 8px;
-      padding: 7px 0; border-top: 1px solid #F1F3F5;
-    }
-    .hm-card-head + .hm-match { border-top: 0; }
-    .hm-match:last-child { padding-bottom: 0; }
-    .hm-cell { display: flex; align-items: center; gap: 8px; min-width: 0; }
-    /* Tesela de color en lugar de foto: el mockup no carga imágenes. */
-    .hm-thumb { width: 28px; height: 28px; flex-shrink: 0; border-radius: 7px; }
-    .hm-thumb.t1 { background: linear-gradient(135deg, #D8C7AE, #9C8468); }
-    .hm-thumb.t2 { background: linear-gradient(135deg, #B9CEDB, #62849A); }
-    .hm-av {
-      width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 700;
-    }
-    .hm-av.caliente { background: #fde8e0; color: var(--hm-caliente); }
-    .hm-av.tibio    { background: #fef3c7; color: #92400e; }
-    .hm-av.frio     { background: #E6EEFB; color: #2F6FDB; }
-    .hm-txt  { min-width: 0; }
-    .hm-name { font-size: 11.5px; font-weight: 600; color: var(--hm-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .hm-sub  { font-size: 10px; color: var(--hm-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .hm-pill { display: inline-block; flex-shrink: 0; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 999px; }
-    .hm-pill.caliente { background: #fde8e0; color: var(--hm-caliente); }
-    .hm-pill.tibio    { background: #fef3c7; color: #92400e; }
-    .hm-pill.frio     { background: #E6EEFB; color: #2F6FDB; }
-    .hm-link { display: flex; justify-content: center; color: var(--teal); }
-    .hm-link svg { width: 14px; height: 14px; }
-
-    /* Grillas según el ancho del panel (container query), no del
-       viewport: el panel mide ~375px en desktop, ~230-490px entre 921 y
-       1180px (sin sidebar) y más de 500px con el hero apilado.
-       Debajo de 330px Tareas y Leads se apilan y la tercera tarea se
-       oculta; debajo de 320px cada coincidencia se apila. */
-    @container (width < 360px) {
-      .hm-stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    }
-    @container (width < 330px) {
-      .hm-duo { grid-template-columns: minmax(0,1fr); }
-      .hm-row.is-extra { display: none; }
-    }
-    @container (width >= 360px) {
-      .hm-stats { grid-template-columns: repeat(4, minmax(0,1fr)); }
-    }
-    @container (width < 320px) {
-      .hm-match { grid-template-columns: minmax(0,1fr); gap: 6px; }
-      .hm-link { display: none; }
-    }
-
-    /* Entre 921 y 1180px el hero sigue en dos columnas y el mockup mide
-       ~285-525px: no entra un sidebar de ancho fijo. Se muestra solo el
-       panel. */
-    @media (920px < width <= 1180px) {
-      .hm-side { display: none; }
-    }
-    /* Entre 1181 y 1239px la columna del mockup todavía no llega a su
-       ancho máximo: un sidebar algo más angosto deja el panel en 360px o
-       más, que es lo que piden las cuatro métricas en fila. */
-    @media (1180px < width < 1240px) {
-      .hm-side { width: 132px; }
-    }
-    /* Apilado: el mockup ocupa el ancho de la página. */
-    @media (max-width: 920px) {
-      .hero-visual { min-height: 0; }
-    }
-    @media (max-width: 768px) {
-      .hero-visual { display: none; }
-    }
 
     /* ============================================================
        TRANSICIÓN HERO → PROBLEMA
@@ -768,49 +734,6 @@
         rgba(15,23,42,.991) 89.5%,
         var(--dark)           97%);
     }
-
-    /* ============================================================
-       MINI "MI DÍA" — hero en teléfono
-
-       Recorte liviano del mockup: las cuatro métricas en una fila y los
-       dos leads prioritarios. Reusa los tokens --hm-* del mockup grande.
-    ============================================================ */
-    .hero-mini {
-      --hm-text:     #16213B;
-      --hm-muted:    #5A6779;
-      --hm-border:   #E5E7EB;
-      --hm-caliente: #C2410C;
-      margin: 4px 0 26px;
-      background: #F5F7F9;
-      border: 1px solid rgba(15,23,42,.08);
-      border-radius: 14px;
-      box-shadow: var(--shadow-md);
-      padding: 14px;
-      text-align: left;
-    }
-    .hmini-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
-    .hmini-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--hm-text); }
-    .hmini-date { font-size: 12px; color: var(--hm-muted); }
-    .hmini-stats { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; }
-    .hmini-stat {
-      background: #fff; border: 1px solid var(--hm-border); border-radius: 10px;
-      padding: 8px 6px 7px; min-width: 0; text-align: center;
-    }
-    .hmini-n { display: block; font-size: 19px; font-weight: 700; line-height: 1.1; color: var(--hm-text); font-variant-numeric: tabular-nums; }
-    .hmini-l { display: block; font-size: 11px; color: var(--hm-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .hmini-stat.is-prio .hmini-n { color: var(--hm-caliente); }
-    @media (max-width: 380px) {
-      .hmini-stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .hmini-stat { display: flex; align-items: baseline; gap: 6px; text-align: left; padding: 7px 10px; }
-    }
-    .hmini-leads { margin-top: 8px; background: #fff; border: 1px solid var(--hm-border); border-radius: 10px; padding: 4px 10px; }
-    .hmini-lead { display: flex; align-items: center; gap: 9px; padding: 7px 0; min-width: 0; }
-    .hmini-lead + .hmini-lead { border-top: 1px solid #F1F3F5; }
-    .hmini-lead .hm-av { width: 28px; height: 28px; font-size: 11px; }
-    .hmini-lead .hm-txt { flex: 1; }
-    .hmini-lead .hm-name { font-size: 13px; }
-    .hmini-lead .hm-sub { font-size: 12px; }
-    .hmini-lead .hm-pill { font-size: 11px; padding: 2px 8px; }
 
     /* ============================================================
        SECCIONES — comunes
@@ -1077,8 +1000,8 @@
        los tokens reales de la app (src/index.css): se declaran una sola
        vez acá y nada de lo que sigue usa un hex suelto.
 
-       Las clases van con prefijo propio (dm-, ld-) y no tocan las hm-*
-       del mockup del hero, que queda como está.
+       Las clases van con prefijo propio (dm-, ld-), exclusivo
+       de la demo.
     ============================================================ */
     .sr-only {
       position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -1635,6 +1558,17 @@
     .kb-dialog h4 { font-size: 1rem; font-weight: 700; color: var(--c-ink); }
     .kb-dialog p { font-size: .85rem; color: var(--c-ink-3); margin-top: 6px; }
     .kb-dialog-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+    /* "Mover a…": la alternativa táctil al arrastre. */
+    .kb-mover-op { font-weight: 600; color: var(--c-ink) !important; }
+    .kb-mover-cols { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+    .kb-mover-cols button {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      min-height: 48px; padding: 0 14px; border-radius: 10px;
+      font: inherit; font-size: 15px; font-weight: 600; text-align: left;
+      color: var(--c-ink); background: var(--c-surface-2); border: 1px solid var(--c-border); cursor: pointer;
+    }
+    .kb-mover-cols button:disabled { color: var(--c-ink-3); background: none; cursor: default; }
+    .kb-mover-cols button small { font-size: 12px; font-weight: 500; color: var(--c-ink-3); }
 
     /* Con cinco columnas en un panel de menos de 1000px, "En negociación"
        no entra a .9rem. */
@@ -2171,12 +2105,6 @@
     }
 
     @media (max-width: 920px) {
-      .hero-wrap {
-        flex-direction: column; padding: 48px 20px 56px;
-        min-height: auto; gap: 40px;
-      }
-      .hero-copy { max-width: 100%; }
-      .hero-visual { width: 100%; flex: none; }
 
       .problema-grid, .demo-head, .precios-head, .cta-grid { grid-template-columns: minmax(0,1fr); }
       .ficha-final { justify-self: start; }
@@ -2194,40 +2122,222 @@
 
       .plan-grid { grid-template-columns: 1fr; gap: 30px; max-width: 480px; margin-left: auto; margin-right: auto; }
 
+    }
 
-      /* — menú mobile — */
+    /* ============================================================
+       MOBILE — hecho para el pulgar
+
+       La mayoría entra desde el teléfono. Acá vive todo lo que cambia
+       el comportamiento (no sólo el tamaño) por debajo de 768/920px:
+       el dock con la ficha de Martina y el CTA, el nav que se esconde
+       al bajar, el menú en hoja, la demo sin scroll atrapado, el
+       carrusel de precios y la respuesta táctil.
+    ============================================================ */
+    html { -webkit-tap-highlight-color: transparent; }
+    a, button, summary, select, input, label { touch-action: manipulation; }
+
+    /* Respuesta táctil: todo lo que se toca se hunde un poco. */
+    .btn-main, .btn-ghost, .btn-main-lg, .ficha-cta, .story-end a, .ld-chip,
+    .demo-nav-item, .plan-dots button, .kb-card, .ld-card, .story-control {
+      transition-property: transform, background, color, border-color, box-shadow, opacity;
+    }
+    .btn-main:active, .btn-ghost:active, .btn-main-lg:active, .ficha-cta:active,
+    .story-end a:active, .ld-chip:active, .demo-nav-item:active, .plan-dots button:active,
+    .ld-card:active, .kb-card:active { transform: scale(.97); transition-duration: .08s; }
+
+    /* En pantallas táctiles el :hover queda "pegado" después de tocar:
+       ningún hover mueve nada. */
+    @media (hover: none) {
+      .btn-main:hover, .btn-main-lg:hover, .nav-links a.nav-cta:hover { transform: none; }
+      .btn-main:hover svg, .btn-main-lg:hover svg, .story-link:hover span, .story-end a:hover svg { transform: none; }
+      .btn-main:active, .btn-main-lg:active { transform: scale(.97); }
+    }
+
+    /* El CTA del dock sólo existe en teléfono. */
+    .ficha-cta { display: none; }
+
+    @media (max-width: 920px) {
+      /* — nav: se esconde al bajar, vuelve al subir — */
+      .site-nav { transition: transform .35s var(--ease-out-expo); }
+      .site-nav.nav-oculta { transform: translateY(-100%); }
+
+      /* — menú en hoja a pantalla completa — */
       .nav-links { display: none; }
       .nav-links.open {
         display: flex; flex-direction: column; align-items: stretch; gap: 0;
-        position: absolute; top: 64px; left: 0; right: 0; z-index: var(--z-menu);
-        background: #fff; padding: 8px 20px 18px;
-        border-bottom: 1px solid var(--border);
-        box-shadow: 0 10px 28px rgba(15,23,42,.08);
+        position: fixed; left: 0; right: 0; top: 60px; bottom: 0; z-index: var(--z-menu);
+        background: #fff; padding: 12px 20px calc(24px + env(safe-area-inset-bottom));
+        overflow-y: auto; overscroll-behavior: contain;
+        animation: hojaIn .35s var(--ease-out-expo);
       }
-      .nav-links.open a { display: block; padding: 12px 2px; font-size: 16px; }
-      .nav-links.open a.nav-login { border-top: 1px solid var(--border-faint); margin-top: 6px; padding-top: 15px; }
-      .nav-links.open a.nav-cta { text-align: center; margin-top: 12px; padding: 13px 18px; font-size: 16px; }
-      .hamburger { display: block; }
+      .nav-links.open li { list-style: none; }
+      .nav-links.open a {
+        display: flex; align-items: center; min-height: 56px;
+        font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -.02em;
+        color: var(--text); border-bottom: 1px solid var(--border-faint); background-image: none;
+      }
+      .nav-links.open li:nth-last-child(2) { margin-top: auto; }
+      .nav-links.open a.nav-login {
+        font-family: var(--font); font-size: 17px; font-weight: 600; border: 0;
+        justify-content: center; padding: 0;
+      }
+      .nav-links.open a.nav-cta {
+        justify-content: center; margin-top: 8px; min-height: 54px; padding: 0 18px;
+        font-family: var(--font); font-size: 17px; letter-spacing: 0; color: #fff; border: 0; border-radius: 12px;
+      }
+      .hamburger { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; margin-right: -10px; }
+      .logo { min-height: 44px; }
+      .hamburger .ico-cerrar { display: none; }
+      .hamburger[aria-expanded="true"] .ico-abrir { display: none; }
+      .hamburger[aria-expanded="true"] .ico-cerrar { display: block; }
+      html.menu-abierto { overflow: hidden; }
+      /* backdrop-filter convierte al nav en contenedor de los fixed:
+         con el menú abierto se apaga, así la hoja ocupa la pantalla. */
+      html.menu-abierto .site-nav { transform: none; background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; }
     }
+    @keyframes hojaIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 
     @media (max-width: 768px) {
-      .hero-mini { display: block; }
-      .hero-wrap { padding-bottom: 40px; }
-
-      /* En teléfono la ficha no se queda: aparece cuando cambia de
-         estado, como un aviso abajo al centro, y se va sola. */
+      /* — el dock: la ficha de Martina y el CTA, siempre a mano — */
       .js .ficha-float {
-        left: 12px; right: 12px; bottom: 12px; width: auto; max-width: 420px; margin: 0 auto;
-        padding: 10px 14px 12px;
+        left: 0; right: 0; bottom: 0; width: auto; max-width: none; margin: 0;
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+        border-radius: 18px 18px 0 0; border-width: 1px 0 0;
+        box-shadow: 0 -12px 32px -14px rgba(15,23,42,.28);
+        opacity: 1; transform: translateY(110%); visibility: hidden;
+        pointer-events: auto;
+        transition: transform .45s var(--ease-out-expo), visibility 0s .45s;
       }
-      .ficha-float .ficha-top { gap: 9px; }
-      .ficha-float .ficha-av { width: 30px; height: 30px; font-size: 11px; }
-      .ficha-float .ficha-estado { margin-top: 8px; }
+      .js .ficha-float.is-on { transform: none; visibility: visible; transition: transform .5s var(--ease-out-expo), visibility 0s; }
+      .ficha-float .ficha-info {
+        flex: 1; min-width: 0;
+        display: grid; grid-template-columns: auto minmax(0,1fr); column-gap: 10px; align-items: center;
+      }
+      .ficha-float .ficha-top { grid-row: span 2; }
+      .ficha-float .ficha-who { display: none; }
+      .ficha-float .ficha-av { width: 36px; height: 36px; font-size: 12px; }
+      .ficha-float .ficha-estado { margin-top: 0; font-size: 12px; }
+      .ficha-float .ficha-pasos { margin-top: 5px; max-width: 150px; }
+      .ficha-cta {
+        display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+        min-height: 46px; padding: 0 18px; border-radius: 11px;
+        background: var(--teal); color: #fff; font-weight: 700; font-size: 15px;
+        box-shadow: var(--shadow-teal);
+      }
+      body.dock-on { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
+      html.menu-abierto .ficha-float { visibility: hidden; }
+
+      /* — demo: sin scroll atrapado y con pestañas para el pulgar — */
+      .demo-frame { overflow: clip; }
+      .demo-main { max-height: none; overflow: visible; }
+      .demo-picker { display: none; }
+      .demo-side {
+        display: block; width: auto; padding: 0;
+        position: sticky; top: var(--nav-offset, 0px); z-index: var(--z-raised);
+        transition: top .35s var(--ease-out-expo);
+      }
+      .demo-brand { display: none; }
+      .demo-nav {
+        flex-direction: row; gap: 8px; padding: 10px 12px;
+        overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
+        overscroll-behavior-x: contain;
+      }
+      .demo-nav::-webkit-scrollbar { display: none; }
+      .demo-nav-item {
+        width: auto; flex-shrink: 0; scroll-snap-align: start;
+        min-height: 44px; padding: 0 14px; border-radius: 999px;
+        background: rgba(255,255,255,.1); font-size: 14px;
+      }
+      .demo-nav-item.is-active, .demo-nav-item.is-active:hover { background: #fff; color: var(--c-primary-dark); }
+      .demo-nav-item:focus-visible { outline-offset: -2px; }
+
+      /* Nada de zoom de iOS al tocar un campo: 16px o más. */
+      .pr-ctl, .demo-picker select, input, select, textarea { font-size: 16px; }
+
+      /* Áreas de toque de 44px. */
+      .ld-chip { min-height: 44px; }
+      .ld-seg button { min-height: 44px; }
+      .pr-ctl { min-height: 44px; }
+      .ld-a { height: 44px; }
+      .ld-a.ico, .ld-a.del { width: 44px; }
+      .cal-nav button { width: 44px; height: 44px; }
+      .demo-back { min-height: 44px; }
+      .kb-toggle button { min-height: 44px; }
+
+      /* Modales del demo: fijos a la pantalla, no al frame (que ahora
+         puede medir varios pantallazos). */
+      .kb-modal { position: fixed; z-index: var(--z-modal); }
+
+      /* — precios: carrusel con snap, arranca en la recomendada — */
+      .plan-grid {
+        display: flex; gap: 14px; max-width: none;
+        margin: 36px -16px 0; padding: 18px 16px 6px;
+        overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px;
+        overscroll-behavior-x: contain; scrollbar-width: none;
+      }
+      .plan-grid::-webkit-scrollbar { display: none; }
+      .plan { flex: 0 0 min(84%, 360px); scroll-snap-align: center; }
+      /* En el carrusel las tarjetas no entran con reveal: las de los
+         costados tienen que asomar desde el primer momento. */
+      .js .plan.reveal, .js .plan.featured.reveal { opacity: 1; transform: none; transition: border-color .22s, box-shadow .22s; }
+      .plan-dots { display: flex; justify-content: center; gap: 4px; margin-top: 10px; }
+      .plan-dots button {
+        width: 44px; height: 44px; border: 0; background: none; cursor: pointer;
+        display: grid; place-items: center;
+      }
+      .plan-dots button::before {
+        content: ''; width: 22px; height: 8px; border-radius: 4px; background: #CBD5E1;
+        transform: scaleX(.36); transition: transform .3s var(--ease-out-expo), background .3s;
+      }
+      .plan-dots button[aria-current="true"]::before { transform: none; background: var(--teal); }
+
+      /* — footer: links de 44px — */
+      .footer-links { column-gap: 20px; row-gap: 0; }
+      .footer-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; }
+
+      /* — teselas del hero: sin flotación infinita en teléfono — */
+      .js .frag-p { animation: none; }
+
+      /* — story: puntos de paso bajo la tarjeta — */
+      .story-dots { display: flex; }
+    }
+    .plan-dots { display: none; }
+    .story-dots { display: none; justify-content: center; gap: 6px; padding: 12px 0 2px; }
+    .story-dots span { width: 18px; height: 6px; border-radius: 3px; background: #DDE7E2; transform: scaleX(.34); transition: transform .3s var(--ease-out-expo), background .3s; }
+    .story-dots { gap: 0; }
+    .story-dots span.on { transform: none; background: var(--teal); }
+    .story-case { touch-action: pan-y; }
+
+    /* Pantallas bajas (iPhone SE, Android chico): la franja de teselas
+       se achica y el subtítulo se queda con la primera oración, así el
+       CTA entra en el primer pantallazo. */
+    @media (max-width: 768px) and (max-height: 700px) {
+      .hero-ruido { height: 112px; }
+      .hero-sub .sub-extra { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      /* Réplicas de la story legibles: nada por debajo de 11px. */
+      .rp-ui { font-size: 12px; }
+      .rp-count, .rp-link, .rp-muted, .rp-contact > span, .rp-action, .rp-eyebrow, .rp-tabs,
+      .rp-event-top time, .rp-event-text, .rp-property div > span, .rp-chips > span,
+      .rp-month, .rp-outline, .rp-google strong, .rp-google div > span, .rp-day-detail strong,
+      .rp-badge, .rp-buyer .rp-badge { font-size: 11px; }
+      .rp-property strong, .rp-buyer > strong, .rp-contact strong { font-size: 13px; }
+      .rp-grid > span { font-size: 11px; }
+      .rp-day { font-size: 11px; }
+      /* En el calendario mini, el evento pasa a ser un punto. */
+      .rp-day small { font-size: 0; width: 6px; height: 6px; padding: 0; border-radius: 50%; background: #4f88cb; margin-top: 4px; }
+      .rp-tabs { gap: 14px; }
+
+      /* La colina sin blur en teléfono: un degradé que se ve casi igual
+         y no le pide nada a la GPU. */
+      .hero-hill { filter: none; background: radial-gradient(60% 75% at 50% 100%, var(--verde-yerba) 0%, rgba(30,92,70,.55) 45%, rgba(30,92,70,0) 100%); }
     }
 
     @media (max-width: 580px) {
       .nav-inner { height: 60px; }
-      .nav-links.open { top: 60px; }
       /* Franja más corta y blur proporcionalmente menor: a 360px de ancho
          un blur de 58px se come la forma entera y queda una banda plana.
          El velo también arranca más abajo, si no se traga el lomo. */
@@ -2281,7 +2391,7 @@
       .js .bridge-line.reveal::after { transform: none; transition: none; }
       /* La colina no se ata al scroll: queda quieta en su estado final. */
       .hero-hill { opacity: 1 !important; transform: none !important; animation: none !important; will-change: auto; }
-      .js .hero-h1 em::after { animation: none; transform: none; }
+      .js .hero-h1 em::after { animation: none !important; transform: none !important; }
       .btn-main:hover, .btn-main-lg:hover, .nav-links a.nav-cta:hover,
       .btn-main:hover svg, .btn-main-lg:hover svg, .story-link:hover span, .story-end a:hover svg { transform: none; }
       .story-control::after, .story-enhanced .story-timeline li,
@@ -2373,10 +2483,13 @@
       <li><a href="https://app.leadera.com.ar/signup" class="nav-cta">Probar gratis</a></li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <svg class="ico-abrir" width="22" height="22" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <rect y="3" width="20" height="2" rx="1"/>
         <rect y="9" width="20" height="2" rx="1"/>
         <rect y="15" width="20" height="2" rx="1"/>
+      </svg>
+      <svg class="ico-cerrar" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 4l12 12M16 4L4 16"/>
       </svg>
     </button>
   </div>
@@ -2385,220 +2498,61 @@
 <main id="top">
 
 <!-- ================================================================
-     HERO
+     HERO — del ruido a la claridad. Los fragmentos son decorativos
+     (aria-hidden): lo que se lee es el titular, el próximo paso y los
+     CTAs. --x/--rx/--y ubican cada uno en escritorio, --xm/--rxm/--ym
+     en teléfono; --dx es hacia dónde se va al scrollear.
 ================================================================ -->
 <div class="hero-wrap">
-  <!-- copy -->
+  <div class="hero-ruido" id="heroRuido" aria-hidden="true">
+    <div class="frag en-movil" data-z="3" style="--i:0;--x:9%;--y:20%;--xm:4%;--ym:20px;--r:-4deg;--dx:-1;--bi:1;--fd:11s;--fx:5px;--fy:-9px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chat"/></svg><b class="badge">3</b></span></div></div></div>
+    <div class="frag en-movil" data-z="3" style="--i:1;--x:15%;--y:52%;--xt:9%;--xm:26%;--ym:78px;--r:3deg;--dx:-1;--bi:0;--fd:13s;--fx:6px;--fy:-7px"><div class="frag-p"><div class="frag-c"><span class="tile is-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-phone"/></svg><b class="badge">1</b></span></div></div></div>
+    <div class="frag en-movil" data-z="2" style="--i:2;--x:4%;--y:38%;--xm:-12px;--ym:92px;--r:-2deg;--dx:-1;--fd:15s;--fx:5px;--fy:-8px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-sheet"/></svg></span></div></div></div>
+    <div class="frag en-movil" data-z="2" style="--i:3;--x:12%;--y:67%;--xt:8%;--yt:76%;--xm:46%;--ym:14px;--r:2deg;--dx:-1;--bi:4;--fd:12s;--fx:-5px;--fy:-9px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-mail"/></svg><b class="badge">12</b></span></div></div></div>
+    <div class="frag" data-z="1" style="--i:4;--x:24%;--y:8%;--r:-3deg;--dx:-1;--fd:16s;--fx:4px;--fy:-7px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-note"/></svg></span></div></div></div>
+    <div class="frag" data-z="1" style="--i:5;--x:3%;--y:70%;--r:2deg;--dx:-1;--bi:6;--fd:14s;--fx:6px;--fy:-6px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bell"/></svg><b class="badge">5</b></span></div></div></div>
+    <div class="frag en-movil" data-z="3" style="--i:6;--rx:10%;--y:24%;--rxm:22%;--ym:70px;--r:4deg;--dx:1;--bi:3;--fd:10s;--fx:-6px;--fy:-8px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-calendar"/></svg><b class="badge">2</b></span></div></div></div>
+    <div class="frag en-movil" data-z="2" style="--i:7;--rx:17%;--y:58%;--rxt:9%;--rxm:-10px;--ym:100px;--r:-3deg;--dx:1;--bi:5;--fd:13s;--fx:-5px;--fy:-9px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-people"/></svg><b class="badge">4</b></span></div></div></div>
+    <div class="frag" data-z="1" style="--i:8;--rx:27%;--y:7%;--r:3deg;--dx:1;--fd:15s;--fx:-4px;--fy:-8px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg></span></div></div></div>
+    <div class="frag en-movil" data-z="3" style="--i:9;--rx:4%;--y:44%;--rxm:3%;--ym:18px;--r:-2deg;--dx:1;--bi:2;--fd:12s;--fx:-6px;--fy:-7px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chat"/></svg><b class="badge">7</b></span></div></div></div>
+    <div class="frag" data-z="1" style="--i:10;--rx:12%;--y:82%;--r:2deg;--dx:1;--fd:14s;--fx:-5px;--fy:-6px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-search"/></svg></span></div></div></div>
+  </div>
+
   <div class="hero-copy">
     <h1 class="hero-h1" data-split data-split-now>
       Entrás y ya<br>sabés <em>qué hacer.</em>
     </h1>
 
-    <p class="hero-sub">
-      Tus contactos, tus seguimientos y tus próximas visitas, en un solo lugar. Abrí LeadEra y encontrá el próximo paso para cada oportunidad.
+    <p class="hero-paso">
+      <span class="hero-paso-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <span class="hero-paso-txt"><span class="hero-paso-k">Tu próximo paso</span><span class="hero-paso-t">Llamar a Martina Beltrán · hoy 10:00</span></span>
     </p>
 
-    <div class="cta-row">
-      <a href="https://app.leadera.com.ar/signup" class="btn-main">
-        Probar gratis 14 días
-        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-          <path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-      <a href="#como-funciona" class="btn-ghost">
-        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-          <polygon points="3.5,2 12.5,7.5 3.5,13" fill="currentColor"/>
-        </svg>
-        Ver cómo funciona
-      </a>
-    </div>
-    <p class="trial-note">14 días para conocerlo. Sin tarjeta.</p>
+    <div class="hero-resto">
+      <p class="hero-sub">
+        Tus contactos, tus seguimientos y tus próximas visitas, en un solo lugar.<span class="sub-extra"> Abrí LeadEra y encontrá el próximo paso para cada oportunidad.</span>
+      </p>
 
-    <!-- Teléfono: el producto, recortado. Decorativo; lo que dice ya
-         está en el texto del hero. -->
-    <div class="hero-mini" aria-hidden="true">
-      <div class="hmini-head">
-        <span class="hmini-title">Mi día</span>
-        <span class="hmini-date">Hoy te quedan 11 tareas</span>
+      <div class="cta-row">
+        <a href="https://app.leadera.com.ar/signup" class="btn-main">
+          Probar gratis 14 días
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+            <path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#como-funciona" class="btn-ghost">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+            <polygon points="3.5,2 12.5,7.5 3.5,13" fill="currentColor"/>
+          </svg>
+          Ver cómo funciona
+        </a>
       </div>
-      <div class="hmini-stats">
-        <div class="hmini-stat is-prio"><span class="hmini-n">5</span><span class="hmini-l">Prioritarios</span></div>
-        <div class="hmini-stat"><span class="hmini-n">2</span><span class="hmini-l">Nuevos</span></div>
-        <div class="hmini-stat"><span class="hmini-n">3</span><span class="hmini-l">Seguimientos</span></div>
-        <div class="hmini-stat"><span class="hmini-n">1</span><span class="hmini-l">Visitas</span></div>
-      </div>
-      <div class="hmini-leads">
-        <div class="hmini-lead">
-          <div class="hm-av caliente">JG</div>
-          <div class="hm-txt"><div class="hm-name">Juan García</div><div class="hm-sub">Sin contacto hace 2 días</div></div>
-          <span class="hm-pill caliente">Caliente</span>
-        </div>
-        <div class="hmini-lead">
-          <div class="hm-av caliente">MB</div>
-          <div class="hm-txt"><div class="hm-name">Martina Beltrán</div><div class="hm-sub">Pidió visita</div></div>
-          <span class="hm-pill caliente">Caliente</span>
-        </div>
-      </div>
-    </div>
+      <p class="trial-note">14 días para conocerlo. Sin tarjeta.</p>
 
-    <div class="hero-highlight">
-      <span class="hero-highlight-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg>
-      </span>
-      <span class="hero-highlight-text">
-        <strong>Integración con Google Calendar</strong>
-        <span>Tu agenda, sincronizada automáticamente</span>
-      </span>
-    </div>
-
-    <p class="hero-near">
-      <svg class="hero-near-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pin"/></svg>
-      <span><strong>Hecho en Mar del Plata.</strong> Hablás directo con quien lo construyó: <a href="https://wa.me/542235827465?text=Hola!%20Vi%20la%20landing%20de%20LeadEra%20y%20tengo%20una%20consulta." target="_blank" rel="noopener noreferrer">escribinos por WhatsApp</a>.</span>
-    </p>
-  </div>
-
-  <!-- app mockup — HTML+CSS, decorativo (fuera del árbol de accesibilidad) -->
-  <div class="hero-visual" aria-hidden="true">
-    <div class="hm-side">
-      <div class="hm-brand"><img class="hm-logo" src="leadera-logo-icon.png" alt="" width="317" height="327">LeadEra</div>
-      <div class="hm-nav">
-        <div class="hm-nav-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-checklist"/></svg>Mi día</div>
-        <div class="hm-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-people"/></svg>Leads</div>
-        <div class="hm-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg>Propiedades</div>
-        <div class="hm-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-pipeline"/></svg>Operaciones</div>
-        <div class="hm-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-calendar"/></svg>Calendario</div>
-      </div>
-    </div>
-
-    <div class="hm-main">
-      <div class="hm-head">
-        <div>
-          <div class="hm-title">Mi día</div>
-          <div class="hm-date">Hoy te quedan 11 tareas</div>
-        </div>
-        <div class="hm-gcal"><span class="hm-gcal-dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-calendar"/></svg>Google Calendar conectado</div>
-      </div>
-
-      <div class="hm-stats">
-        <div class="hm-stat is-prio">
-          <div class="hm-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-warning"/></svg></div>
-          <div class="hm-stat-body">
-            <div class="hm-stat-n">5</div>
-            <div class="hm-stat-l">Prioritarios</div>
-          </div>
-        </div>
-        <div class="hm-stat is-new">
-          <div class="hm-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-people"/></svg></div>
-          <div class="hm-stat-body">
-            <div class="hm-stat-n">2</div>
-            <div class="hm-stat-l">Nuevos</div>
-          </div>
-        </div>
-        <div class="hm-stat is-follow">
-          <div class="hm-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bell"/></svg></div>
-          <div class="hm-stat-body">
-            <div class="hm-stat-n">3</div>
-            <div class="hm-stat-l">Seguimientos</div>
-          </div>
-        </div>
-        <div class="hm-stat is-visit">
-          <div class="hm-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg></div>
-          <div class="hm-stat-body">
-            <div class="hm-stat-n">1</div>
-            <div class="hm-stat-l">Visitas</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hm-duo">
-        <div class="hm-card">
-          <div class="hm-card-head">
-            <div class="hm-card-title">Tareas de hoy</div>
-          </div>
-          <div class="hm-row">
-            <span class="hm-check"></span>
-            <span class="hm-task">Llamar a Juan</span>
-            <span class="hm-prio alta">Alta</span>
-          </div>
-          <div class="hm-row">
-            <span class="hm-check"></span>
-            <span class="hm-task">Coordinar visita</span>
-            <span class="hm-prio media">Media</span>
-          </div>
-          <div class="hm-row is-extra">
-            <span class="hm-check"></span>
-            <span class="hm-task">Actualizar estado</span>
-            <span class="hm-prio baja">Baja</span>
-          </div>
-        </div>
-
-        <div class="hm-card">
-          <div class="hm-card-head">
-            <div class="hm-card-title">Leads prioritarios</div>
-          </div>
-          <div class="hm-lead">
-            <div class="hm-av caliente">JG</div>
-            <div class="hm-txt" style="flex:1">
-              <div class="hm-name">Juan García</div>
-              <div class="hm-lead-meta">
-                <span class="hm-pill caliente">Caliente</span>
-                <span class="hm-sub">Sin contacto</span>
-              </div>
-            </div>
-          </div>
-          <div class="hm-lead">
-            <div class="hm-av tibio">AS</div>
-            <div class="hm-txt" style="flex:1">
-              <div class="hm-name">Ana Soria</div>
-              <div class="hm-lead-meta">
-                <span class="hm-pill tibio">Tibio</span>
-                <span class="hm-sub">Pidió visita</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hm-card">
-        <div class="hm-card-head">
-          <div class="hm-card-title">Coincidencias</div>
-          <div class="hm-count">2 nuevas</div>
-        </div>
-        <div class="hm-match">
-          <div class="hm-cell">
-            <div class="hm-thumb t1"></div>
-            <div class="hm-txt">
-              <div class="hm-name">Alsina 3300</div>
-              <div class="hm-sub">Depto · USD 95.000</div>
-            </div>
-          </div>
-          <div class="hm-link"><svg viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="hm-cell">
-            <div class="hm-av tibio">RP</div>
-            <div class="hm-txt">
-              <div class="hm-name">Rodrigo Paz</div>
-              <div class="hm-pill tibio">Tibio</div>
-            </div>
-          </div>
-        </div>
-        <div class="hm-match">
-          <div class="hm-cell">
-            <div class="hm-thumb t2"></div>
-            <div class="hm-txt">
-              <div class="hm-name">Belgrano 2450</div>
-              <div class="hm-sub">Depto · USD 180.000</div>
-            </div>
-          </div>
-          <div class="hm-link"><svg viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="hm-cell">
-            <div class="hm-av frio">LM</div>
-            <div class="hm-txt">
-              <div class="hm-name">Laura Martínez</div>
-              <div class="hm-pill frio">Frío</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <p class="hero-meta">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pin"/></svg><span><strong>Hecho en Mar del Plata.</strong> Hablás directo con quien lo construyó: <a href="https://wa.me/542235827465?text=Hola!%20Vi%20la%20landing%20de%20LeadEra%20y%20tengo%20una%20consulta." target="_blank" rel="noopener noreferrer">WhatsApp</a></span></span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg>Sincroniza con Google Calendar</span>
+      </p>
     </div>
   </div>
 </div>
@@ -3348,15 +3302,19 @@
 
 </main>
 
-<!-- Ficha flotante de Martina: avanza de estado con el recorrido.
-     Decorativa (el mismo recorrido está en el texto de cada sección). -->
-<div class="ficha ficha-float" id="fichaFloat" aria-hidden="true">
-  <div class="ficha-top">
-    <span class="ficha-av">MB</span>
-    <span class="ficha-who"><strong>Martina Beltrán</strong><span>Compradora · busca en Centro</span></span>
+<!-- Ficha de Martina: avanza de estado con el recorrido. En escritorio
+     flota; en teléfono es el dock con el CTA. La ficha es decorativa (el
+     recorrido está en el texto de cada sección); el link no. -->
+<div class="ficha ficha-float" id="fichaFloat">
+  <div class="ficha-info" aria-hidden="true">
+    <div class="ficha-top">
+      <span class="ficha-av">MB</span>
+      <span class="ficha-who"><strong>Martina Beltrán</strong><span>Compradora · busca en Centro</span></span>
+    </div>
+    <span class="ficha-estado"><span>Consulta</span></span>
+    <ol class="ficha-pasos"><li></li><li></li><li></li><li></li></ol>
   </div>
-  <span class="ficha-estado"><span>Consulta</span></span>
-  <ol class="ficha-pasos"><li></li><li></li><li></li><li></li></ol>
+  <a class="ficha-cta" href="https://app.leadera.com.ar/signup">Probar gratis</a>
 </div>
 
 <!-- ================================================================
@@ -3449,25 +3407,6 @@
   window.splitWords = splitWords;
 
   /* ----------------------------------------------------------------
-     Las métricas de "Mi día" cuentan de 0 a su valor. Se vuelve a
-     contar cada vez que el mockup reaparece en pantalla.
-  ---------------------------------------------------------------- */
-  function contar(el) {
-    const fin = +(el.dataset.fin || (el.dataset.fin = el.textContent));
-    if (!fin) return;
-    const id = (el._cuenta = (el._cuenta || 0) + 1);
-    const t0 = performance.now() + 250, dur = 700;
-    el.textContent = '0';
-    const tick = (now) => {
-      if (el._cuenta !== id) return;
-      const p = Math.min(1, Math.max(0, (now - t0) / dur));
-      el.textContent = Math.round(fin * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }
-
-  /* ----------------------------------------------------------------
      Entradas — se repiten cada vez que el elemento vuelve a pantalla.
 
      Dos umbrales distintos a propósito (histéresis):
@@ -3482,8 +3421,7 @@
   ---------------------------------------------------------------- */
   if (!reduceMotion) document.querySelectorAll('[data-split]').forEach(el => splitWords(el));
 
-  const reveals = document.querySelectorAll('.reveal, [data-split-now]');
-  const contadores = document.querySelectorAll('.hero-visual, .hero-mini');
+  const reveals = document.querySelectorAll('.reveal, [data-split-now], .hero-wrap');
   if (reduceMotion || !('IntersectionObserver' in window)) {
     reveals.forEach(el => el.classList.add('visible'));
   } else {
@@ -3491,7 +3429,6 @@
       entries.forEach(e => {
         if (!e.isIntersecting || e.target.classList.contains('visible')) return;
         e.target.classList.add('visible');
-        if (e.target.matches('.hero-visual, .hero-mini')) e.target.querySelectorAll('.hm-stat-n, .hmini-n').forEach(contar);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     const salir = new IntersectionObserver((entries) => {
@@ -3502,8 +3439,35 @@
         requestAnimationFrame(() => requestAnimationFrame(() => e.target.classList.remove('reveal-reset')));
       });
     }, { threshold: 0 });
-    [...reveals, ...contadores].forEach(el => { entrar.observe(el); salir.observe(el); });
+    reveals.forEach(el => { entrar.observe(el); salir.observe(el); });
   }
+
+
+  /* ----------------------------------------------------------------
+     Hero: el ruido se corre apenas con el mouse, según su profundidad
+     (--z). El JS sólo escribe --mx/--my (-1…1) sobre el contenedor,
+     suavizados con lerp; el desplazamiento lo resuelve el CSS. Sólo
+     con puntero fino, sin reduced motion y mientras el hero se ve.
+  ---------------------------------------------------------------- */
+  (() => {
+    const ruido = document.getElementById('heroRuido');
+    if (!ruido || reduceMotion || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    let tx = 0, ty = 0, x = 0, y = 0, corriendo = false, enVista = true;
+    const paso = () => {
+      x += (tx - x) * .08; y += (ty - y) * .08;
+      ruido.style.setProperty('--mx', x.toFixed(4));
+      ruido.style.setProperty('--my', y.toFixed(4));
+      if (Math.abs(tx - x) > .001 || Math.abs(ty - y) > .001) requestAnimationFrame(paso);
+      else corriendo = false;
+    };
+    addEventListener('pointermove', (e) => {
+      if (!enVista) return;
+      tx = e.clientX / innerWidth * 2 - 1;
+      ty = e.clientY / innerHeight * 2 - 1;
+      if (!corriendo) { corriendo = true; requestAnimationFrame(paso); }
+    }, { passive: true });
+    new IntersectionObserver(([e]) => { enVista = e.isIntersecting; }).observe(ruido.parentElement);
+  })();
 
   /* ----------------------------------------------------------------
      Scroll suave con inercia (rueda del mouse y teclado).
@@ -3695,8 +3659,14 @@
      Cada sección declara su estado en data-martina (0 consulta, 1
      seguimiento, 2 visita agendada, 3 operación en curso, "end" =
      cierre en el CTA final). Gana la sección que ocupa la franja del
-     medio de la pantalla. En escritorio la ficha queda flotando; en
-     teléfono aparece cuando el estado avanza y se va a los 3,5 s.
+     medio de la pantalla.
+
+     Escritorio: la ficha flota abajo a la izquierda mientras haya
+     una sección con estado.
+     Teléfono: la ficha es el dock — estado de Martina + "Probar
+     gratis" — y está siempre a mano desde que el hero sale de
+     pantalla hasta que aparece el CTA final. Se esconde si hay un
+     campo con foco (teclado abierto) o el menú abierto.
   ---------------------------------------------------------------- */
   (() => {
     const ficha = document.getElementById('fichaFloat');
@@ -3705,7 +3675,7 @@
     const label = ficha.querySelector('.ficha-estado');
     const segs = [...ficha.querySelectorAll('.ficha-pasos li')];
     const mobile = matchMedia('(max-width: 768px)');
-    let actual = null, max = -1, ocultar = null;
+    let actual = null, max = -1, ctaCerca = false, heroVisible = true, tecleando = false;
 
     function ponerEstado(i) {
       const viejo = label.querySelector('span:not(.out)');
@@ -3724,26 +3694,27 @@
       segs.forEach((s, k) => s.classList.toggle('on', k <= i));
     }
 
-    function mostrar(visible) {
-      clearTimeout(ocultar);
-      ficha.classList.toggle('is-on', visible);
+    function decidir() {
+      let ver;
+      if (mobile.matches) {
+        ver = !heroVisible && !ctaCerca && !tecleando;
+        if (max < 0) ponerEstado(0);
+      } else {
+        ver = actual !== null && actual !== 'end' && !ctaCerca;
+      }
+      ficha.classList.toggle('is-on', ver);
+      document.body.classList.toggle('dock-on', ver && mobile.matches);
     }
 
     function aplicar(valor) {
-      if (valor === actual) return;
       actual = valor;
-      if (valor === null || valor === 'end') { mostrar(false); return; }
-      const i = +valor;
-      // La historia no retrocede: al volver para arriba, la ficha
-      // conserva lo que ya avanzó.
-      const avanzo = i > max;
-      max = Math.max(max, i);
-      ponerEstado(max);
-      if (mobile.matches) {
-        if (avanzo) { mostrar(true); ocultar = setTimeout(() => ficha.classList.remove('is-on'), 3500); }
-      } else if (!ctaCerca) {
-        mostrar(true);
+      if (valor !== null && valor !== 'end') {
+        // La historia no retrocede: al volver para arriba, la ficha
+        // conserva lo que ya avanzó.
+        max = Math.max(max, +valor);
+        ponerEstado(max);
       }
+      decidir();
     }
 
     const secciones = [...document.querySelectorAll('[data-martina]')];
@@ -3755,17 +3726,22 @@
     }, { rootMargin: '-45% 0px -45% 0px' });
     secciones.forEach(s => io.observe(s));
 
-    // Apenas asoma el CTA final la ficha flotante se va: ahí la historia
-    // la cierra la ficha completa de la sección, y no tiene que tapar
-    // el botón mientras se desvanece.
+    // Apenas asoma el CTA final la ficha se va: ahí la historia la
+    // cierra la ficha completa de la sección.
     const cta = document.getElementById('cta-final');
-    let ctaCerca = false;
-    if (cta) new IntersectionObserver(([e]) => {
-      ctaCerca = e.isIntersecting;
-      if (ctaCerca) mostrar(false);
-      else if (actual !== null && actual !== 'end' && !mobile.matches) mostrar(true);
-    }, { rootMargin: '0px 0px -10% 0px' }).observe(cta);
-    mobile.addEventListener('change', () => { const a = actual; actual = undefined; aplicar(a); });
+    if (cta) new IntersectionObserver(([e]) => { ctaCerca = e.isIntersecting; decidir(); },
+      { rootMargin: '0px 0px -10% 0px' }).observe(cta);
+
+    // En teléfono el dock no compite con los botones del hero.
+    const hero = document.querySelector('.hero-wrap');
+    if (hero) new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; decidir(); },
+      { rootMargin: '0px 0px -35% 0px' }).observe(hero);
+
+    // Teclado abierto: el dock se corre.
+    addEventListener('focusin', e => { if (e.target.matches('input, select, textarea')) { tecleando = true; decidir(); } });
+    addEventListener('focusout', e => { if (e.target.matches('input, select, textarea')) { tecleando = false; decidir(); } });
+
+    mobile.addEventListener('change', decidir);
   })();
 
   /* ----------------------------------------------------------------
@@ -3785,24 +3761,90 @@
   });
 
   /* ----------------------------------------------------------------
-     Mobile nav toggle
+     Nav en teléfono: se esconde al bajar y vuelve al subir. Escribe
+     --nav-offset en <html> para que lo que va pegado arriba (las
+     pestañas de la demo) se acomode debajo cuando el nav está.
   ---------------------------------------------------------------- */
   const ham = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
+  const siteNav = document.querySelector('.site-nav');
+  const navMovil = matchMedia('(max-width: 920px)');
+  (() => {
+    let ultimoY = scrollY, pendiente = false;
+    const pintar = () => {
+      pendiente = false;
+      const y = scrollY, abierto = navLinks.classList.contains('open');
+      let oculta = siteNav.classList.contains('nav-oculta');
+      if (!navMovil.matches || abierto || y < 120) oculta = false;
+      else if (y > ultimoY + 8) oculta = true;
+      else if (y < ultimoY - 8) oculta = false;
+      if (Math.abs(y - ultimoY) > 8 || y < 120) ultimoY = y;
+      siteNav.classList.toggle('nav-oculta', oculta);
+      document.documentElement.style.setProperty('--nav-offset', oculta ? '0px' : siteNav.offsetHeight + 'px');
+    };
+    addEventListener('scroll', () => { if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); } }, { passive: true });
+    navMovil.addEventListener('change', pintar);
+    pintar();
+  })();
 
-  ham.addEventListener('click', () => {
-    const open = navLinks.classList.toggle('open');
-    ham.setAttribute('aria-expanded', String(open));
-    ham.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  /* ----------------------------------------------------------------
+     Menú mobile: hoja a pantalla completa. Bloquea el scroll de la
+     página, se cierra con Esc, con un link o con el mismo botón, y
+     devuelve el foco al botón.
+  ---------------------------------------------------------------- */
+  function menu(abrir) {
+    navLinks.classList.toggle('open', abrir);
+    document.documentElement.classList.toggle('menu-abierto', abrir);
+    ham.setAttribute('aria-expanded', String(abrir));
+    ham.setAttribute('aria-label', abrir ? 'Cerrar menú' : 'Abrir menú');
+    if (abrir) navLinks.querySelector('a').focus({ preventScroll: true });
+  }
+  ham.addEventListener('click', () => menu(!navLinks.classList.contains('open')));
+  navLinks.addEventListener('click', e => { if (e.target.closest('a')) menu(false); });
+  addEventListener('keydown', e => {
+    if (e.key === 'Escape' && navLinks.classList.contains('open')) { menu(false); ham.focus(); }
   });
+  navMovil.addEventListener('change', () => { if (!navMovil.matches) menu(false); });
 
-  navLinks.addEventListener('click', e => {
-    if (e.target.closest('a')) {
-      navLinks.classList.remove('open');
-      ham.setAttribute('aria-expanded', 'false');
-      ham.setAttribute('aria-label', 'Abrir menú');
+  /* ----------------------------------------------------------------
+     Precios en teléfono: carrusel con snap. Arranca centrado en la
+     recomendada y los puntos de abajo siguen (y mueven) el carrusel.
+  ---------------------------------------------------------------- */
+  (() => {
+    const grid = document.querySelector('.plan-grid');
+    if (!grid) return;
+    const planes = [...grid.querySelectorAll('.plan')];
+    const puntos = document.createElement('div');
+    puntos.className = 'plan-dots';
+    puntos.setAttribute('role', 'group');
+    puntos.setAttribute('aria-label', 'Planes');
+    const botones = planes.map((p, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Ver plan ' + p.querySelector('h3').textContent);
+      b.addEventListener('click', () => centrar(i, true));
+      puntos.append(b);
+      return b;
+    });
+    grid.after(puntos);
+    const marcar = (i) => botones.forEach((b, k) => b.setAttribute('aria-current', String(k === i)));
+    function centrar(i, suave) {
+      const p = planes[i];
+      grid.scrollTo({ left: p.offsetLeft - (grid.clientWidth - p.clientWidth) / 2, behavior: suave && !reduceMotion ? 'smooth' : 'auto' });
+      marcar(i);
     }
-  });
+    const carrusel = matchMedia('(max-width: 768px)');
+    const destacada = Math.max(0, planes.findIndex(p => p.classList.contains('featured')));
+    const preparar = () => { if (carrusel.matches) centrar(destacada, false); };
+    preparar();
+    carrusel.addEventListener('change', preparar);
+    if ('IntersectionObserver' in window) {
+      const visto = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) marcar(planes.indexOf(e.target)); });
+      }, { root: grid, threshold: .6 });
+      planes.forEach(p => visto.observe(p));
+    }
+  })();
 </script>
 <script>
 /* ------------------------------------------------------------------
@@ -4105,9 +4147,19 @@
       </div>`;
     showPanel('ficha');
     ficha.focus({ preventScroll: true });
+    alInicio();
   }
 
-  navBtns.forEach(b => b.addEventListener('click', () => goTo(b.dataset.target)));
+  navBtns.forEach(b => b.addEventListener('click', () => { goTo(b.dataset.target); alInicio(); }));
+
+  // En teléfono el panel crece con la página: al cambiar de sección o
+  // abrir una ficha, si el arranque del frame quedó arriba de la
+  // pantalla, se vuelve a él para ver la sección desde el principio.
+  function alInicio() {
+    if (!matchMedia('(max-width: 768px)').matches) return;
+    const top = frame.getBoundingClientRect().top;
+    if (top < 0) scrollTo({ top: top + scrollY - 8, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
   if (picker) picker.addEventListener('change', () => goTo(picker.value));
 
   chips.forEach(c => c.addEventListener('click', () => {
@@ -4260,7 +4312,7 @@
 
   function cardHTML(o) {
     return `
-      <article class="kb-card ${o.tipo}${o.dias >= 7 ? ' stale' : ''}" draggable="true" data-op="${o.id}">
+      <article class="kb-card ${o.tipo}${o.dias >= 7 ? ' stale' : ''}" draggable="true" tabindex="0" aria-label="${o.lead || 'Sin vincular'}, ${plata(o.moneda, o.monto)}. Enter para moverla." data-op="${o.id}">
         <div class="kb-card-body">
           <div class="kb-monto">${plata(o.moneda, o.monto)}</div>
           <div class="kb-lead">${o.lead || 'Sin vincular'}</div>
@@ -4331,25 +4383,84 @@
     const col = e.target.closest('.kb-col');
     if (col && !col.contains(e.relatedTarget)) col.classList.remove('is-over');
   });
+  // Las dos columnas finales piden confirmación; si se cancela, la card
+  // se queda donde estaba. Lo usan el arrastre y la hoja táctil.
+  function pedirMovimiento(id, destino) {
+    const op = OPS.find(o => o.id === id);
+    if (!op || op.col === destino) return;
+    if (FINALES[destino]) {
+      pendiente = { id, destino };
+      modalText.textContent = `Vas a marcar esta operación como ${FINALES[destino]}. ¿Confirmás?`;
+      modal.hidden = false;
+      modal.querySelector('[data-kb="ok"]').focus({ preventScroll: true });
+    } else {
+      mover(id, destino);
+    }
+  }
+
   board.addEventListener('drop', e => {
     const col = e.target.closest('.kb-col');
     if (!col) return;
     e.preventDefault();
     board.querySelectorAll('.kb-col').forEach(c => c.classList.remove('is-over'));
-    const id = +e.dataTransfer.getData('text/plain');
-    const destino = col.dataset.col;
-    const op = OPS.find(o => o.id === id);
-    if (!op || op.col === destino) return;
+    pedirMovimiento(+e.dataTransfer.getData('text/plain'), col.dataset.col);
+  });
 
-    // Las dos columnas finales piden confirmación; si se cancela, la card
-    // se queda donde estaba.
-    if (FINALES[destino]) {
-      pendiente = { id, destino };
-      modalText.textContent = `Vas a marcar esta operación como ${FINALES[destino]}. ¿Confirmás?`;
-      modal.hidden = false;
-    } else {
-      mover(id, destino);
-    }
+  /* ---- Kanban táctil: el arrastre HTML5 no existe en el teléfono.
+     Tocar una card abre "Mover a…" con las columnas. ---- */
+  const tactil = matchMedia('(hover: none), (pointer: coarse)');
+  const ayuda = frame.querySelector('[data-panel="operaciones"] .ld-count');
+  const ponerAyuda = () => {
+    if (ayuda) ayuda.textContent = tactil.matches ? 'Tocá una operación para cambiarle el estado.' : 'Arrastrá una operación para cambiarle el estado.';
+  };
+  ponerAyuda();
+  tactil.addEventListener('change', ponerAyuda);
+
+  const hoja = document.createElement('div');
+  hoja.className = 'kb-modal';
+  hoja.hidden = true;
+  hoja.innerHTML = `
+    <div class="kb-dialog" role="dialog" aria-modal="true" aria-labelledby="kbMoverTitle">
+      <h4 id="kbMoverTitle">Mover a…</h4>
+      <p class="kb-mover-op"></p>
+      <div class="kb-mover-cols"></div>
+      <div class="kb-dialog-btns"><button type="button" class="ld-a ghost" data-mv="cancel">Cancelar</button></div>
+    </div>`;
+  frame.append(hoja);
+  let tocada = null, origen = null;
+  function abrirHoja(id, card) {
+    const op = OPS.find(o => o.id === id);
+    if (!op) return;
+    tocada = id; origen = card;
+    hoja.querySelector('.kb-mover-op').textContent = `${op.lead || 'Sin vincular'} · ${plata(op.moneda, op.monto)}`;
+    hoja.querySelector('.kb-mover-cols').innerHTML = COLS.map(c =>
+      `<button type="button" data-mv="${c.key}"${c.key === op.col ? ' disabled' : ''}>${c.label}${c.key === op.col ? '<small>Estado actual</small>' : ''}</button>`).join('');
+    hoja.hidden = false;
+    hoja.querySelector('button:not(:disabled)').focus({ preventScroll: true });
+  }
+  function cerrarHoja() { hoja.hidden = true; origen?.focus?.({ preventScroll: true }); }
+  board.addEventListener('click', e => {
+    if (!tactil.matches) return;
+    const card = e.target.closest('.kb-card');
+    if (card) abrirHoja(+card.dataset.op, card);
+  });
+  board.addEventListener('keydown', e => {
+    const card = e.target.closest('.kb-card');
+    if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); abrirHoja(+card.dataset.op, card); }
+  });
+  hoja.addEventListener('click', e => {
+    const b = e.target.closest('[data-mv]');
+    if (e.target === hoja) { cerrarHoja(); return; }
+    if (!b) return;
+    const destino = b.dataset.mv;
+    hoja.hidden = true;
+    if (destino !== 'cancel') pedirMovimiento(tocada, destino);
+    else cerrarHoja();
+  });
+  addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (!hoja.hidden) cerrarHoja();
+    if (!modal.hidden) { pendiente = null; modal.hidden = true; }
   });
 
   modal.addEventListener('click', e => {
@@ -4516,10 +4627,6 @@
    animation.finished.catch(() => {}).finally(() => animations.delete(animation));
    return animation;
  }
- // One composed hero entrance: readable copy first, product second.
- const hero = document.querySelector('.hero-visual');
- play(document.querySelector('.hero-copy'), [{transform:'translateY(10px)'},{transform:'none'}], {duration:900,easing:ease});
- play(hero, [{opacity:.3,transform:'translateY(24px) scale(.97)'},{opacity:1,transform:'none'}], {duration:800,delay:120,easing:ease});
  const nav = document.querySelector('.site-nav');
  const progress = document.createElement('span');
  progress.className = 'reading-progress'; progress.setAttribute('aria-hidden','true'); nav?.append(progress);
@@ -4550,6 +4657,7 @@
  let active=0, timer=null, barAnimation=null, visible=false, paused=preference.matches;
  function stop() {clearTimeout(timer);timer=null;barAnimation?.cancel();barAnimation=null;}
  function paint(animate=true) {
+   dots?.querySelectorAll('span').forEach((d,i)=>d.classList.toggle('on',i===active));
    if(active===items.length-1) storyEnd?.classList.add('is-on');
    items.forEach((item,i)=>{item.classList.toggle('story-active',i===active);buttons[i].setAttribute('aria-pressed',String(i===active));item.setAttribute('aria-hidden',String(i!==active));});
    if(animate) {
@@ -4567,6 +4675,22 @@
    timer=setTimeout(()=>{active=(active+1)%items.length;paint();run();},6500);
  }
  buttons.forEach((b,i)=>b.addEventListener('click',()=>{paused=true;stop();active=i;paint();}));
+ // Teléfono: se desliza la tarjeta para pasar de paso. Es lo mismo que
+ // tocar una pestaña: pausa el recorrido y cambia de escena.
+ const caso = scene.querySelector('.story-case');
+ const dots = document.createElement('div'); dots.className='story-dots'; dots.setAttribute('aria-hidden','true');
+ items.forEach(()=>dots.append(document.createElement('span')));
+ caso.append(dots);
+ let x0=null, y0=null;
+ caso.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
+ caso.addEventListener('touchend',e=>{
+   if(x0===null)return;
+   const t=e.changedTouches[0], dx=t.clientX-x0, dy=t.clientY-y0; x0=null;
+   if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy)*1.3)return;
+   paused=true; stop();
+   active=(active+(dx<0?1:-1)+items.length)%items.length;
+   paint();
+ },{passive:true});
  toggle.addEventListener('click',()=>{paused=!paused;paint(false);run();});
  // Keyboard readers keep control of the sequence once they enter it.
  controls.addEventListener('focusin',()=>{paused=true;stop();paint(false);});
