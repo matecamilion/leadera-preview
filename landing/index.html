@@ -32,13 +32,43 @@
   <meta name="twitter:title" content="LeadEra — CRM para inmobiliarias que funciona">
   <meta name="twitter:description" content="El CRM para agentes inmobiliarios que te dice exactamente qué hacer cada día. Probá LeadEra 14 días gratis, sin tarjeta.">
   <meta name="twitter:image" content="https://www.leadera.com.ar/og-leadera.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Schibsted Grotesk (titulares: la voz del aviso clasificado) +
-       Public Sans (cuerpo). Sólo los pesos que la hoja usa. -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@700;800&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+       Public Sans (cuerpo). Self-hosted: woff2 variable, subset latino
+       (castellano completo), solo los pesos que la hoja usa. Licencia OFL
+       en /fonts. Se precargan las dos porque el primer pantallazo usa ambas. -->
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/schibsted-grotesk-latin-var.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/public-sans-latin-var.woff2" crossorigin>
   <style>
+    /* ============================================================
+       FUENTES
+
+       Variables, un archivo por familia. Las caras "Fallback" calzan
+       las métricas de Arial/Roboto con las de cada fuente (size-adjust
+       y overrides de línea): mientras llega el woff2 el texto ocupa lo
+       mismo y el swap no mueve nada (CLS 0).
+    ============================================================ */
+    @font-face {
+      font-family: 'Public Sans';
+      src: url('/fonts/public-sans-latin-var.woff2') format('woff2');
+      font-weight: 400 700; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Schibsted Grotesk';
+      src: url('/fonts/schibsted-grotesk-latin-var.woff2') format('woff2');
+      font-weight: 700 800; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Public Sans Fallback';
+      src: local('Arial'), local('Roboto'), local('Helvetica Neue');
+      size-adjust: 103.5%; ascent-override: 91.8%; descent-override: 21.7%; line-gap-override: 0%;
+    }
+    @font-face {
+      font-family: 'Schibsted Grotesk Fallback';
+      src: local('Arial Bold'), local('Arial'), local('Roboto'), local('Helvetica Neue');
+      font-weight: 700 800;
+      size-adjust: 101%; ascent-override: 96.7%; descent-override: 25.5%; line-gap-override: 0%;
+    }
+
     /* ============================================================
        TOKENS
 
@@ -91,8 +121,8 @@
 
       /* Tipografía. Schibsted Grotesk es la voz de los titulares (el
          aviso clasificado del diario); Public Sans, neutra, el cuerpo. */
-      --font:         'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-      --font-display: 'Schibsted Grotesk', 'Public Sans', system-ui, sans-serif;
+      --font:         'Public Sans', 'Public Sans Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-display: 'Schibsted Grotesk', 'Schibsted Grotesk Fallback', 'Public Sans', system-ui, sans-serif;
 
       /* Escala modular: ratio 1.25 en teléfono que abre a ~1.33 en
          escritorio. Cada paso es un clamp(); el h1 topea en 5.6rem. */
@@ -131,6 +161,14 @@
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
     body { font-family: var(--font); font-size: var(--fs-md); background: var(--bg); color: var(--text); line-height: 1.6; }
     a { color: inherit; text-decoration: none; }
+    /* Flechas y marcas inline: SVG del sprite, nunca caracteres de texto
+       (las fuentes no los traen y caerían a la del sistema). */
+    .ar {
+      width: 1em; height: 1em; flex-shrink: 0; margin-left: .3em; vertical-align: -.14em;
+      fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .ar:first-child { margin-left: 0; margin-right: .3em; }
+
     img { display: block; max-width: 100%; }
     :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
     ::selection { background: var(--teal-light); color: var(--teal-darker); }
@@ -2459,6 +2497,7 @@
     <g id="i-warning"><path d="M10.3 4.3 2.2 18.4A2 2 0 0 0 3.9 21.4h16.2a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"/><path d="M12 9.6v4.2"/><path d="M12 17.4h.01"/></g>
     <g id="i-pin"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></g>
     <g id="i-check"><path d="M5 12.5l4.5 4.5L19 7.5"/></g>
+    <g id="i-x"><path d="M6 6l12 12M18 6 6 18"/></g>
   </defs>
 </svg>
 
@@ -2596,7 +2635,7 @@
   <div class="story-copy">
    <h2 class="section-h2 reveal" id="story-title" data-split>Retomá cada conversación<br><em>donde la dejaste.</em></h2>
    <p class="section-lead">Revisá qué hablaron, encontrá una propiedad que encaje y organizá el próximo encuentro.</p>
-   <a class="story-link" href="#explorar">Explorá la demo de LeadEra <span aria-hidden="true">→</span></a>
+   <a class="story-link" href="#explorar">Explorá la demo de LeadEra <span aria-hidden="true"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span></a>
    <p class="story-end" id="storyEnd">
      <span>¿Lo querés para tus leads?</span>
      <a href="https://app.leadera.com.ar/signup">Probalo 14 días gratis <svg viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
@@ -2604,7 +2643,7 @@
   </div>
   <div class="story-case" aria-label="Ejemplo de seguimiento de Martina Beltrán">
    <div class="story-person"><span class="story-avatar">MB</span><div><strong>Martina Beltrán</strong><span>Compradora · busca en Centro</span></div><small>Recorrido de ejemplo</small></div>
-   <ol class="story-timeline"><li><span class="story-number">Paso 1 de 4 · Priorizá</span><div class="scene-detail"><h3 class="real-heading">Sabés a quién retomar.</h3><div class="rp-ui rp-priority"><div class="rp-card"><div class="rp-card-title"><span class="rp-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 18H2L12 3Z M12 9v5 M12 17v.1"/></svg></span><strong>Leads prioritarios</strong><span class="rp-count">5 urgentes</span><span class="rp-link">Ver todos (7) →</span></div><div class="rp-muted rp-card-sub">Calientes o con el seguimiento vencido</div><div class="rp-row "><span class="rp-avatar rp-nuevo">PZ</span><div class="rp-contact"><strong>Paula Zárate</strong><span>Todavía sin contactar</span></div><span class="rp-badge rp-nuevo">nuevo</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div><div class="rp-row "><span class="rp-avatar rp-tibio">LF</span><div class="rp-contact"><strong>Lucía Ferrari</strong><span>19 días sin contacto</span></div><span class="rp-badge rp-tibio">tibio</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div><div class="rp-row "><span class="rp-avatar rp-tibio">FI</span><div class="rp-contact"><strong>Federico Ibarra</strong><span>19 días sin contacto</span></div><span class="rp-badge rp-tibio">tibio</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div><div class="rp-row rp-focus"><span class="rp-avatar rp-caliente">MB</span><div class="rp-contact"><strong>Martina Beltrán</strong><span>13 días sin contacto</span></div><span class="rp-badge rp-caliente">caliente</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div></div></div><p>Mi día reúne los leads que necesitan atención.</p></div></li><li><span class="story-number">Paso 2 de 4 · Recordá</span><div class="scene-detail"><h3 class="real-heading">La conversación sigue acá.</h3><div class="rp-ui rp-history"><div class="rp-lead-header"><span class="rp-avatar rp-caliente">MB</span><div><span class="rp-eyebrow">Ficha de lead</span><strong>Martina Beltrán</strong></div><span class="rp-badge rp-caliente">Caliente</span></div><div class="rp-tabs"><span>Resumen</span><span class="rp-tab-active">Interacciones (3)</span><span>Operaciones (1)</span><span>Tareas (1)</span></div><div class="rp-history-list"><div class="rp-event"><div class="rp-event-top"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><strong>WhatsApp</strong><time data-dias="-13" data-hora="10:35">22 de septiembre, 10:35</time></div><div class="rp-event-text">Le mandé un mensaje para consultar si volvió de viaje. La idea es agendar visita para esta semana.</div></div><div class="rp-event"><div class="rp-event-top"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg></span><strong>Llamada</strong><time data-dias="-22" data-hora="20:30">13 de septiembre, 20:30</time></div><div class="rp-event-text">Quiere visitar el departamento esta semana.</div></div><div class="rp-event"><div class="rp-event-top"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><strong>WhatsApp</strong><time data-dias="-29" data-hora="20:30">6 de septiembre, 20:30</time></div><div class="rp-event-text">Le pasé tres opciones en Centro, le gustó la de Rivadavia.</div></div></div></div><p>Revisás qué hablaron y qué opciones le interesaron.</p></div></li><li><span class="story-number">Paso 3 de 4 · Conectá</span><div class="scene-detail"><h3 class="real-heading">Una propiedad. Una coincidencia.</h3><div class="rp-ui rp-matches"><div class="rp-card"><div class="rp-card-title"><span class="rp-title-icon rp-gold"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-star"/></svg></span><strong>Coincidencias encontradas</strong><span class="rp-count rp-gold">3</span></div><div class="rp-muted rp-card-sub">Interesados de tu cartera que buscan propiedades como las tuyas</div><div class="rp-match-row rp-focus"><div class="rp-property"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-8h6v8"/></svg></span><div><strong>Rivadavia 2840, piso 6</strong><span>Centro · USD 115.000</span></div></div><span class="rp-arrow">→</span><div class="rp-buyer"><strong>Martina Beltrán</strong><span class="rp-badge rp-caliente">Caliente</span><div class="rp-chips"><span>Busca departamento en Centro</span><span>USD 90.000 – 130.000</span><span>3+ amb.</span></div></div></div><div class="rp-match-row"><div class="rp-property"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-8h6v8"/></svg></span><div><strong>Güemes 2915</strong><span>Güemes · USD 98.000</span></div></div><span class="rp-arrow">→</span><div class="rp-buyer"><strong>Carolina Vega</strong><span class="rp-badge rp-caliente">Caliente</span><div class="rp-chips"><span>Busca local comercial en Güemes</span><span>USD 80.000 – 110.000</span></div></div></div></div></div><p>Su búsqueda aparece relacionada con Rivadavia 2840.</p></div></li><li><span class="story-number">Paso 4 de 4 · Organizá</span><div class="scene-detail"><h3 class="real-heading">Dale lugar al próximo paso.</h3><div class="rp-ui rp-calendar"><div class="rp-cal-top"><div><span class="rp-eyebrow">Agenda</span><strong>Calendario</strong></div><span class="rp-month" id="storyCalMes">Octubre de 2026</span><span class="rp-action">+ Nueva tarea</span><span class="rp-outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-8h6v8"/></svg> Agendar visita</span></div><div class="rp-google"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4 M17 3v4 M3 11h18"/></svg><div><strong>Sincronizá tu agenda con Google Calendar</strong><span>Tu agenda: tareas, visitas y seguimientos de leads.</span></div></div><div class="rp-cal-layout"><div class="rp-grid" id="storyCalGrid"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span><div class="rp-day rp-otro"><span>28</span></div><div class="rp-day rp-otro"><span>29</span></div><div class="rp-day rp-otro"><span>30</span></div><div class="rp-day"><span>1</span></div><div class="rp-day"><span>2</span></div><div class="rp-day"><span>3</span></div><div class="rp-day"><span>4</span><small>09:00 Seguimiento</small></div><div class="rp-day rp-today"><span>5</span></div><div class="rp-day"><span>6</span></div><div class="rp-day rp-selected"><span>7</span></div><div class="rp-day"><span>8</span></div><div class="rp-day"><span>9</span></div><div class="rp-day"><span>10</span></div><div class="rp-day"><span>11</span></div><div class="rp-day"><span>12</span></div><div class="rp-day"><span>13</span></div><div class="rp-day"><span>14</span></div><div class="rp-day"><span>15</span></div><div class="rp-day"><span>16</span></div><div class="rp-day"><span>17</span></div><div class="rp-day"><span>18</span></div><div class="rp-day"><span>19</span></div><div class="rp-day"><span>20</span></div><div class="rp-day"><span>21</span></div><div class="rp-day"><span>22</span></div><div class="rp-day"><span>23</span></div><div class="rp-day"><span>24</span></div><div class="rp-day"><span>25</span></div><div class="rp-day"><span>26</span></div><div class="rp-day"><span>27</span></div><div class="rp-day"><span>28</span></div><div class="rp-day"><span>29</span></div><div class="rp-day"><span>30</span></div><div class="rp-day"><span>31</span></div><div class="rp-day rp-otro"><span>1</span></div></div><div class="rp-day-detail" id="storyCalDetalle"><strong>Miércoles, 7 de octubre</strong><span>No hay nada agendado para este día.</span></div></div></div><p>Desde Calendario podés agendar la visita y elegir propiedad, lead, fecha y hora.</p></div></li></ol>
+   <ol class="story-timeline"><li><span class="story-number">Paso 1 de 4 · Priorizá</span><div class="scene-detail"><h3 class="real-heading">Sabés a quién retomar.</h3><div class="rp-ui rp-priority"><div class="rp-card"><div class="rp-card-title"><span class="rp-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 18H2L12 3Z M12 9v5 M12 17v.1"/></svg></span><strong>Leads prioritarios</strong><span class="rp-count">5 urgentes</span><span class="rp-link">Ver todos (7)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span></div><div class="rp-muted rp-card-sub">Calientes o con el seguimiento vencido</div><div class="rp-row "><span class="rp-avatar rp-nuevo">PZ</span><div class="rp-contact"><strong>Paula Zárate</strong><span>Todavía sin contactar</span></div><span class="rp-badge rp-nuevo">nuevo</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div><div class="rp-row "><span class="rp-avatar rp-tibio">LF</span><div class="rp-contact"><strong>Lucía Ferrari</strong><span>19 días sin contacto</span></div><span class="rp-badge rp-tibio">tibio</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div><div class="rp-row "><span class="rp-avatar rp-tibio">FI</span><div class="rp-contact"><strong>Federico Ibarra</strong><span>19 días sin contacto</span></div><span class="rp-badge rp-tibio">tibio</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div><div class="rp-row rp-focus"><span class="rp-avatar rp-caliente">MB</span><div class="rp-contact"><strong>Martina Beltrán</strong><span>13 días sin contacto</span></div><span class="rp-badge rp-caliente">caliente</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div></div></div><p>Mi día reúne los leads que necesitan atención.</p></div></li><li><span class="story-number">Paso 2 de 4 · Recordá</span><div class="scene-detail"><h3 class="real-heading">La conversación sigue acá.</h3><div class="rp-ui rp-history"><div class="rp-lead-header"><span class="rp-avatar rp-caliente">MB</span><div><span class="rp-eyebrow">Ficha de lead</span><strong>Martina Beltrán</strong></div><span class="rp-badge rp-caliente">Caliente</span></div><div class="rp-tabs"><span>Resumen</span><span class="rp-tab-active">Interacciones (3)</span><span>Operaciones (1)</span><span>Tareas (1)</span></div><div class="rp-history-list"><div class="rp-event"><div class="rp-event-top"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><strong>WhatsApp</strong><time data-dias="-13" data-hora="10:35">22 de septiembre, 10:35</time></div><div class="rp-event-text">Le mandé un mensaje para consultar si volvió de viaje. La idea es agendar visita para esta semana.</div></div><div class="rp-event"><div class="rp-event-top"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg></span><strong>Llamada</strong><time data-dias="-22" data-hora="20:30">13 de septiembre, 20:30</time></div><div class="rp-event-text">Quiere visitar el departamento esta semana.</div></div><div class="rp-event"><div class="rp-event-top"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><strong>WhatsApp</strong><time data-dias="-29" data-hora="20:30">6 de septiembre, 20:30</time></div><div class="rp-event-text">Le pasé tres opciones en Centro, le gustó la de Rivadavia.</div></div></div></div><p>Revisás qué hablaron y qué opciones le interesaron.</p></div></li><li><span class="story-number">Paso 3 de 4 · Conectá</span><div class="scene-detail"><h3 class="real-heading">Una propiedad. Una coincidencia.</h3><div class="rp-ui rp-matches"><div class="rp-card"><div class="rp-card-title"><span class="rp-title-icon rp-gold"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-star"/></svg></span><strong>Coincidencias encontradas</strong><span class="rp-count rp-gold">3</span></div><div class="rp-muted rp-card-sub">Interesados de tu cartera que buscan propiedades como las tuyas</div><div class="rp-match-row rp-focus"><div class="rp-property"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-8h6v8"/></svg></span><div><strong>Rivadavia 2840, piso 6</strong><span>Centro · USD 115.000</span></div></div><span class="rp-arrow"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span><div class="rp-buyer"><strong>Martina Beltrán</strong><span class="rp-badge rp-caliente">Caliente</span><div class="rp-chips"><span>Busca departamento en Centro</span><span>USD 90.000 – 130.000</span><span>3+ amb.</span></div></div></div><div class="rp-match-row"><div class="rp-property"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-8h6v8"/></svg></span><div><strong>Güemes 2915</strong><span>Güemes · USD 98.000</span></div></div><span class="rp-arrow"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span><div class="rp-buyer"><strong>Carolina Vega</strong><span class="rp-badge rp-caliente">Caliente</span><div class="rp-chips"><span>Busca local comercial en Güemes</span><span>USD 80.000 – 110.000</span></div></div></div></div></div><p>Su búsqueda aparece relacionada con Rivadavia 2840.</p></div></li><li><span class="story-number">Paso 4 de 4 · Organizá</span><div class="scene-detail"><h3 class="real-heading">Dale lugar al próximo paso.</h3><div class="rp-ui rp-calendar"><div class="rp-cal-top"><div><span class="rp-eyebrow">Agenda</span><strong>Calendario</strong></div><span class="rp-month" id="storyCalMes">Octubre de 2026</span><span class="rp-action">+ Nueva tarea</span><span class="rp-outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-8h6v8"/></svg> Agendar visita</span></div><div class="rp-google"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4 M17 3v4 M3 11h18"/></svg><div><strong>Sincronizá tu agenda con Google Calendar</strong><span>Tu agenda: tareas, visitas y seguimientos de leads.</span></div></div><div class="rp-cal-layout"><div class="rp-grid" id="storyCalGrid"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span><div class="rp-day rp-otro"><span>28</span></div><div class="rp-day rp-otro"><span>29</span></div><div class="rp-day rp-otro"><span>30</span></div><div class="rp-day"><span>1</span></div><div class="rp-day"><span>2</span></div><div class="rp-day"><span>3</span></div><div class="rp-day"><span>4</span><small>09:00 Seguimiento</small></div><div class="rp-day rp-today"><span>5</span></div><div class="rp-day"><span>6</span></div><div class="rp-day rp-selected"><span>7</span></div><div class="rp-day"><span>8</span></div><div class="rp-day"><span>9</span></div><div class="rp-day"><span>10</span></div><div class="rp-day"><span>11</span></div><div class="rp-day"><span>12</span></div><div class="rp-day"><span>13</span></div><div class="rp-day"><span>14</span></div><div class="rp-day"><span>15</span></div><div class="rp-day"><span>16</span></div><div class="rp-day"><span>17</span></div><div class="rp-day"><span>18</span></div><div class="rp-day"><span>19</span></div><div class="rp-day"><span>20</span></div><div class="rp-day"><span>21</span></div><div class="rp-day"><span>22</span></div><div class="rp-day"><span>23</span></div><div class="rp-day"><span>24</span></div><div class="rp-day"><span>25</span></div><div class="rp-day"><span>26</span></div><div class="rp-day"><span>27</span></div><div class="rp-day"><span>28</span></div><div class="rp-day"><span>29</span></div><div class="rp-day"><span>30</span></div><div class="rp-day"><span>31</span></div><div class="rp-day rp-otro"><span>1</span></div></div><div class="rp-day-detail" id="storyCalDetalle"><strong>Miércoles, 7 de octubre</strong><span>No hay nada agendado para este día.</span></div></div></div><p>Desde Calendario podés agendar la visita y elegir propiedad, lead, fecha y hora.</p></div></li></ol>
    <div class="story-timer" aria-hidden="true"><span></span></div>
    <div class="story-caption">La información conectada. La decisión, en tus manos.</div>
   </div>
@@ -2653,7 +2692,7 @@
               <h3 class="dm-h1">Hoy te quedan <span>11</span> tareas</h3>
               <p class="dm-sub">Gestioná tus contactos y hacé crecer tu cartera</p>
             </div>
-            <span class="dm-toplink">Ver contactados hoy →</span>
+            <span class="dm-toplink">Ver contactados hoy<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
           </div>
 
           <div class="dm-stats">
@@ -2681,7 +2720,7 @@
             <span class="dm-chip t-caliente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg></span>
             <span class="dm-card-title">Leads prioritarios</span>
             <span class="dm-pill t-caliente">2 urgentes</span>
-            <span class="dm-all">Ver todos (5) →</span>
+            <span class="dm-all">Ver todos (5)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
           </div>
           <p class="dm-card-sub">Calientes o con el seguimiento vencido</p>
               <div class="dm-list">
@@ -2718,7 +2757,7 @@
             <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-person-plus"/></svg></span>
             <span class="dm-card-title">Nuevos leads</span>
             <span class="dm-pill t-brand">2 nuevos</span>
-            <span class="dm-all">Ver todos (2) →</span>
+            <span class="dm-all">Ver todos (2)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
           </div>
           <p class="dm-card-sub">Todavía no tuvieron un primer contacto</p>
               <div class="dm-list">
@@ -2758,7 +2797,7 @@
             <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span>
             <span class="dm-card-title">Seguimientos</span>
             <span class="dm-pill t-tibio">3 hoy</span>
-            <span class="dm-all">Ver todos (3) →</span>
+            <span class="dm-all">Ver todos (3)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
           </div>
           <p class="dm-card-sub">Contactos que necesitan un recordatorio hoy</p>
               <div class="dm-list">
@@ -2795,7 +2834,7 @@
             <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg></span>
             <span class="dm-card-title">Agenda de hoy</span>
             <span class="dm-pill t-frio">4 eventos</span>
-            <span class="dm-all">Ver todos (4) →</span>
+            <span class="dm-all">Ver todos (4)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
           </div>
           <p class="dm-card-sub">Tareas, seguimientos y visitas del día</p>
               <div class="dm-list">
@@ -2828,7 +2867,7 @@
             <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-star"/></svg></span>
             <span class="dm-card-title">Coincidencias encontradas</span>
             <span class="dm-pill t-tibio">2 nuevas</span>
-            <span class="dm-all">Ver todas (2) →</span>
+            <span class="dm-all">Ver todas (2)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
           </div>
           <p class="dm-card-sub">Interesados de tu cartera que buscan propiedades como las tuyas</p>
             <div class="dm-list">
@@ -2869,7 +2908,7 @@
             <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
             <span class="dm-card-title">Propiedades recientes</span>
             
-            <span class="dm-all">Ver todas (12) →</span>
+            <span class="dm-all">Ver todas (12)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
           </div>
           <p class="dm-card-sub">Lo último que sumaste a la cartera</p>
               <div class="dm-list">
@@ -2896,7 +2935,7 @@
             <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span>
             <span class="dm-card-title">Actividad reciente</span>
             
-            <span class="dm-all">Ver toda →</span>
+            <span class="dm-all">Ver toda<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
           </div>
           <p class="dm-card-sub">Lo último que registraste</p>
               <div class="dm-list">
@@ -2924,7 +2963,7 @@
             <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pipeline"/></svg></span>
             <span class="dm-card-title">Operaciones en curso</span>
             
-            <span class="dm-all">Ver todas (4) →</span>
+            <span class="dm-all">Ver todas (4)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
           </div>
           <p class="dm-card-sub">Todavía no están cerradas ni canceladas</p>
             <div class="dm-list">
@@ -3590,7 +3629,7 @@
   if (DOLAR_MEP > 0) {
     document.querySelectorAll('.plan-ars[data-usd]').forEach(el => {
       const pesos = Math.round(+el.dataset.usd * DOLAR_MEP / 100) * 100;
-      el.textContent = `≈ $ ${pesos.toLocaleString('es-AR')} por mes`;
+      el.textContent = `Aprox. $ ${pesos.toLocaleString('es-AR')} por mes`;
       el.hidden = false;
     });
     const nota = document.getElementById('arsNota');
@@ -4236,7 +4275,7 @@
         <td><span class="bdg-prop ${p.estado}">${EST[p.estado]}</span></td>
         <td class="pr-precio">${money(p) || '<span class="ld-muted">—</span>'}</td>
         <td>${p.dueno ? `<span class="pr-owner">${p.dueno}</span>` : '<span class="ld-muted">—</span>'}</td>
-        <td><span class="pr-ver">Ver detalle →</span></td>
+        <td><span class="pr-ver">Ver detalle<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span></td>
       </tr>`).join('')
       : `<tr><td colspan="6"><div class="pr-empty">No hay propiedades para mostrar.</div></td></tr>`;
 
@@ -4321,7 +4360,7 @@
         </div>
         <div class="kb-foot">
           <span class="kb-foot-ico"><span class="kb-ico">${icon('phone')}</span><span class="kb-ico">${icon('chat')}</span></span>
-          <span class="kb-ver">Ver →</span>
+          <span class="kb-ver">Ver<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
         </div>
       </article>`;
   }
@@ -4570,8 +4609,8 @@
               <span class="cal-tit">${e.tit}</span>
               <span class="cal-desc">${e.lead || 'Sin lead asignado'}${e.notas ? ' · ' + e.notas : ''}</span>
               <span class="cal-visita-foot">
-                <span class="ld-a primary">✓ Marcar realizada</span>
-                <span class="ld-a ghost">✕ Cancelar</span>
+                <span class="ld-a primary"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>Marcar realizada</span>
+                <span class="ld-a ghost"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>Cancelar</span>
               </span>
             </span>
             <span class="cal-hora">${e.hora}<br><span class="bdg tibio sm">Agendada</span></span>
