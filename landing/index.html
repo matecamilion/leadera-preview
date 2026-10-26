@@ -1764,14 +1764,38 @@
     .cercania-txt .cercania-nombre { color: var(--text); font-weight: 600; }
     .cercania-txt .cercania-nombre[hidden] { display: none; }
 
-    /* Testimonio: preparado, oculto hasta tener uno real. */
-    .testimonio {
-      margin-top: 40px; padding: 28px 0 0; border-top: 1px solid var(--border);
-      max-width: 60ch;
+    /* ============================================================
+       TESTIMONIOS — entre la demo y los precios
+
+       Hansel, destacado: la frase en grande y el texto completo debajo
+       en tamaño de lectura (65ch). Bautista, secundario. Todo visible,
+       sin hover ni carrusel. Las partes del pie que no tienen dato
+       (rol, inmobiliaria, ciudad) no se escriben en el HTML.
+    ============================================================ */
+    .testimonios { padding-block: clamp(56px, 7vw, 96px); }
+    .testimonios-grid { display: grid; gap: 48px; }
+    .testimonio-frase {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.625rem, 1.1rem + 2.4vw, 2.875rem);
+      line-height: 1.1; letter-spacing: -.03em; color: var(--text);
+      max-width: 24ch; text-wrap: balance;
     }
-    .testimonio[hidden] { display: none; }
-    .testimonio blockquote p { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; line-height: 1.35; letter-spacing: -.015em; }
-    .testimonio figcaption { margin-top: 12px; font-size: var(--fs-sm); color: var(--text-2); }
+    .testimonio-texto { margin-top: 20px; max-width: 47ch; font-size: var(--fs-md); line-height: 1.7; color: var(--text-2); }
+    .testimonio-sec { padding-top: 32px; border-top: 1px solid var(--border); }
+    .testimonio-sec .testimonio-frase { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -.015em; line-height: 1.35; max-width: 34ch; }
+    .testimonio figcaption { margin-top: 24px; display: flex; align-items: center; gap: 12px; font-size: var(--fs-sm); color: var(--text-2); }
+    .testimonio-sec figcaption { margin-top: 16px; }
+    .testimonio-avatar {
+      width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%;
+      display: grid; place-items: center;
+      background: rgba(var(--teal-rgb),.1); color: var(--teal-darker);
+      font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .02em;
+    }
+    .testimonio figcaption strong { color: var(--text); font-weight: 600; }
+    @media (min-width: 900px) {
+      .testimonios-grid { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 72px; align-items: end; }
+      .testimonio-sec { padding-top: 0; border-top: 0; }
+    }
 
     /* ============================================================
        FAQ
@@ -2942,6 +2966,31 @@
 </section>
 
 <!-- ================================================================
+     TESTIMONIOS — dos agentes que usan LeadEra. Sin foto: avatar con
+     iniciales. Solo se escriben los datos del pie que existen.
+================================================================ -->
+<section id="testimonios" class="testimonios" aria-labelledby="testimonios-titulo" data-martina="2">
+  <div class="inner">
+    <h2 class="sr-only" id="testimonios-titulo">Lo que dicen quienes ya usan LeadEra</h2>
+    <div class="testimonios-grid reveal">
+      <figure class="testimonio testimonio-main">
+        <blockquote>
+          <p class="testimonio-frase">“En LeadEra tengo un programa que me agrupa toda la información que necesito.”</p>
+          <p class="testimonio-texto">Lo que más me gustó del programa es que puedo tener absolutamente todo en un solo lugar. Antes tenía Calendar por un lado, otro sistema para agendar leads, el de la oficina. O sea, tenía básicamente tres programas o cinco hojas de Excel diferentes. En cambio, en LeadEra tengo un programa que me agrupa toda la información que necesito. Eso para mí es único.</p>
+        </blockquote>
+        <figcaption><span class="testimonio-avatar" aria-hidden="true">HZ</span><strong>Hansel Zamora</strong></figcaption>
+      </figure>
+      <figure class="testimonio testimonio-sec">
+        <blockquote>
+          <p class="testimonio-frase">“De verdad que todo mi negocio lo tengo súper organizado. Y además tengo una estadística de lo que vengo haciendo por semana y por día.”</p>
+        </blockquote>
+        <figcaption><span class="testimonio-avatar" aria-hidden="true">BC</span><strong>Bautista Camilion</strong></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
      PRECIOS — con "Empezá en tres pasos" adelante de los planes
 ================================================================ -->
 <!-- Espejo de DETALLE_PLAN en leadera-v2 (src/lib/api/suscripcion.ts) y de los precios en USD de planes_precio. Si cambian allá, actualizar acá. -->
@@ -3027,14 +3076,6 @@
         Escribinos por WhatsApp
       </a>
     </div>
-
-    <!-- TODO: testimonio real. Completar los cuatro campos con datos de
-         un cliente que haya dado su permiso y sacar el atributo hidden.
-         No publicar con los textos de ejemplo. -->
-    <figure class="testimonio" hidden>
-      <blockquote><p>CITA DEL CLIENTE</p></blockquote>
-      <figcaption>NOMBRE APELLIDO · INMOBILIARIA · CIUDAD</figcaption>
-    </figure>
   </div>
 </section>
 
