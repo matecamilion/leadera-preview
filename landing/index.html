@@ -25,7 +25,7 @@
   <meta property="og:image" content="https://www.leadera.com.ar/og-leadera.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="LeadEra: Entrás y ya sabés qué hacer. Captura de la pantalla Mi día.">
+  <meta property="og:image:alt" content="LeadEra: Abrís LeadEra y sabés a quién llamar hoy. Captura de la pantalla Mi día.">
   <meta property="og:locale" content="es_AR">
   <meta property="og:site_name" content="LeadEra">
   <meta name="twitter:card" content="summary_large_image">
@@ -103,10 +103,6 @@
       /* Verde de la historia de Martina (sección story) y su texto. */
       --story:         #083E34;
       --on-story:      #C9DFD9;   /* 9.6:1 sobre --story */
-
-      /* Verde Yerba — sólo para la masa borrosa que empalma el hero con
-         la sección oscura. No estaba en la escala teal de arriba. */
-      --verde-yerba:   #1E5C46;
 
       --shadow-xs:     0 1px 2px rgba(0,0,0,.05);
       --shadow-sm:     0 1px 4px rgba(0,0,0,.07), 0 2px 8px rgba(0,0,0,.04);
@@ -225,7 +221,6 @@
       }
       .js .is-split.visible .w { opacity: 1; transform: none; filter: blur(0); }
       .js .problema-lead.is-split + .problema-lead.is-split { --split-delay: 220ms; }
-      .js .hero-h1 em::after { animation-delay: .95s; }
 
       /* — 2. secuencias — */
       .js .dolores.reveal, .js .pasos.reveal { opacity: 1; transform: none; }
@@ -387,74 +382,8 @@
     }
 
     /* ============================================================
-       HERO — del ruido a la claridad
-
-       Sin capturas del producto: el producto aparece más abajo, en la
-       historia y en la demo. Acá se cuenta la promesa. El día de un
-       agente es ruido: chats, mails, una llamada perdida, la planilla,
-       la agenda, cada uno con su globito de pendientes. Los globitos se
-       atienden, el ruido se apaga alrededor del titular y queda una
-       sola cosa nítida: tu próximo paso.
-
-       Los estados escritos acá son los FINALES (ruido apagado, chapa a
-       la vista): es lo que se ve sin JS y con reduced motion. La
-       coreografía vive más abajo, en "HERO — coreografía".
+       BOTONES
     ============================================================ */
-    .hero-wrap {
-      position: relative; overflow: clip;
-      display: grid; place-items: center;
-      padding: 88px 24px 96px;
-      /* Topeado: en una ventana muy alta el hero no se estira a un
-         cuadro vacío. */
-      min-height: min(calc(100vh - 64px), 900px);
-      min-height: min(calc(100svh - 64px), 900px);
-      view-timeline-name: --hero;
-      view-timeline-axis: block;
-    }
-    .hero-copy {
-      position: relative; z-index: var(--z-raised);
-      width: 100%; max-width: 980px;
-      display: flex; flex-direction: column; align-items: center; text-align: center;
-    }
-
-    .hero-h1 {
-      font-size: clamp(2.6rem, 1rem + 5.6vw, 6rem);
-      font-weight: 800; line-height: .96; letter-spacing: -.035em;
-      color: var(--text); margin-bottom: 26px;
-    }
-    .hero-h1 em { font-style: normal; color: var(--teal); position: relative; display: inline-block; }
-    .hero-h1 em::after {
-      content: ''; position: absolute; left: 0; right: 0; bottom: -.06em; height: .06em;
-      background: var(--teal); transform-origin: left;
-    }
-    @keyframes underlineArrival { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-
-    /* La chapa: lo único nítido y con color de marca en la escena. */
-    .hero-paso {
-      display: inline-flex; align-items: center; gap: 12px;
-      max-width: 100%; margin: 0 0 28px;
-      padding: 10px 18px 10px 10px;
-      background: #fff; border: 1px solid rgba(var(--teal-rgb),.22); border-radius: 999px;
-      box-shadow: 0 2px 6px rgba(15,23,42,.05), 0 14px 32px -14px rgba(15,23,42,.30);
-      text-align: left;
-    }
-    .hero-paso-check {
-      width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%;
-      display: grid; place-items: center; background: var(--teal); color: #fff;
-    }
-    .hero-paso-check svg { width: 18px; height: 18px; stroke-dasharray: 24; stroke-dashoffset: 0; }
-    .hero-paso-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
-    .hero-paso-k { font-size: var(--fs-xs); color: var(--text-muted); }
-    .hero-paso-t { font-size: 16px; font-weight: 600; color: var(--text); }
-
-    .hero-sub {
-      font-size: var(--fs-md); color: var(--text-2);
-      line-height: 1.7; margin: 0 auto 28px; max-width: 52ch;
-    }
-
-    .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 11px; align-items: center; margin-bottom: 12px; }
-    .trial-note { color: var(--text-muted); font-size: var(--fs-xs); margin: 0 auto 26px; }
-
     .btn-main {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--teal); color: #fff;
@@ -476,302 +405,167 @@
       cursor: pointer; transition: border-color .18s, color .18s, background .18s; text-decoration: none;
     }
     .btn-ghost:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-faint); }
-    .hero-copy .btn-ghost { background: rgba(255,255,255,.7); }
 
-    /* Cercanía + integración: una línea de datos, sin cajas. */
-    .hero-meta {
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px;
-      font-size: 14px; color: var(--text-2); max-width: none;
+    /* ============================================================
+       HERO — el producto abre la página
+
+       El visitante llega frío desde un anuncio, en el celular. En el
+       primer pantallazo: qué es (titular + subtítulo), qué hacer
+       (CTA) y por qué confiar (línea de confianza). Lo que sigue
+       asoma recortado debajo: la ventana "Mi día" con el próximo paso
+       a la vista, que es la promesa del titular hecha pantalla.
+
+       El texto está pintado desde el primer frame (es el LCP): el
+       único movimiento es la ventana, que se arma una vez al cargar
+       con transform y opacity. Sin JS y con reduced motion se ve el
+       estado final. Nada atado al scroll ni al mouse.
+
+       Mobile first: una columna, la ventana recortada contra el
+       borde de abajo. Desde 900px, dos columnas y la ventana sale
+       por el borde derecho.
+    ============================================================ */
+    .hero {
+      position: relative; overflow: clip;
+      padding: 20px 16px 0;
     }
-    .hero-meta > span { display: inline-flex; align-items: center; gap: 7px; }
-    .hero-meta svg { width: 17px; height: 17px; color: var(--teal); flex-shrink: 0; }
-    .hero-meta strong { color: var(--text); font-weight: 600; }
-    .hero-meta a {
-      color: var(--teal); font-weight: 600;
-      text-decoration: underline; text-underline-offset: 3px;
+    .hero-copy { max-width: 36rem; }
+
+    .hero-h1 {
+      font-size: clamp(2.25rem, 1.55rem + 4vw, 4.75rem);
+      font-weight: 800; line-height: 1; letter-spacing: -.035em;
+      color: var(--text); margin-bottom: 16px;
+    }
+    /* El tramo en teal arranca en línea nueva y se balancea solo: nunca
+       queda partido entre dos líneas con una palabra suelta. */
+    .hero-acento { display: block; color: var(--teal); text-wrap: balance; }
+    .hero-sub {
+      font-size: clamp(1rem, .94rem + .3vw, 1.1875rem);
+      color: var(--text-2); line-height: 1.5; max-width: 34ch;
+    }
+
+    .hero-actions { margin-top: 22px; display: flex; flex-direction: column; gap: 6px; }
+    .btn-hero { min-height: 52px; justify-content: center; font-size: 16px; padding: 0 28px; transition: background .18s, transform 90ms, box-shadow .2s; }
+    .btn-hero:active { transform: scale(.98); }
+    .hero-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .hero-link {
+      display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 10px 0 0;
+      font-size: 15px; font-weight: 600; color: var(--teal);
+      text-decoration: underline; text-underline-offset: 4px;
       text-decoration-color: rgba(var(--teal-rgb),.4);
+      transition: text-decoration-color .18s, transform 90ms;
     }
-    .hero-meta a:hover { text-decoration-color: var(--teal); }
+    .hero-link:hover { text-decoration-color: var(--teal); }
+    .hero-link:active { transform: scale(.98); }
+    .hero-link .ar { margin: 0; }
 
-    /* ---- el ruido ----
-       Teselas de íconos con globitos de notificación: el día de un
-       agente, sin una palabra para leer. Tres capas por elemento,
-       cada una con un solo trabajo:
-         .frag    posición en la escena y dispersión al scrollear
-         .frag-p  parallax del mouse (transform) y flotación (translate)
-         .frag-c  la tesela: entrada, profundidad y "apagado"
-       --z es la profundidad (1 atrás, 3 adelante) y define el lado
-       de la tesela (--t). */
-    .hero-ruido { position: absolute; inset: 0; pointer-events: none; }
-    .frag {
-      position: absolute;
-      left: var(--x, auto); right: var(--rx, auto); top: var(--y);
+    .hero-trust { margin-top: 6px; font-size: var(--fs-xs); line-height: 1.45; color: var(--text-2); }
+    .hero-trust span { white-space: nowrap; }
+
+    /* ---- la ventana: pantalla "Mi día" con datos de ejemplo ----
+       Usa las piezas dm-* de la demo (mismos tokens --c-*). El alto
+       fijo recorta la lista contra el borde; clip-path con márgenes
+       negativos deja salir la tarjeta del próximo paso y las sombras
+       por los costados y por arriba. */
+    .hero-app {
+      position: relative; margin-top: 28px; height: 244px;
+      clip-path: inset(-24px -24px 0 -24px);
     }
-    .frag[data-z="1"] { --z: 1; --t: 44px; --o: .6;  --b: 1.2px; }
-    .frag[data-z="2"] { --z: 2; --t: 56px; --o: .85; --b: .3px; }
-    .frag[data-z="3"] { --z: 3; --t: 68px; --o: 1;   --b: 0px; }
-    .frag-c {
-      /* Estado final: el ruido apagado y en orden, sin desaparecer. */
-      opacity: calc(var(--o) * .45);
-      filter: saturate(.2) blur(var(--b));
+    .hero-app::after {
+      content: ''; position: absolute; left: -24px; right: -24px; bottom: 0; height: 104px;
+      background: linear-gradient(180deg, rgba(247,248,250,0), var(--bg) 88%);
+      pointer-events: none;
+    }
+    .ha-win {
+      background: var(--c-bg); color: var(--c-ink);
+      border: 1px solid rgba(15,23,42,.1); border-radius: 16px;
+      box-shadow: var(--shadow-md); text-align: left;
+    }
+    .ha-bar {
+      display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+      border-bottom: 1px solid var(--c-border); background: var(--c-surface);
+      border-radius: 15px 15px 0 0;
+      font-size: .8rem; font-weight: 600; color: var(--c-ink-3);
+    }
+    .ha-bar img { width: 18px; height: auto; }
+    .ha-body { padding: 14px 0 6px; }
+    .ha-head { padding: 0 14px 10px; }
+    .ha-head .dm-h1 { display: block; font-size: 1.15rem; }
+    .ha-list { display: flex; flex-direction: column; }
+    .ha-row {
+      position: relative; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; min-width: 0; background: var(--c-surface);
+    }
+    .ha-row + .ha-row { border-top: 1px solid var(--c-border); }
+    .ha-time { font-size: .76rem; font-weight: 600; color: var(--c-ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .ha-row .dm-chip { width: 32px; height: 32px; border-radius: 50%; }
+    .ha-row .dm-chip svg { width: 16px; height: 16px; }
+
+    /* El próximo paso: un solo nivel de elevación. La sombra y el
+       borde viven en ::before para poder fundirlos con opacity. */
+    .ha-next { z-index: 1; width: calc(100% + 10px); translate: -10px 0; padding: 12px 14px 12px 24px; border-radius: 12px; background: none; border-top-color: transparent; }
+    .ha-next + .ha-row { border-top-color: transparent; }
+    .ha-next::before {
+      content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+      background: var(--c-surface); border: 1px solid rgba(var(--teal-rgb),.28);
+      box-shadow: 0 1px 2px rgba(15,23,42,.08), 0 16px 28px -14px rgba(15,23,42,.35);
+    }
+    .ha-tag {
+      display: flex; align-items: center; gap: 5px; margin-bottom: 1px;
+      font-size: .72rem; font-weight: 700; color: var(--c-primary);
+    }
+    .ha-tag svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    .ha-next .dm-name { font-size: .95rem; }
+    .ha-next .ha-time { color: var(--c-primary); }
+
+    .hero-nota { position: absolute; left: 0; bottom: 8px; z-index: 1; font-size: .75rem; color: var(--text-muted); }
+
+    @media (min-width: 640px) {
+      .hero-copy { max-width: none; }
+      .hero-app { height: 272px; }
     }
 
-    .tile {
-      position: relative; display: grid; place-items: center;
-      width: var(--t); height: var(--t); border-radius: calc(var(--t) * .3);
-      background: #fff; border: 1px solid var(--border); color: var(--teal-darker);
-      box-shadow: 0 1px 2px rgba(15,23,42,.06), 0 14px 26px -14px rgba(15,23,42,.38);
-    }
-    .tile svg { width: calc(var(--t) * .42); height: calc(var(--t) * .42); }
-    .tile.is-alert { background: #FDE2E1; border-color: #FBCFCF; color: #B91C1C; }
-    /* El globito: notificación pendiente. En el estado final ya se
-       atendió (no se ve); la coreografía lo muestra y lo resuelve. */
-    .badge {
-      position: absolute; top: -7px; right: -7px;
-      min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px;
-      background: #DC2626; color: #fff; border: 2px solid #fff;
-      font: 700 11px/18px var(--font); text-align: center; font-variant-numeric: tabular-nums;
-      opacity: 0; scale: 0;
-    }
+    @media (min-width: 900px) {
+      .hero {
+        /* El titular se dimensiona con la columna: el tramo en teal
+           (8,7em de ancho) entra siempre entero en su línea, así que
+           el h1 nunca pasa de 3 líneas. */
+        --hero-col: clamp(28rem, 46vw, 38rem);
+        display: grid; align-items: center;
+        grid-template-columns: max(24px, calc((100% - 1200px) / 2)) var(--hero-col) 48px minmax(0, 1fr);
+        padding: 72px 0 88px;
+      }
+      .hero-copy { grid-column: 2; max-width: none; }
+      .hero-h1 { font-size: calc(var(--hero-col) / 9.2); }
+      .hero-sub { max-width: 36ch; }
+      .hero-actions { margin-top: 28px; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 8px 20px; }
+      .btn-hero { padding: 0 32px; }
+      .hero-trust { margin-top: 18px; max-width: 40ch; }
 
-    /* Teléfono y tablet: el ruido es una franja arriba del titular,
-       recortada por los bordes. */
-    @media (max-width: 1000px) {
-      .hero-wrap { display: flex; flex-direction: column; padding: 8px 16px 48px; min-height: auto; }
-      .hero-ruido { position: relative; inset: auto; width: calc(100% + 32px); height: 150px; margin: 0 -16px 10px; }
-      .frag { left: var(--xm, auto); right: var(--rxm, auto); top: var(--ym); }
-      .frag:not(.en-movil) { display: none; }
-      .frag[data-z="3"] { --t: 50px; }
-      .frag[data-z="2"] { --t: 42px; }
-      .badge { min-width: 20px; height: 20px; border-radius: 10px; line-height: 16px; font-size: 10px; top: -6px; right: -6px; }
-      .hero-paso-t { font-size: 15px; }
-      .hero-meta { flex-direction: column; align-items: center; }
-    }
-    /* Entre tablet y escritorio ancho: sin la capa de atrás. */
-    @media (1001px <= width < 1200px) {
-      .frag[data-z="1"] { display: none; }
-      .frag { left: var(--xt, var(--x, auto)); right: var(--rxt, var(--rx, auto)); top: var(--yt, var(--y)); }
-      .hero-meta { flex-direction: column; align-items: center; }
+      .hero-app { grid-column: 4; margin-top: 0; height: auto; clip-path: none; min-width: 40rem; padding: 8px 0 28px; }
+      .hero-app::after { display: none; }
+      .ha-win { border-right: 0; border-radius: 16px 0 0 16px; }
+      .ha-bar { border-radius: 15px 0 0 0; }
+      .ha-body { padding: 18px 0 10px; }
+      .ha-head { padding: 0 20px 14px; }
+      .ha-head .dm-h1 { font-size: 1.3rem; }
+      .ha-row { padding: 12px 20px; }
+      .ha-next { padding: 14px 20px 14px 30px; }
+      .hero-nota { position: static; margin-top: 12px; padding-left: 4px; }
     }
 
-    /* ============================================================
-       HERO — coreografía
-
-         0–800 ms     las teselas entran escalonadas, con sus globitos
-         450–1300 ms  el titular, palabra por palabra
-         1.4–2 s      los globitos se atienden uno por uno (--bi)
-         2 s          el ruido se apaga y se endereza; sube la chapa
-                      "Tu próximo paso" y su check se dibuja
-         siempre      flotación lenta + parallax del mouse (JS)
-         al bajar     el ruido se dispersa y el titular se queda atrás
-
-       Se dispara con .visible sobre .hero-wrap (mismo observer que el
-       resto de la página), así que se repite cada vez que el hero
-       vuelve a pantalla.
-    ============================================================ */
+    /* Un solo momento orquestado (~1 s): la lista se arma y el primer
+       ítem queda marcado como el próximo paso. Solo transform y
+       opacity. Los estados escritos arriba son los FINALES. */
     @media (prefers-reduced-motion: no-preference) {
-      .js .hero-h1 { --split-delay: 450ms; }
-      .js .hero-wrap.visible .hero-h1 em::after { animation: underlineArrival .7s 1.25s var(--ease-out-expo) both; }
-      .js .hero-wrap:not(.visible) .hero-h1 em::after { transform: scaleX(0); }
-
-      .js .hero-wrap:not(.visible) .frag-c,
-      .js .hero-wrap:not(.visible) .hero-paso,
-      .js .hero-wrap:not(.visible) .hero-resto { opacity: 0; }
-
-      .js .hero-wrap.visible .frag-c {
-        animation:
-          fragIn .8s var(--ease-out-expo) calc(var(--i) * 60ms) both,
-          fragCalma 1s var(--ease-out-expo) 2s forwards;
-      }
-      .js .hero-wrap.visible .badge {
-        animation:
-          badgeIn .45s var(--ease-out-expo) calc(var(--i) * 60ms + 260ms) both,
-          badgeOut .35s cubic-bezier(.5,0,.75,0) calc(1.4s + var(--bi, 0) * 95ms) forwards;
-      }
-      .js .frag-p {
-        transform: translate3d(calc(var(--mx, 0) * var(--z) * -9px), calc(var(--my, 0) * var(--z) * -7px), 0);
-        animation: fragFlota var(--fd, 12s) ease-in-out calc(var(--i) * -1.3s) infinite alternate;
-      }
-      .js .hero-wrap.visible .hero-paso { animation: pasoIn .9s var(--ease-out-expo) 2.05s both; }
-      .js .hero-wrap.visible .hero-paso-check svg { animation: checkDraw .6s var(--ease-out-expo) 2.4s both; }
-      .js .hero-wrap.visible .hero-resto { animation: restoIn .8s var(--ease-out-expo) .95s both; }
+      .ha-win { animation: haIn .55s var(--ease-out-expo) both; }
+      .ha-row { animation: haRow .5s var(--ease-out-expo) calc(.25s + var(--i) * 90ms) both; }
+      .ha-next::before { animation: haMark .5s var(--ease-out-expo) .85s both; }
+      .ha-next .ha-tag { animation: haTag .45s var(--ease-out-expo) .95s both; }
     }
-    @keyframes fragIn {
-      from { opacity: 0; filter: saturate(1) blur(8px); scale: .8; rotate: var(--r, 0deg); }
-      to   { opacity: var(--o); filter: saturate(1) blur(var(--b)); scale: 1; rotate: var(--r, 0deg); }
-    }
-    @keyframes fragCalma {
-      from { opacity: var(--o); filter: saturate(1) blur(var(--b)); rotate: var(--r, 0deg); }
-      to   { opacity: calc(var(--o) * .45); filter: saturate(.2) blur(var(--b)); rotate: 0deg; }
-    }
-    @keyframes badgeIn  { from { opacity: 0; scale: .4; } to { opacity: 1; scale: 1; } }
-    @keyframes badgeOut { from { opacity: 1; scale: 1; } to { opacity: 0; scale: 0; } }
-    @keyframes fragFlota { from { translate: 0 0; } to { translate: var(--fx, 6px) var(--fy, -10px); } }
-    @keyframes pasoIn    { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
-    @keyframes checkDraw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
-    @keyframes restoIn   { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-
-    /* Al bajar: el ruido se va hacia los costados y el titular se
-       queda un poco atrás. Reversible: al volver se acomoda. */
-    @supports (animation-timeline: view()) {
-      @media (prefers-reduced-motion: no-preference) {
-        .js .frag {
-          animation-name: fragAway; animation-duration: auto; animation-fill-mode: both;
-          animation-timing-function: linear;
-          animation-timeline: --hero; animation-range: exit 0% exit 75%;
-        }
-        .js .hero-copy {
-          animation-name: heroLift; animation-duration: auto; animation-fill-mode: both;
-          animation-timing-function: linear;
-          animation-timeline: --hero; animation-range: exit 0% exit 100%;
-        }
-      }
-    }
-    @keyframes fragAway { to { transform: translate(calc(var(--dx, 1) * 140px), -60px); opacity: 0; } }
-    @keyframes heroLift { to { transform: translateY(140px); opacity: .25; } }
-
-
-    /* ============================================================
-       TRANSICIÓN HERO → PROBLEMA
-
-       Franja propia, que no toca ni el hero ni #problema: una colina
-       borrosa crece desde abajo y funde el final del hero con el
-       arranque de la sección oscura.
-
-       Tres capas, de atrás hacia adelante:
-         1. el fondo de la franja, que es --bg —el mismo color del
-            body, así el borde de arriba no existe;
-         2. .hero-hill, la masa de Verde Yerba desenfocada;
-         3. .hero-seal, un velo que resuelve el último tramo en --dark
-            exacto. Sin él el blur deja la costura verdosa contra
-            #problema, porque el degradé de la colina y el de la franja
-            no cierran en el mismo valor.
-
-       El recorte de arriba lo disuelve una máscara sobre la franja:
-       con overflow:hidden a secas el blur se corta en línea recta y
-       se ve el canto.
-
-       La colina no se dispara: su tamaño está atado al scroll. El
-       progreso lo marca el usuario, así que si scrollea despacio crece
-       despacio y si vuelve para arriba se achica de nuevo.
-    ============================================================ */
-    .hero-transition {
-      position: relative;
-      height: 208px;
-      /* -1px: la franja lleva máscara, así que se compone en su propia
-         capa y el borde de abajo cae en medio píxel de dispositivo. Esa
-         fila a medio pintar deja pasar el fondo claro y se lee como un
-         hilo más claro contra #problema. Pisando 1px no queda fila
-         suelta —el último renglón de la franja ya es --dark puro—. */
-      margin-bottom: -1px;
-      overflow: hidden;   /* contiene el desborde lateral del blur */
-      background: var(--bg);
-      /* Rampa smootherstep, no una recta: una rampa lineal cambia de
-         pendiente de golpe donde arranca y donde termina, y ese quiebre
-         se ve como una línea horizontal (banda de Mach) sobre el fondo
-         claro. Con derivada cero en las dos puntas no hay canto. */
-      -webkit-mask-image: linear-gradient(180deg,
-        rgba(0,0,0,0)     0%,
-        rgba(0,0,0,.058)  6.8%,
-        rgba(0,0,0,.163) 10.2%,
-        rgba(0,0,0,.317) 13.6%,
-        rgba(0,0,0,.5)     17%,
-        rgba(0,0,0,.683) 20.4%,
-        rgba(0,0,0,.837) 23.8%,
-        rgba(0,0,0,.942) 27.2%,
-        rgba(0,0,0,.991) 30.6%,
-        #000               34%);
-              mask-image: linear-gradient(180deg,
-        rgba(0,0,0,0)     0%,
-        rgba(0,0,0,.058)  6.8%,
-        rgba(0,0,0,.163) 10.2%,
-        rgba(0,0,0,.317) 13.6%,
-        rgba(0,0,0,.5)     17%,
-        rgba(0,0,0,.683) 20.4%,
-        rgba(0,0,0,.837) 23.8%,
-        rgba(0,0,0,.942) 27.2%,
-        rgba(0,0,0,.991) 30.6%,
-        #000               34%);
-      view-timeline-name: --hero-hill;
-      view-timeline-axis: block;
-    }
-
-    /* La base y los flancos de la colina caen fuera de la franja: lo
-       único que entra en cuadro es el lomo.
-
-       El estado escrito acá es el FINAL, que es lo que se ve sin JS y
-       sin scroll-driven animations. El scrubbing lo pisa desde el
-       primer frame, así que no hay salto visible. */
-    .hero-hill {
-      position: absolute;
-      left: 6%; right: 6%; bottom: -118px;
-      height: 262px;
-      border-radius: 50% 50% 0 0 / 78% 78% 0 0;
-      background: var(--verde-yerba);
-      filter: blur(58px);
-      transform-origin: 50% 100%;
-      opacity: 1;
-      transform: none;
-      will-change: transform, opacity;
-    }
-
-    /* Sólo transform y opacity: nada que obligue a recalcular layout. */
-    @keyframes hero-hill-grow {
-      from { opacity: .12; transform: translateY(52px) scaleY(.55); }
-      to   { opacity: 1;   transform: translateY(0)    scaleY(1); }
-    }
-
-    /* Camino nativo, sin una línea de JS.
-
-       Ojo con el timing-function: acá no es una curva temporal, porque
-       no hay tiempo. Mapea progreso-de-scroll → progreso-de-animación,
-       que es exactamente el ease-out-quart sobre el input que se busca.
-
-       animation-duration va explícito en auto: el shorthand `animation`
-       lo dejaría en 0s y con un timeline de scroll eso no reproduce el
-       rango, salta. Por eso todo en longhand. */
-    @supports (animation-timeline: view()) {
-      .hero-hill {
-        animation-name: hero-hill-grow;
-        animation-duration: auto;
-        animation-fill-mode: both;
-        animation-timing-function: cubic-bezier(.165,.84,.44,1);
-        animation-timeline: --hero-hill;
-        /* Arranca recién cuando la franja está bien adentro del cuadro:
-           con cover 0% el ease-out se come casi todo el crecimiento
-           mientras la franja todavía asoma por el borde de abajo, y no
-           se llega a ver crecer nada. */
-        animation-range: cover 12% cover 62%;
-      }
-    }
-
-    /* El velo que cierra el tramo de abajo en --dark exacto.
-
-       Iba con tres paradas —0 al 34%, .58 al 70%, opaco al 94%— y ahí
-       estaba la banda: en los flancos, donde no hay verde que la tape,
-       el arranque brusco del alfa al 34% y el cambio de pendiente al
-       70% se leen como dos rectas horizontales cruzando la forma. No
-       era el blur recortándose; sacando el overflow:hidden la banda
-       seguía, y ocultando este velo desaparecía.
-
-       Ahora el alfa sigue un smootherstep (6t⁵-15t⁴+10t³): entra y
-       sale con derivada cero, así que no hay ningún punto del recorrido
-       donde el ojo pueda enganchar un canto. */
-    .hero-seal {
-      position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(180deg,
-        rgba(15,23,42,0)     22%,
-        rgba(15,23,42,.009) 29.5%,
-        rgba(15,23,42,.058)   37%,
-        rgba(15,23,42,.163) 44.5%,
-        rgba(15,23,42,.317)   52%,
-        rgba(15,23,42,.5)   59.5%,
-        rgba(15,23,42,.683)   67%,
-        rgba(15,23,42,.837) 74.5%,
-        rgba(15,23,42,.942)   82%,
-        rgba(15,23,42,.991) 89.5%,
-        var(--dark)           97%);
-    }
+    @keyframes haIn   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @keyframes haRow  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    @keyframes haMark { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
+    @keyframes haTag  { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
 
     /* ============================================================
        SECCIONES — comunes
@@ -1047,7 +841,7 @@
     }
 
     #explorar { background: var(--bg-white); }
-    .demo-frame {
+    .demo-frame, .hero-app {
       /* marca */
       --c-primary:       #0f6e5c;
       --c-primary-hover: #0c5a4b;
@@ -1091,7 +885,9 @@
       --c-sidebar-hover:  #0f5a4a;
       --c-sidebar-active: #14705c;
       --c-sidebar-ink:    #a9c9c1;
+    }
 
+    .demo-frame {
       margin-top: 40px; min-height: 560px;
       position: relative;
       display: flex; overflow: hidden;
@@ -2334,9 +2130,6 @@
       .footer-links { column-gap: 20px; row-gap: 0; }
       .footer-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; }
 
-      /* — teselas del hero: sin flotación infinita en teléfono — */
-      .js .frag-p { animation: none; }
-
       /* — story: puntos de paso bajo la tarjeta — */
       .story-dots { display: flex; }
     }
@@ -2346,14 +2139,6 @@
     .story-dots { gap: 0; }
     .story-dots span.on { transform: none; background: var(--teal); }
     .story-case { touch-action: pan-y; }
-
-    /* Pantallas bajas (iPhone SE, Android chico): la franja de teselas
-       se achica y el subtítulo se queda con la primera oración, así el
-       CTA entra en el primer pantallazo. */
-    @media (max-width: 768px) and (max-height: 700px) {
-      .hero-ruido { height: 112px; }
-      .hero-sub .sub-extra { display: none; }
-    }
 
     @media (max-width: 600px) {
       /* Réplicas de la story legibles: nada por debajo de 11px. */
@@ -2369,37 +2154,12 @@
       .rp-day small { font-size: 0; width: 6px; height: 6px; padding: 0; border-radius: 50%; background: #4f88cb; margin-top: 4px; }
       .rp-tabs { gap: 14px; }
 
-      /* La colina sin blur en teléfono: un degradé que se ve casi igual
-         y no le pide nada a la GPU. */
-      .hero-hill { filter: none; background: radial-gradient(60% 75% at 50% 100%, var(--verde-yerba) 0%, rgba(30,92,70,.55) 45%, rgba(30,92,70,0) 100%); }
     }
 
     @media (max-width: 580px) {
       .nav-inner { height: 60px; }
-      /* Franja más corta y blur proporcionalmente menor: a 360px de ancho
-         un blur de 58px se come la forma entera y queda una banda plana.
-         El velo también arranca más abajo, si no se traga el lomo. */
-      .hero-transition { height: 156px; }
-      .hero-hill { left: 1%; right: 1%; bottom: -84px; height: 186px; filter: blur(34px); }
-      .hero-seal {
-        background: linear-gradient(180deg,
-          rgba(15,23,42,0)     38%,
-          rgba(15,23,42,.009) 43.9%,
-          rgba(15,23,42,.058) 49.8%,
-          rgba(15,23,42,.163) 55.7%,
-          rgba(15,23,42,.317) 61.6%,
-          rgba(15,23,42,.5)   67.5%,
-          rgba(15,23,42,.683) 73.4%,
-          rgba(15,23,42,.837) 79.3%,
-          rgba(15,23,42,.942) 85.2%,
-          rgba(15,23,42,.991) 91.1%,
-          var(--dark)           97%);
-      }
       section { padding-left: 16px; padding-right: 16px; }
-      .hero-wrap { padding-left: 16px; padding-right: 16px; }
       .site-nav { padding: 0 16px; }
-      .hero-copy .cta-row { flex-direction: column; align-items: stretch; }
-      .hero-copy .cta-row a { justify-content: center; }
 
       .story-timeline { padding: 16px; }
       .story-person { padding: 16px; flex-wrap: wrap; }
@@ -2427,9 +2187,6 @@
       html { scroll-behavior: auto; }
       .js .reveal, .js .reveal.visible { opacity: 1; transform: none; transition: none; }
       .js .bridge-line.reveal::after { transform: none; transition: none; }
-      /* La colina no se ata al scroll: queda quieta en su estado final. */
-      .hero-hill { opacity: 1 !important; transform: none !important; animation: none !important; will-change: auto; }
-      .js .hero-h1 em::after { animation: none !important; transform: none !important; }
       .btn-main:hover, .btn-main-lg:hover, .nav-links a.nav-cta:hover,
       .btn-main:hover svg, .btn-main-lg:hover svg, .story-link:hover span, .story-end a:hover svg { transform: none; }
       .story-control::after, .story-enhanced .story-timeline li,
@@ -2498,6 +2255,7 @@
     <g id="i-pin"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></g>
     <g id="i-check"><path d="M5 12.5l4.5 4.5L19 7.5"/></g>
     <g id="i-x"><path d="M6 6l12 12M18 6 6 18"/></g>
+    <g id="i-arrow-down"><path d="M12 4v15M6 13l6 6 6-6"/></g>
   </defs>
 </svg>
 
@@ -2537,71 +2295,75 @@
 <main id="top">
 
 <!-- ================================================================
-     HERO — del ruido a la claridad. Los fragmentos son decorativos
-     (aria-hidden): lo que se lee es el titular, el próximo paso y los
-     CTAs. --x/--rx/--y ubican cada uno en escritorio, --xm/--rxm/--ym
-     en teléfono; --dx es hacia dónde se va al scrollear.
+     HERO — el producto abre la página: titular, subtítulo, CTA y línea
+     de confianza en el primer pantallazo; debajo asoma "Mi día" con
+     datos de ejemplo. Sin imágenes: todo es HTML/CSS.
 ================================================================ -->
-<div class="hero-wrap">
-  <div class="hero-ruido" id="heroRuido" aria-hidden="true">
-    <div class="frag en-movil" data-z="3" style="--i:0;--x:9%;--y:20%;--xm:4%;--ym:20px;--r:-4deg;--dx:-1;--bi:1;--fd:11s;--fx:5px;--fy:-9px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chat"/></svg><b class="badge">3</b></span></div></div></div>
-    <div class="frag en-movil" data-z="3" style="--i:1;--x:15%;--y:52%;--xt:9%;--xm:26%;--ym:78px;--r:3deg;--dx:-1;--bi:0;--fd:13s;--fx:6px;--fy:-7px"><div class="frag-p"><div class="frag-c"><span class="tile is-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-phone"/></svg><b class="badge">1</b></span></div></div></div>
-    <div class="frag en-movil" data-z="2" style="--i:2;--x:4%;--y:38%;--xm:-12px;--ym:92px;--r:-2deg;--dx:-1;--fd:15s;--fx:5px;--fy:-8px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-sheet"/></svg></span></div></div></div>
-    <div class="frag en-movil" data-z="2" style="--i:3;--x:12%;--y:67%;--xt:8%;--yt:76%;--xm:46%;--ym:14px;--r:2deg;--dx:-1;--bi:4;--fd:12s;--fx:-5px;--fy:-9px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-mail"/></svg><b class="badge">12</b></span></div></div></div>
-    <div class="frag" data-z="1" style="--i:4;--x:24%;--y:8%;--r:-3deg;--dx:-1;--fd:16s;--fx:4px;--fy:-7px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-note"/></svg></span></div></div></div>
-    <div class="frag" data-z="1" style="--i:5;--x:3%;--y:70%;--r:2deg;--dx:-1;--bi:6;--fd:14s;--fx:6px;--fy:-6px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bell"/></svg><b class="badge">5</b></span></div></div></div>
-    <div class="frag en-movil" data-z="3" style="--i:6;--rx:10%;--y:24%;--rxm:22%;--ym:70px;--r:4deg;--dx:1;--bi:3;--fd:10s;--fx:-6px;--fy:-8px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-calendar"/></svg><b class="badge">2</b></span></div></div></div>
-    <div class="frag en-movil" data-z="2" style="--i:7;--rx:17%;--y:58%;--rxt:9%;--rxm:-10px;--ym:100px;--r:-3deg;--dx:1;--bi:5;--fd:13s;--fx:-5px;--fy:-9px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-people"/></svg><b class="badge">4</b></span></div></div></div>
-    <div class="frag" data-z="1" style="--i:8;--rx:27%;--y:7%;--r:3deg;--dx:1;--fd:15s;--fx:-4px;--fy:-8px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg></span></div></div></div>
-    <div class="frag en-movil" data-z="3" style="--i:9;--rx:4%;--y:44%;--rxm:3%;--ym:18px;--r:-2deg;--dx:1;--bi:2;--fd:12s;--fx:-6px;--fy:-7px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chat"/></svg><b class="badge">7</b></span></div></div></div>
-    <div class="frag" data-z="1" style="--i:10;--rx:12%;--y:82%;--r:2deg;--dx:1;--fd:14s;--fx:-5px;--fy:-6px"><div class="frag-p"><div class="frag-c"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-search"/></svg></span></div></div></div>
-  </div>
-
+<div class="hero">
   <div class="hero-copy">
-    <h1 class="hero-h1" data-split data-split-now>
-      Entrás y ya<br>sabés <em>qué hacer.</em>
-    </h1>
+    <h1 class="hero-h1">Abrís LeadEra y sabés <span class="hero-acento">a&nbsp;quién llamar&nbsp;hoy.</span></h1>
+    <p class="hero-sub">El CRM para agentes inmobiliarios de Argentina: tus contactos, seguimientos y visitas en un solo lugar.</p>
 
-    <p class="hero-paso">
-      <span class="hero-paso-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
-      <span class="hero-paso-txt"><span class="hero-paso-k">Tu próximo paso</span><span class="hero-paso-t">Llamar a Martina Beltrán · hoy 10:00</span></span>
-    </p>
-
-    <div class="hero-resto">
-      <p class="hero-sub">
-        Tus contactos, tus seguimientos y tus próximas visitas, en un solo lugar.<span class="sub-extra"> Abrí LeadEra y encontrá el próximo paso para cada oportunidad.</span>
-      </p>
-
-      <div class="cta-row">
-        <a href="https://app.leadera.com.ar/signup" class="btn-main">
-          Probar gratis 14 días
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-            <path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a href="#como-funciona" class="btn-ghost">
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-            <polygon points="3.5,2 12.5,7.5 3.5,13" fill="currentColor"/>
-          </svg>
-          Ver cómo funciona
-        </a>
+    <div class="hero-actions">
+      <a href="https://app.leadera.com.ar/signup" class="btn-main btn-hero">
+        Probar gratis 14 días
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+          <path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <div class="hero-links">
+        <a href="#explorar" class="hero-link">Ver la demo<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+        <a href="https://wa.me/542235827465?text=Hola!%20Vi%20la%20landing%20de%20LeadEra%20y%20tengo%20una%20consulta." class="hero-link" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a>
       </div>
-      <p class="trial-note">14 días para conocerlo. Sin tarjeta.</p>
-
-      <p class="hero-meta">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pin"/></svg><span><strong>Hecho en Mar del Plata.</strong> Hablás directo con quien lo construyó: <a href="https://wa.me/542235827465?text=Hola!%20Vi%20la%20landing%20de%20LeadEra%20y%20tengo%20una%20consulta." target="_blank" rel="noopener noreferrer">WhatsApp</a></span></span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg>Sincroniza con Google Calendar</span>
-      </p>
     </div>
-  </div>
-</div>
 
-<!-- ================================================================
-     TRANSICIÓN HERO → PROBLEMA
-================================================================ -->
-<div class="hero-transition" aria-hidden="true">
-  <div class="hero-hill"></div>
-  <div class="hero-seal"></div>
+    <p class="hero-trust"><span>14 días gratis ·</span> <span>Sin tarjeta ·</span> <span>Hecho en Mar del Plata ·</span> <span>Sincroniza con Google Calendar</span></p>
+  </div>
+
+  <figure class="hero-app" role="img" aria-label="Pantalla Mi día de LeadEra, con datos de ejemplo: el próximo paso es llamar a Martina Beltrán hoy a las 10:00.">
+    <div class="ha-win">
+      <div class="ha-bar"><img src="leadera-logo-icon.png" alt="" width="317" height="327">Mi día</div>
+      <div class="ha-body">
+        <div class="ha-head"><span class="dm-h1">Hoy te quedan <span>11</span> tareas</span></div>
+        <div class="ha-list">
+          <div class="ha-row ha-next" style="--i:0">
+            <span class="dm-av caliente">MB</span>
+            <span class="dm-body">
+              <span class="ha-tag"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg>Tu próximo paso</span>
+              <span class="dm-name">Llamar a Martina Beltrán</span>
+              <span class="dm-ctx">Consultó por un depto en el Centro</span>
+            </span>
+            <span class="ha-time">hoy 10:00</span>
+          </div>
+          <div class="ha-row" style="--i:1">
+            <span class="dm-av tibio">CV</span>
+            <span class="dm-body">
+              <span class="dm-name">Seguimiento a Carolina Vega</span>
+              <span class="dm-ctx">223 566-9021 · hace 8 días</span>
+            </span>
+            <span class="ha-time">11:30</span>
+          </div>
+          <div class="ha-row" style="--i:2">
+            <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg></span>
+            <span class="dm-body">
+              <span class="dm-name">Visita a Alsina 3300</span>
+              <span class="dm-ctx">Departamento · Centro</span>
+            </span>
+            <span class="ha-time">16:00</span>
+          </div>
+          <div class="ha-row" style="--i:3">
+            <span class="dm-av nuevo">IS</span>
+            <span class="dm-body">
+              <span class="dm-name">Ignacio Sosa</span>
+              <span class="dm-ctx">Todavía sin contactar</span>
+            </span>
+            <span class="bdg nuevo sm">Nuevo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption class="hero-nota">Datos de ejemplo</figcaption>
+  </figure>
 </div>
 
 <!-- ================================================================
@@ -3460,7 +3222,7 @@
   ---------------------------------------------------------------- */
   if (!reduceMotion) document.querySelectorAll('[data-split]').forEach(el => splitWords(el));
 
-  const reveals = document.querySelectorAll('.reveal, [data-split-now], .hero-wrap');
+  const reveals = document.querySelectorAll('.reveal');
   if (reduceMotion || !('IntersectionObserver' in window)) {
     reveals.forEach(el => el.classList.add('visible'));
   } else {
@@ -3481,32 +3243,6 @@
     reveals.forEach(el => { entrar.observe(el); salir.observe(el); });
   }
 
-
-  /* ----------------------------------------------------------------
-     Hero: el ruido se corre apenas con el mouse, según su profundidad
-     (--z). El JS sólo escribe --mx/--my (-1…1) sobre el contenedor,
-     suavizados con lerp; el desplazamiento lo resuelve el CSS. Sólo
-     con puntero fino, sin reduced motion y mientras el hero se ve.
-  ---------------------------------------------------------------- */
-  (() => {
-    const ruido = document.getElementById('heroRuido');
-    if (!ruido || reduceMotion || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    let tx = 0, ty = 0, x = 0, y = 0, corriendo = false, enVista = true;
-    const paso = () => {
-      x += (tx - x) * .08; y += (ty - y) * .08;
-      ruido.style.setProperty('--mx', x.toFixed(4));
-      ruido.style.setProperty('--my', y.toFixed(4));
-      if (Math.abs(tx - x) > .001 || Math.abs(ty - y) > .001) requestAnimationFrame(paso);
-      else corriendo = false;
-    };
-    addEventListener('pointermove', (e) => {
-      if (!enVista) return;
-      tx = e.clientX / innerWidth * 2 - 1;
-      ty = e.clientY / innerHeight * 2 - 1;
-      if (!corriendo) { corriendo = true; requestAnimationFrame(paso); }
-    }, { passive: true });
-    new IntersectionObserver(([e]) => { enVista = e.isIntersecting; }).observe(ruido.parentElement);
-  })();
 
   /* ----------------------------------------------------------------
      Scroll suave con inercia (rueda del mouse y teclado).
@@ -3589,39 +3325,6 @@
     }
     return { activo, ir };
   })();
-
-  /* ----------------------------------------------------------------
-     Colina hero → problema — fallback de scroll-linked
-
-     Si el navegador entiende animation-timeline (Chrome, Edge) el
-     efecto ya está resuelto en CSS y esto no corre. Safari todavía no,
-     así que ahí se replica el mismo scrub a mano.
-  ---------------------------------------------------------------- */
-  const hillStrip = document.querySelector('.hero-transition');
-  const hill      = document.querySelector('.hero-hill');
-  const nativeScrollTimeline = window.CSS && CSS.supports('animation-timeline: view()');
-
-  if (hill && hillStrip && !reduceMotion && !nativeScrollTimeline) {
-    /* Mismo tramo que el animation-range de arriba: cover 12% → 62%. */
-    const FROM = .12, TO = .62;
-    const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
-    let queued = false;
-
-    const paint = () => {
-      queued = false;
-      const r  = hillStrip.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const raw = (vh - r.top) / (vh + r.height);
-      const p   = Math.min(Math.max((raw - FROM) / (TO - FROM), 0), 1);
-      const e   = easeOutQuart(p);
-      hill.style.opacity   = (.12 + .88 * e).toFixed(3);
-      hill.style.transform = 'translateY(' + (52 - 52 * e).toFixed(2) + 'px) scaleY(' + (.55 + .45 * e).toFixed(4) + ')';
-    };
-    const schedule = () => { if (!queued) { queued = true; requestAnimationFrame(paint); } };
-    addEventListener('scroll', schedule, { passive: true });
-    addEventListener('resize', schedule, { passive: true });
-    paint();
-  }
 
   /* ----------------------------------------------------------------
      Precios: equivalente aproximado en pesos.
@@ -3772,7 +3475,7 @@
       { rootMargin: '0px 0px -10% 0px' }).observe(cta);
 
     // En teléfono el dock no compite con los botones del hero.
-    const hero = document.querySelector('.hero-wrap');
+    const hero = document.querySelector('.hero');
     if (hero) new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; decidir(); },
       { rootMargin: '0px 0px -35% 0px' }).observe(hero);
 
