@@ -1716,10 +1716,6 @@
       color: var(--text); font-variant-numeric: tabular-nums;
     }
     .plan-period { font-size: var(--fs-sm); color: var(--text-muted); }
-    /* El equivalente en pesos: aproximado y dicho así. Sin JS no se
-       muestra (no hay cotización para calcularlo). */
-    .plan-ars { flex-basis: 100%; font-size: var(--fs-sm); color: var(--text-2); font-variant-numeric: tabular-nums; }
-    .plan-ars[hidden] { display: none; }
     .plan-feats {
       list-style: none; display: flex; flex-direction: column; gap: 10px;
       padding-top: 20px; border-top: 1px solid var(--border-faint);
@@ -2329,7 +2325,7 @@
       </div>
     </div>
 
-    <p class="hero-trust"><span>14 días gratis ·</span> <span>Sin tarjeta ·</span> <span>Hecho en Mar del Plata ·</span> <span>Sincroniza con Google Calendar</span></p>
+    <p class="hero-trust"><span>14 días gratis ·</span> <span>Sin tarjeta ·</span> <span>Sin límite de leads ·</span> <span>Hecho en Mar del Plata ·</span> <span>Sincroniza con Google Calendar</span></p>
   </div>
 
   <figure class="hero-app" role="img" aria-label="Pantalla Mi día de LeadEra, con datos de ejemplo: el próximo paso es llamar a Martina Beltrán hoy a las 10:00.">
@@ -2993,12 +2989,12 @@
 <!-- ================================================================
      PRECIOS — con "Empezá en tres pasos" adelante de los planes
 ================================================================ -->
-<!-- Espejo de DETALLE_PLAN en leadera-v2 (src/lib/api/suscripcion.ts) y de los precios en USD de planes_precio. Si cambian allá, actualizar acá. -->
+<!-- Actualizado 03/11/2026. Espejo de DETALLE_PLAN en leadera-v2 (src/lib/api/suscripcion.ts) y de los precios en dólares de planes_precio. Ya no muestra pesos, así que no depende de la cotización. Revisar ambos al cambiar planes. -->
 <section id="precios" aria-labelledby="precios-titulo" data-martina="3">
   <div class="inner">
     <div class="precios-head">
       <h2 class="section-h2 reveal" id="precios-titulo" data-split>Empezá en tres pasos.</h2>
-      <p class="section-lead reveal d1">14 días gratis para probar, sin tarjeta. Después, elegí el plan que le sirve a tu inmobiliaria.</p>
+      <p class="section-lead reveal d1">14 días gratis para probar, sin tarjeta. Después, elegí el plan que le sirve a tu inmobiliaria. <strong>En todos los planes: leads, propiedades y operaciones sin límite.</strong></p>
     </div>
 
     <ol class="pasos reveal d1">
@@ -3011,10 +3007,9 @@
       <article class="plan reveal d1" aria-labelledby="plan-solo">
         <h3 id="plan-solo">Solo</h3>
         <p class="plan-desc">Para el agente que trabaja por su cuenta.</p>
-        <p class="plan-price"><span class="plan-amount">US$ 15</span> <span class="plan-period">por mes</span><span class="plan-ars" data-usd="15" hidden></span></p>
+        <p class="plan-price"><span class="plan-amount">US$ 15</span> <span class="plan-period">por mes</span></p>
         <ul class="plan-feats">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>1 agente + hasta 2 asistentes</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hasta 200 leads, 60 propiedades y 100 operaciones activas</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Agenda sincronizada con Google Calendar</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Matching automático entre compradores y propiedades</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reporte semanal por email para arrancar la semana ordenado</li>
@@ -3026,10 +3021,9 @@
         <span class="plan-badge"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-star"/></svg>Recomendado</span>
         <h3 id="plan-chica">Agencia Chica</h3>
         <p class="plan-desc">Para el equipo que recién arranca.</p>
-        <p class="plan-price"><span class="plan-amount">US$ 25</span> <span class="plan-period">por mes</span><span class="plan-ars" data-usd="25" hidden></span></p>
+        <p class="plan-price"><span class="plan-amount">US$ 25</span> <span class="plan-period">por mes</span></p>
         <ul class="plan-feats">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hasta 5 agentes, con hasta 2 asistentes cada uno</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hasta 1.000 leads, 300 propiedades y 300 operaciones activas</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Estadísticas de rendimiento por agente</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Cada agente con su propia carga de trabajo, ordenada</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reporte semanal por email para arrancar la semana ordenado</li>
@@ -3040,13 +3034,11 @@
       <article class="plan reveal d2" aria-labelledby="plan-grande">
         <h3 id="plan-grande">Agencia Grande</h3>
         <p class="plan-desc">Para la inmobiliaria con varios agentes.</p>
-        <p class="plan-price"><span class="plan-amount">US$ 40</span> <span class="plan-period">por mes</span><span class="plan-ars" data-usd="40" hidden></span></p>
+        <p class="plan-price"><span class="plan-amount">US$ 40</span> <span class="plan-period">por mes</span></p>
         <ul class="plan-feats">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Agentes y asistentes sin límite</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Leads, propiedades y operaciones sin límite</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Todo lo de Agencia Chica</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Soporte prioritario</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Pensado para equipos con alto volumen de operaciones</li>
         </ul>
         <a href="https://app.leadera.com.ar/signup" class="btn-ghost" aria-describedby="plan-grande">Empezar prueba gratis</a>
       </article>
@@ -3054,7 +3046,6 @@
 
     <div class="plan-notes reveal">
       <p><strong>Pagás en pesos, por transferencia.</strong> Tomamos el dólar MEP de esa semana y cancelás cuando quieras.</p>
-      <p id="arsNota" hidden>Los montos en pesos son aproximados.</p>
       <p>¿Preferís que te lo mostremos? <a href="https://wa.me/542235827465?text=Hola!%20Vi%20la%20landing%20de%20LeadEra%20y%20quiero%20ver%20una%20demo." target="_blank" rel="noopener noreferrer">Coordiná una demo de 15 minutos</a>.</p>
     </div>
 
@@ -3088,6 +3079,7 @@
     <details class="reveal"><summary>¿Necesito una demo para empezar?</summary><p class="faq-a">No. Podés crear tu cuenta y probar LeadEra 14 días sin tarjeta. Si preferís conocerlo con acompañamiento, <a href="https://wa.me/542235827465?text=Hola!%20Quiero%20agendar%20una%20demo%20de%20LeadEra" target="_blank" rel="noopener noreferrer">coordiná una demo por WhatsApp</a>.</p></details>
     <details class="reveal"><summary>¿Puedo traer mis contactos de Excel?</summary><p class="faq-a">Sí. Podés importarlos desde Excel o cargarlos uno a uno, y organizar su historial y sus próximos seguimientos en LeadEra.</p></details>
     <details class="reveal"><summary>¿Sirve si trabajo por mi cuenta?</summary><p class="faq-a">Sí. El plan Solo contempla un agente y hasta dos asistentes. También hay planes para equipos de hasta cinco agentes y para agencias más grandes.</p></details>
+    <details class="reveal"><summary>¿Hay un máximo de leads, propiedades u operaciones?</summary><p class="faq-a">No. En todos los planes podés cargar leads, propiedades y operaciones sin límite. Los planes se diferencian por la cantidad de agentes y asistentes, las estadísticas por agente y el soporte.</p></details>
     <details class="reveal"><summary>Tengo un equipo. ¿Qué veo como dueño?</summary><p class="faq-a">Cada agente trabaja con su propia carga de trabajo, ordenada, y vos ves las estadísticas de rendimiento de cada uno (desde el plan Agencia Chica). Además, todos los planes incluyen un reporte semanal por email para arrancar la semana ordenado.</p></details>
     <details class="reveal"><summary>¿Cómo se paga?</summary><p class="faq-a">Los planes se expresan en dólares y se pagan en pesos por transferencia, al dólar MEP, que actualizamos una vez por semana. Podés cancelar cuando quieras.</p></details>
   </div>
@@ -3170,14 +3162,6 @@
 </footer>
 
 <script>
-  /* ----------------------------------------------------------------
-     Valor de referencia del dólar MEP para mostrar el equivalente
-     aproximado en pesos al lado de cada precio. Es el ÚNICO lugar que
-     hay que tocar cuando cambia la cotización.
-     TODO: actualizar con la cotización vigente.
-  ---------------------------------------------------------------- */
-  const DOLAR_MEP = 1500;
-
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ----------------------------------------------------------------
@@ -3354,22 +3338,6 @@
     }
     return { activo, ir };
   })();
-
-  /* ----------------------------------------------------------------
-     Precios: equivalente aproximado en pesos.
-  ---------------------------------------------------------------- */
-  if (DOLAR_MEP > 0) {
-    document.querySelectorAll('.plan-ars[data-usd]').forEach(el => {
-      const pesos = Math.round(+el.dataset.usd * DOLAR_MEP / 100) * 100;
-      el.textContent = `Aprox. $ ${pesos.toLocaleString('es-AR')} por mes`;
-      el.hidden = false;
-    });
-    const nota = document.getElementById('arsNota');
-    if (nota) {
-      nota.textContent = `Los montos en pesos son aproximados, con un dólar MEP de referencia de $ ${DOLAR_MEP.toLocaleString('es-AR')}.`;
-      nota.hidden = false;
-    }
-  }
 
   /* ----------------------------------------------------------------
      Historia de Martina: fechas del historial y calendario de
