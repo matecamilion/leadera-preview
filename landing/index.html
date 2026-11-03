@@ -840,7 +840,7 @@
       overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
     }
 
-    #explorar { background: var(--bg-white); }
+    #explorar, #flyers { background: var(--bg-white); }
     .demo-frame, .hero-app {
       /* marca */
       --c-primary:       #0f6e5c;
@@ -1680,10 +1680,16 @@
     .pasos h3 { font-size: var(--fs-md); font-weight: 700; letter-spacing: -.01em; margin-bottom: 4px; }
     .pasos p { font-size: var(--fs-sm); color: var(--text-2); line-height: 1.6; }
 
-    .plan-grid {
+    .plan-grid, .flyer-grid {
       display: grid; grid-template-columns: repeat(3,1fr);
       gap: 18px; margin-top: 48px; align-items: stretch;
     }
+    /* Flyers de ejemplo: 4:5 a pelo, con la leyenda abajo (.plan-desc). */
+    .flyer { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .flyer img { width: 100%; height: auto; aspect-ratio: 4 / 5; border-radius: var(--r-md); box-shadow: var(--shadow-md); }
+    /* Pegada a la demo (también blanca): sólo queda el padding de abajo de la demo. */
+    #flyers { padding-top: 0; }
+    #flyers .plan-feats li { text-align: left; }
     .plan {
       position: relative; min-width: 0;
       display: flex; flex-direction: column;
@@ -2123,18 +2129,20 @@
          puede medir varios pantallazos). */
       .kb-modal { position: fixed; z-index: var(--z-modal); }
 
-      /* — precios: carrusel con snap, arranca en la recomendada — */
-      .plan-grid {
+      /* — precios y flyers: carrusel con snap (precios arranca en la recomendada) — */
+      .plan-grid, .flyer-grid {
         display: flex; gap: 14px; max-width: none;
         margin: 36px -16px 0; padding: 18px 16px 6px;
         overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px;
         overscroll-behavior-x: contain; scrollbar-width: none;
       }
-      .plan-grid::-webkit-scrollbar { display: none; }
+      .plan-grid::-webkit-scrollbar, .flyer-grid::-webkit-scrollbar { display: none; }
       .plan { flex: 0 0 min(84%, 360px); scroll-snap-align: center; }
+      .flyer { flex: 0 0 min(72%, 300px); scroll-snap-align: center; }
+      .flyer-grid { padding-bottom: 32px; } /* aire para que no se corte la sombra */
       /* En el carrusel las tarjetas no entran con reveal: las de los
          costados tienen que asomar desde el primer momento. */
-      .js .plan.reveal, .js .plan.featured.reveal { opacity: 1; transform: none; transition: border-color .22s, box-shadow .22s; }
+      .js .plan.reveal, .js .plan.featured.reveal, .js .flyer.reveal { opacity: 1; transform: none; transition: border-color .22s, box-shadow .22s; }
       .plan-dots { display: flex; justify-content: center; gap: 4px; margin-top: 10px; }
       .plan-dots button {
         width: 44px; height: 44px; border: 0; background: none; cursor: pointer;
@@ -2957,6 +2965,45 @@
           <path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     FLYERS — la función "Flyers de propiedades". Imágenes de ejemplo
+     (datos inventados) en flyers/. Mismo carrusel de snap que precios
+     en teléfono. Sin puntos: se navega por scroll o con el teclado.
+================================================================ -->
+<section id="flyers" aria-labelledby="flyers-titulo" data-martina="2">
+  <div class="inner">
+    <div class="demo-head">
+      <h2 class="section-h2 reveal" id="flyers-titulo" data-split>Flyers de tus propiedades, listos para Instagram.</h2>
+      <p class="section-lead reveal d1">Elegí la propiedad y una de tres plantillas, y descargá una pieza con tus fotos, tus colores y tu firma.</p>
+    </div>
+
+    <div class="flyer-grid" role="region" aria-label="Ejemplos de flyers" tabindex="0">
+      <figure class="flyer reveal d1">
+        <img src="flyers/flyer-editorial-540.webp" srcset="flyers/flyer-editorial-540.webp 540w, flyers/flyer-editorial-1080.webp 1080w" sizes="(max-width: 768px) 72vw, 33vw" width="1080" height="1350" alt="Flyer de ejemplo con la plantilla Editorial: chalet moderno de dos plantas al atardecer, con cuatro fotos más del interior, cuatro datos de la propiedad (4 ambientes, 2 baños, 70 m² cubiertos, parque) y el precio USD 120.000 en una franja dorada." loading="lazy" decoding="async">
+        <figcaption class="plan-desc">Editorial</figcaption>
+      </figure>
+      <figure class="flyer reveal d2">
+        <img src="flyers/flyer-impacto-540.webp" srcset="flyers/flyer-impacto-540.webp 540w, flyers/flyer-impacto-1080.webp 1080w" sizes="(max-width: 768px) 72vw, 33vw" width="1080" height="1350" alt="Flyer de ejemplo con la plantilla Impacto: título grande «Chalet de estilo» sobre fondo crema, foto del frente de la casa y dos fotos interiores (cocina y living), cuatro datos de la propiedad y el precio USD 120.000 en un bloque dorado con el nombre del agente." loading="lazy" decoding="async">
+        <figcaption class="plan-desc">Impacto</figcaption>
+      </figure>
+      <figure class="flyer reveal d3">
+        <img src="flyers/flyer-moderno-540.webp" srcset="flyers/flyer-moderno-540.webp 540w, flyers/flyer-moderno-1080.webp 1080w" sizes="(max-width: 768px) 72vw, 33vw" width="1080" height="1350" alt="Flyer de ejemplo con la plantilla Moderno: título «Chalet de estilo» a la izquierda y los datos de la propiedad con íconos a la derecha, foto del frente de la casa con dos fotos interiores, y el precio USD 120.000 abajo con la firma del agente." loading="lazy" decoding="async">
+        <figcaption class="plan-desc">Moderno</figcaption>
+      </figure>
+    </div>
+
+    <div class="plan-notes reveal">
+      <ul class="plan-feats">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Tres plantillas para elegir.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Editás textos, datos, fotos y colores.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Formato 1080×1350, pensado para Instagram.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Además, ficha en PDF de cada propiedad para mandar a compradores o colegas.</li>
+      </ul>
+      <p><a href="https://app.leadera.com.ar/signup">Probalo gratis 14 días <svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
     </div>
   </div>
 </section>
