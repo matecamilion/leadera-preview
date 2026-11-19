@@ -803,18 +803,66 @@
     .un-dia, #flyers { background: var(--bg-white); }
 
     /* ---- Un día con LeadEra: los cuatro momentos ----
-       Por ahora apilados arriba de la demo; la sincronización con el
-       scroll llega después. */
+       Debajo de 1024px: los cuatro apilados arriba de la demo (los
+       botones están deshabilitados: no hacen nada). Desde 1024px: dos
+       columnas, momentos a la izquierda y demo fija a la derecha; el
+       script de la sección habilita los botones y resalta el activo. */
     .dia-pasos {
       list-style: none; display: grid; gap: 20px 32px; margin: 36px 0 40px;
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
     }
     .dia-pasos li { padding-top: 14px; border-top: 2px solid var(--border); }
-    .dia-hora { display: block; font-size: var(--fs-sm); font-weight: 700; color: var(--teal); font-variant-numeric: tabular-nums; }
-    .dia-h3 { margin: 6px 0 4px; font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; color: var(--text); }
-    .dia-pasos p { font-size: var(--fs-sm); line-height: 1.55; color: var(--text-2); }
+    .dia-pasos button {
+      display: block; width: 100%; padding: 0; border: 0; background: none;
+      font: inherit; color: inherit; text-align: left; cursor: default;
+    }
+    .dia-pasos button:focus-visible { outline: 2px solid var(--teal); outline-offset: 8px; border-radius: 6px; }
+    .dia-hora { display: block; font-size: var(--fs-sm); font-weight: 600; color: var(--text-2); }
+    .dia-hora time {
+      display: inline-block; padding: 2px 9px; border-radius: 999px; margin-right: 2px;
+      background: var(--teal-faint); color: var(--teal-darker); font-weight: 700; font-variant-numeric: tabular-nums;
+    }
+    .dia-h3 { display: block; margin: 8px 0 4px; font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; color: var(--text); }
+    .dia-txt { display: block; font-size: var(--fs-sm); line-height: 1.55; color: var(--text-2); }
     .dia-ancla { display: block; scroll-margin-top: 88px; }
     .dia-nota { margin-bottom: 10px; font-size: var(--fs-xs); font-weight: 600; color: var(--text-muted); }
+    .dia-volver {
+      min-height: 44px; padding: 0 4px; border: 0; background: none; cursor: pointer;
+      font: 600 15px/1 var(--font); color: var(--teal);
+      text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(var(--teal-rgb),.4);
+    }
+    .dia-volver:hover { text-decoration-color: var(--teal); }
+    .dia-volver[hidden] { display: none; }
+
+    @media (min-width: 1024px) {
+      .dia-grid {
+        display: grid; align-items: start; margin-top: 8px;
+        grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); gap: clamp(32px, 4vw, 64px);
+      }
+      .dia-guia { display: flex; flex-direction: column; }
+      .dia-pasos { display: block; margin: 0; }
+      .dia-pasos li { display: flex; align-items: center; min-height: 50vh; padding-top: 0; border-top: 0; }
+      .dia-volver { position: sticky; bottom: 28px; align-self: flex-start; }
+
+      /* El marco queda fijo debajo del nav con alto fijo: no hay saltos
+         (CLS 0) al cambiar de panel. El sticky vive acá afuera porque
+         .demo-frame tiene overflow. */
+      .dia-sticky { position: sticky; top: 92px; }
+      .dia-sticky .demo-frame { margin-top: 0; min-height: 0; height: min(620px, calc(100vh - 140px)); }
+      .dia-sticky .demo-main { max-height: none; }
+
+      /* Con la sincronización activa: el momento actual se marca con el
+         chip teal y más peso; los demás se apagan en color (siguen en AA). */
+      .dia-sync .dia-pasos button { cursor: pointer; }
+      .dia-sync .dia-pasos button[aria-current="step"] .dia-hora time { background: var(--teal); color: #fff; }
+      .dia-sync .dia-pasos button[aria-current="step"] .dia-h3 { font-weight: 800; }
+      .dia-sync .dia-pasos button:not([aria-current]) .dia-h3 { font-weight: 600; color: var(--text-muted); }
+      .dia-sync .dia-pasos button:not([aria-current]) .dia-txt,
+      .dia-sync .dia-pasos button:not([aria-current]) .dia-hora { color: var(--text-muted); }
+    }
+    @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+      .dia-pasos .dia-h3, .dia-pasos .dia-txt, .dia-pasos .dia-hora, .dia-pasos .dia-hora time { transition: color .25s, background-color .25s, font-weight .25s; }
+    }
     .demo-frame, .hero-dev, .avisos {
       /* marca */
       --c-primary:       #0f6e5c;
@@ -2371,544 +2419,555 @@
       <p class="section-lead reveal d1">Retomá cada conversación donde la dejaste. Tocá la demo cuando quieras: es interactiva.</p>
     </div>
 
-    <ol class="dia-pasos">
-      <li data-paso="1"><span class="dia-hora"><time>9:05</time> · Priorizá</span><h3 class="dia-h3">Sabés a quién retomar.</h3><p>Mi día reúne los leads que necesitan atención.</p></li>
-      <li data-paso="2"><span class="dia-hora"><time>9:50</time> · Recordá</span><h3 class="dia-h3">La conversación sigue acá.</h3><p>Revisás qué hablaron y qué opciones le interesaron.</p></li>
-      <li data-paso="3"><span class="dia-hora"><time>12:15</time> · Conectá</span><h3 class="dia-h3">Una propiedad. Una coincidencia.</h3><p>Su búsqueda aparece relacionada con Alsina 3300.</p></li>
-      <li data-paso="4"><span class="dia-hora"><time>16:00</time> · Organizá</span><h3 class="dia-h3">Dale lugar al próximo paso.</h3><p>Desde Calendario podés agendar la visita y elegir propiedad, lead, fecha y hora.</p></li>
-    </ol>
 
     <!-- Ancla vieja de la demo: puede estar en mensajes o anuncios ya enviados. -->
     <span id="explorar" class="dia-ancla"></span>
-    <p class="dia-nota">Datos de ejemplo</p>
-    <div class="demo-frame reveal d2">
-      <!-- teléfono: el sidebar se reemplaza por un desplegable -->
-      <div class="demo-picker">
-        <img src="leadera-logo-icon.svg" alt="" width="317" height="327">
-        <label class="sr-only" for="demoPicker">Sección del demo</label>
-        <select id="demoPicker">
-            <option value="midia">Mi día</option>
-            <option value="leads">Leads</option>
-            <option value="propiedades">Propiedades</option>
-            <option value="operaciones">Operaciones</option>
-            <option value="calendario">Calendario</option>
-        </select>
+
+    <!-- Desde 1024px: momentos a la izquierda, demo fija a la derecha. El sticky
+         va en .dia-sticky, FUERA de .demo-frame (que tiene overflow). -->
+    <div class="dia-grid">
+      <div class="dia-guia">
+      <ol class="dia-pasos">
+        <li data-paso="1"><button type="button" disabled><span class="dia-hora"><time>9:05</time> · Priorizá</span><span class="dia-h3">Sabés a quién retomar.</span><span class="dia-txt">Mi día reúne los leads que necesitan atención.</span></button></li>
+        <li data-paso="2"><button type="button" disabled><span class="dia-hora"><time>9:50</time> · Recordá</span><span class="dia-h3">La conversación sigue acá.</span><span class="dia-txt">Revisás qué hablaron y qué opciones le interesaron.</span></button></li>
+        <li data-paso="3"><button type="button" disabled><span class="dia-hora"><time>12:15</time> · Conectá</span><span class="dia-h3">Una propiedad. Una coincidencia.</span><span class="dia-txt">Su búsqueda aparece relacionada con Alsina 3300.</span></button></li>
+        <li data-paso="4"><button type="button" disabled><span class="dia-hora"><time>16:00</time> · Organizá</span><span class="dia-h3">Dale lugar al próximo paso.</span><span class="dia-txt">Desde Calendario podés agendar la visita y elegir propiedad, lead, fecha y hora.</span></button></li>
+      </ol>
+        <button type="button" class="dia-volver" hidden>Volver a la guía</button>
       </div>
-
-      <div class="demo-side">
-        <div class="demo-brand"><img src="leadera-logo-icon.svg" alt="" width="317" height="327">LeadEra</div>
-        <nav class="demo-nav" aria-label="Secciones del demo">
-          <button type="button" class="demo-nav-item is-active" data-target="midia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg>Mi día</button>
-          <button type="button" class="demo-nav-item" data-target="leads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-people"/></svg>Leads</button>
-          <button type="button" class="demo-nav-item" data-target="propiedades"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg>Propiedades</button>
-          <button type="button" class="demo-nav-item" data-target="operaciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pipeline"/></svg>Operaciones</button>
-          <button type="button" class="demo-nav-item" data-target="calendario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg>Calendario</button>
-        </nav>
-      </div>
-
-      <div class="demo-main" tabindex="0" aria-label="Pantalla de ejemplo de LeadEra">
-        <div class="demo-panel" data-panel="midia">
-          <div class="dm-head">
-            <div>
-              <div class="dm-h1">Hoy te quedan <span>11</span> tareas</div>
-              <p class="dm-sub">Gestioná tus contactos y hacé crecer tu cartera</p>
-            </div>
-            <span class="dm-toplink">Ver contactados hoy<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-          </div>
-
-          <div class="dm-stats">
-            <div class="dm-stat">
-              <div class="dm-stat-l">Prioritarios</div>
-              <div class="dm-stat-row"><span class="dm-chip t-caliente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg></span><span class="dm-stat-n">5</span></div>
-            </div>
-            <div class="dm-stat">
-              <div class="dm-stat-l">Nuevos</div>
-              <div class="dm-stat-row"><span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-person-plus"/></svg></span><span class="dm-stat-n">2</span></div>
-            </div>
-            <div class="dm-stat">
-              <div class="dm-stat-l">Seguimientos</div>
-              <div class="dm-stat-row"><span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="dm-stat-n">3</span></div>
-            </div>
-            <div class="dm-stat">
-              <div class="dm-stat-l">Visitas hoy</div>
-              <div class="dm-stat-row"><span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span><span class="dm-stat-n">1</span></div>
-            </div>
-          </div>
-
-          <div class="dm-pair">
-            <div class="dm-card">
-          <div class="dm-card-head">
-            <span class="dm-chip t-caliente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg></span>
-            <span class="dm-card-title">Leads prioritarios</span>
-            <span class="dm-pill t-caliente">2 urgentes</span>
-            <span class="dm-all">Ver todos (5)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-          </div>
-          <p class="dm-card-sub">Calientes o con el seguimiento vencido</p>
-              <div class="dm-list">
-            <div class="dm-row">
-              <span class="dm-av caliente">JG</span>
-              <span class="dm-body">
-                <span class="dm-name">Juan García</span>
-                <span class="dm-ctx">223 478-2214 · hace 2 días</span>
-              </span>
-              <span class="dm-act">
-                <span class="bdg caliente sm">Caliente</span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
-                <span class="dm-mini">Interacción</span>
-              </span>
-            </div>
-            <div class="dm-row">
-              <span class="dm-av caliente">MB</span>
-              <span class="dm-body">
-                <span class="dm-name">Martina Beltrán</span>
-                <span class="dm-ctx">223 545-1180 · hace 5 horas</span>
-              </span>
-              <span class="dm-act">
-                <span class="bdg caliente sm">Caliente</span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
-                <span class="dm-mini">Interacción</span>
-              </span>
-            </div>
-              </div>
-            </div>
-            <div class="dm-card">
-          <div class="dm-card-head">
-            <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-person-plus"/></svg></span>
-            <span class="dm-card-title">Nuevos leads</span>
-            <span class="dm-pill t-brand">2 nuevos</span>
-            <span class="dm-all">Ver todos (2)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-          </div>
-          <p class="dm-card-sub">Todavía no tuvieron un primer contacto</p>
-              <div class="dm-list">
-            <div class="dm-row">
-              <span class="dm-av nuevo">IS</span>
-              <span class="dm-body">
-                <span class="dm-name">Ignacio Sosa</span>
-                <span class="dm-ctx">Todavía sin contactar</span>
-              </span>
-              <span class="dm-act">
-                <span class="bdg nuevo sm">Nuevo</span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
-                <span class="dm-mini">Interacción</span>
-              </span>
-            </div>
-            <div class="dm-row">
-              <span class="dm-av nuevo">PC</span>
-              <span class="dm-body">
-                <span class="dm-name">Paula Cordero</span>
-                <span class="dm-ctx">Todavía sin contactar</span>
-              </span>
-              <span class="dm-act">
-                <span class="bdg nuevo sm">Nuevo</span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
-                <span class="dm-mini">Interacción</span>
-              </span>
-            </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="dm-pair">
-            <div class="dm-card">
-          <div class="dm-card-head">
-            <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span>
-            <span class="dm-card-title">Seguimientos</span>
-            <span class="dm-pill t-tibio">3 hoy</span>
-            <span class="dm-all">Ver todos (3)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-          </div>
-          <p class="dm-card-sub">Contactos que necesitan un recordatorio hoy</p>
-              <div class="dm-list">
-            <div class="dm-row">
-              <span class="dm-av tibio">CV</span>
-              <span class="dm-body">
-                <span class="dm-name">Carolina Vega</span>
-                <span class="dm-ctx">223 566-9021 · hace 8 días</span>
-              </span>
-              <span class="dm-act">
-                <span class="bdg tibio sm">Tibio</span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
-                <span class="dm-mini">Interacción</span>
-              </span>
-            </div>
-            <div class="dm-row">
-              <span class="dm-av tibio">AS</span>
-              <span class="dm-body">
-                <span class="dm-name">Ana Soria</span>
-                <span class="dm-ctx">223 533-6047 · hace 6 días</span>
-              </span>
-              <span class="dm-act">
-                <span class="bdg tibio sm">Tibio</span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
-                <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
-                <span class="dm-mini">Interacción</span>
-              </span>
-            </div>
-              </div>
-            </div>
-            <div class="dm-card">
-          <div class="dm-card-head">
-            <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg></span>
-            <span class="dm-card-title">Agenda de hoy</span>
-            <span class="dm-pill t-frio">6 eventos</span>
-            <span class="dm-all">Ver todos (6)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-          </div>
-          <p class="dm-card-sub">Tareas, seguimientos y visitas del día</p>
-              <div class="dm-list">
-                <div class="dm-row">
-                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Llamar a Martina Beltrán</span><span class="dm-ctx">Tarea</span></span>
-                  <span class="dm-time">10:00</span>
-                </div>
-                <div class="dm-row">
-                  <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Seguimiento a Carolina Vega</span><span class="dm-ctx">Seguimiento</span></span>
-                  <span class="dm-time">11:30</span>
-                </div>
-                <div class="dm-row">
-                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Llamar a Juan García</span><span class="dm-ctx">Tarea</span></span>
-                  <span class="dm-time">12:30</span>
-                </div>
-                <div class="dm-row">
-                  <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Visita a Alsina 3300</span><span class="dm-ctx">Visita</span></span>
-                  <span class="dm-time">16:00</span>
-                </div>
-                <div class="dm-row">
-                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Armar comparativa de expensas</span><span class="dm-ctx">Tarea</span></span>
-                  <span class="dm-time">18:00</span>
-                </div>
-                <div class="dm-row dm-done">
-                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Actualizar estado de Belgrano 2450</span><span class="dm-ctx">Tarea</span></span>
-                  <span class="dm-time">09:00</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="dm-card">
-          <div class="dm-card-head">
-            <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-star"/></svg></span>
-            <span class="dm-card-title">Coincidencias encontradas</span>
-            <span class="dm-pill t-tibio">2 nuevas</span>
-            <span class="dm-all">Ver todas (2)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-          </div>
-          <p class="dm-card-sub">Interesados de tu cartera que buscan propiedades como las tuyas</p>
-            <div class="dm-list">
-              <div class="dm-match">
-                <span class="dm-cell">
-                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Alsina 3300</span><span class="dm-ctx">Centro · USD 95.000</span></span>
-                </span>
-                <span class="dm-cross"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cross"/></svg></span>
-                <span class="dm-cell">
-                  <span class="dm-body">
-                    <span class="dm-meta"><span class="dm-name">Martina Beltrán</span><span class="bdg caliente sm">Caliente</span></span>
-                    <span class="dm-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>Busca depto en Centro</span>
-                  </span>
-                </span>
-                <span class="dm-score">92%</span>
-              </div>
-              <div class="dm-match">
-                <span class="dm-cell">
-                  <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">San Luis 1750</span><span class="dm-ctx">Centro · USD 78.000</span></span>
-                </span>
-                <span class="dm-cross"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cross"/></svg></span>
-                <span class="dm-cell">
-                  <span class="dm-body">
-                    <span class="dm-meta"><span class="dm-name">Juan García</span><span class="bdg caliente sm">Caliente</span></span>
-                    <span class="dm-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>Busca 2 o 3 amb. en Centro</span>
-                  </span>
-                </span>
-                <span class="dm-score">78%</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="dm-pair">
-            <div class="dm-card">
-          <div class="dm-card-head">
-            <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
-            <span class="dm-card-title">Propiedades recientes</span>
-            
-            <span class="dm-all">Ver todas (12)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-          </div>
-          <p class="dm-card-sub">Lo último que sumaste a la cartera</p>
-              <div class="dm-list">
-                <div class="dm-row">
-                  <span class="dm-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Alsina 3300</span><span class="dm-ctx">Departamento · Centro</span></span>
-                  <span class="dm-right">
-                    <span class="dm-price">USD 95.000</span><br>
-                    <span class="bdg-prop disponible">Disponible</span>
-                  </span>
-                </div>
-                <div class="dm-row">
-                  <span class="dm-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Güemes 2915</span><span class="dm-ctx">Departamento · Güemes</span></span>
-                  <span class="dm-right">
-                    <span class="dm-price">USD 140.000</span><br>
-                    <span class="bdg-prop reservada">Reservada</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="dm-card">
-          <div class="dm-card-head">
-            <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span>
-            <span class="dm-card-title">Actividad reciente</span>
-            
-            <span class="dm-all">Ver toda<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-          </div>
-          <p class="dm-card-sub">Lo último que registraste</p>
-              <div class="dm-list">
-                <div class="dm-row">
-                  <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Interacción con Juan García</span><span class="dm-ctx">Llamada · sin respuesta</span></span>
-                  <span class="dm-time">hace 2 h</span>
-                </div>
-                <div class="dm-row">
-                  <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Interacción con Martina Beltrán</span><span class="dm-ctx">Llamada · confirmó la visita de hoy</span></span>
-                  <span class="dm-time">ayer</span>
-                </div>
-                <div class="dm-row">
-                  <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Propiedad creada</span><span class="dm-ctx">Güemes 2915</span></span>
-                  <span class="dm-time">hace 3 d</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="dm-card">
-          <div class="dm-card-head">
-            <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pipeline"/></svg></span>
-            <span class="dm-card-title">Operaciones en curso</span>
-            
-            <span class="dm-all">Ver todas (4)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-          </div>
-          <p class="dm-card-sub">Todavía no están cerradas ni canceladas</p>
-            <div class="dm-list">
-              <div class="dm-row">
-                <span class="dm-body"><span class="dm-name">Venta Alsina 3300</span><span class="dm-ctx">Venta · Martina Beltrán</span></span>
-                <span class="dm-right">
-                  <span class="dm-price">USD 95.000</span><br>
-                  <span class="bdg-op publicada">Publicada</span>
-                </span>
-              </div>
-              <div class="dm-row">
-                <span class="dm-body"><span class="dm-name">Alquiler Belgrano 2450</span><span class="dm-ctx">Alquiler · Carolina Vega</span></span>
-                <span class="dm-right">
-                  <span class="dm-price">ARS 380.000</span><br>
-                  <span class="bdg-op negociacion">En negociación</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="demo-panel" data-panel="leads" hidden>
-          <div class="ld-head">
-            <div>
-              <div class="ld-kicker">Gestión de leads</div>
-              <div class="ld-h1">Todos los leads</div>
-              <p class="ld-count" id="ldCount">9 leads encontrados</p>
-            </div>
-            <div class="ld-tools">
-              <span class="ld-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>Buscar leads...</span>
-              <span class="ld-btn primary">+ Nuevo Lead</span>
-              <span class="ld-btn ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-sheet"/></svg>Exportar Excel</span>
-            </div>
-          </div>
-
-          <div class="ld-filters">
-            <div class="ld-chips" id="ldChips">
-              <button type="button" class="ld-chip is-on" data-temp="todos"><span class="ld-dot"></span>Todos (9)</button>
-              <button type="button" class="ld-chip" data-temp="caliente"><span class="ld-dot"></span>Calientes</button>
-              <button type="button" class="ld-chip" data-temp="tibio"><span class="ld-dot"></span>Tibios</button>
-              <button type="button" class="ld-chip" data-temp="frio"><span class="ld-dot"></span>Fríos</button>
-              <button type="button" class="ld-chip" data-temp="inactivo"><span class="ld-dot"></span>Inactivos</button>
-            </div>
-            <div class="ld-seg" id="ldSeg" role="group" aria-label="Filtrar por rol">
-              <button type="button" class="is-on" data-rol="todos">Todos</button>
-              <button type="button" data-rol="comprador">Compradores</button>
-              <button type="button" data-rol="vendedor">Vendedores</button>
-            </div>
-          </div>
-
-          <div class="ld-tablecard">
-            <table class="ld-table">
-              <colgroup>
-                <col style="width:26%"><col style="width:11%"><col style="width:11%">
-                <col style="width:13%"><col style="width:13%"><col style="width:26%">
-              </colgroup>
-              <thead>
-                <tr>
-                  <th scope="col">Lead</th>
-                  <th scope="col">Temperatura</th>
-                  <th scope="col">Origen</th>
-                  <th scope="col">Último contacto</th>
-                  <th scope="col">Próx. seguimiento</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="ldRows"></tbody>
-            </table>
-          </div>
-
-          <div class="ld-cards" id="ldCards"></div>
-        </div>
-
-        <!-- Propiedades -->
-        <div class="demo-panel" data-panel="propiedades" hidden>
-          <div class="ld-head">
-            <div>
-              <div class="ld-kicker">Propiedades</div>
-              <div class="ld-h1">Propiedades</div>
-              <p class="ld-count" id="prCount">8 propiedades en tu cartera.</p>
-            </div>
-            <div class="ld-tools">
-              <span class="ld-btn primary">+ Nueva Propiedad</span>
-            </div>
-          </div>
-
-          <div class="pr-filters">
-            <input class="pr-ctl" id="prSearch" type="search" placeholder="Buscar por dirección o zona..." aria-label="Buscar propiedades">
-            <select class="pr-ctl" id="prEstado" aria-label="Estado">
-              <option value="">Todos los estados</option>
-              <option value="disponible">Disponible</option>
-              <option value="reservada">Reservada</option>
-              <option value="vendida">Vendida</option>
-              <option value="alquilada">Alquilada</option>
-              <option value="pausada">Pausada</option>
+      <div class="dia-sticky">
+        <p class="dia-nota">Datos de ejemplo</p>
+        <div class="demo-frame reveal d2">
+          <!-- teléfono: el sidebar se reemplaza por un desplegable -->
+          <div class="demo-picker">
+            <img src="leadera-logo-icon.svg" alt="" width="317" height="327">
+            <label class="sr-only" for="demoPicker">Sección del demo</label>
+            <select id="demoPicker">
+                <option value="midia">Mi día</option>
+                <option value="leads">Leads</option>
+                <option value="propiedades">Propiedades</option>
+                <option value="operaciones">Operaciones</option>
+                <option value="calendario">Calendario</option>
             </select>
-            <button type="button" class="pr-ctl pr-more" id="prMore" aria-expanded="false" aria-controls="prAdv">
-              Más filtros <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chevron-down"/></svg><span class="pr-more-n" id="prMoreN" hidden>0</span>
-            </button>
           </div>
-
-          <div class="pr-adv" id="prAdv" hidden>
-            <select class="pr-ctl" id="prTipo" aria-label="Tipo de propiedad">
-              <option value="">Todos los tipos</option>
-              <option value="Departamento">Departamento</option>
-              <option value="Casa">Casa</option>
-              <option value="PH">PH</option>
-              <option value="Local">Local</option>
-              <option value="Terreno">Terreno</option>
-            </select>
-            <input class="pr-ctl" id="prMin" type="number" min="0" placeholder="Precio mín." aria-label="Precio mínimo">
-            <input class="pr-ctl" id="prMax" type="number" min="0" placeholder="Precio máx." aria-label="Precio máximo">
-            <input class="pr-ctl" id="prAmb" type="number" min="0" placeholder="Ambientes mín." aria-label="Ambientes mínimos">
+    
+          <div class="demo-side">
+            <div class="demo-brand"><img src="leadera-logo-icon.svg" alt="" width="317" height="327">LeadEra</div>
+            <nav class="demo-nav" aria-label="Secciones del demo">
+              <button type="button" class="demo-nav-item is-active" data-target="midia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg>Mi día</button>
+              <button type="button" class="demo-nav-item" data-target="leads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-people"/></svg>Leads</button>
+              <button type="button" class="demo-nav-item" data-target="propiedades"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg>Propiedades</button>
+              <button type="button" class="demo-nav-item" data-target="operaciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pipeline"/></svg>Operaciones</button>
+              <button type="button" class="demo-nav-item" data-target="calendario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg>Calendario</button>
+            </nav>
           </div>
-
-          <div class="pr-tablecard">
-            <table class="pr-table">
-              <thead>
-                <tr>
-                  <th scope="col">Dirección</th>
-                  <th scope="col">Tipo</th>
-                  <th scope="col">Estado</th>
-                  <th scope="col" class="num">Precio</th>
-                  <th scope="col">Propietario</th>
-                  <th scope="col"><span class="sr-only">Detalle</span></th>
-                </tr>
-              </thead>
-              <tbody id="prRows"></tbody>
-            </table>
-          </div>
-
-          <div class="pr-cards" id="prCards"></div>
-
-          <div class="pr-pager">
-            <span class="pr-page">‹</span>
-            <span class="pr-page is-on">1</span>
-            <span class="pr-page">2</span>
-            <span class="pr-page">›</span>
-          </div>
-        </div>
-
-        <!-- Operaciones (kanban) -->
-        <div class="demo-panel" data-panel="operaciones" hidden>
-          <div class="ld-head">
-            <div>
-              <div class="ld-kicker">Operaciones</div>
-              <div class="ld-h1">Tablero</div>
-              <p class="ld-count">Arrastrá una operación para cambiarle el estado.</p>
-            </div>
-            <div class="ld-tools">
-              <span class="kb-toggle">
-                <button type="button" data-view="lista">Lista</button>
-                <button type="button" class="is-on" data-view="tablero">Tablero</button>
-              </span>
-              <span class="ld-btn primary">+ Nueva Operación</span>
-            </div>
-          </div>
-
-          <div class="kb-alert" id="kbAlert" role="status" hidden></div>
-          <div class="kb-board" id="kbBoard"></div>
-        </div>
-
-        <!-- Calendario -->
-        <div class="demo-panel" data-panel="calendario" hidden>
-          <div class="ld-head">
-            <div>
-              <div class="ld-kicker">Agenda</div>
-              <div class="ld-h1">Calendario</div>
-              <p class="ld-count">Tu agenda: tus tareas, tus visitas y tus seguimientos de leads.</p>
-            </div>
-            <div class="ld-tools">
-              <span class="cal-nav">
-                <button type="button" id="calPrev" aria-label="Mes anterior">‹</button>
-                <span class="cal-mes" id="calMes">Calendario</span>
-                <button type="button" id="calNext" aria-label="Mes siguiente">›</button>
-              </span>
-              <span class="ld-btn primary">+ Nueva tarea</span>
-              <span class="ld-btn ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg>Agendar visita</span>
-            </div>
-          </div>
-
-          <div class="cal-wrap">
-            <div class="cal-grid">
-              <div class="cal-dows">
-                <span><span class="largo">Lun</span><span class="corto">L</span></span>
-                <span><span class="largo">Mar</span><span class="corto">M</span></span>
-                <span><span class="largo">Mié</span><span class="corto">M</span></span>
-                <span><span class="largo">Jue</span><span class="corto">J</span></span>
-                <span><span class="largo">Vie</span><span class="corto">V</span></span>
-                <span><span class="largo">Sáb</span><span class="corto">S</span></span>
-                <span><span class="largo">Dom</span><span class="corto">D</span></span>
+    
+          <div class="demo-main" tabindex="0" aria-label="Pantalla de ejemplo de LeadEra">
+            <div class="demo-panel" data-panel="midia">
+              <div class="dm-head">
+                <div>
+                  <div class="dm-h1">Hoy te quedan <span>11</span> tareas</div>
+                  <p class="dm-sub">Gestioná tus contactos y hacé crecer tu cartera</p>
+                </div>
+                <span class="dm-toplink">Ver contactados hoy<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
               </div>
-              <div class="cal-days" id="calDays"></div>
+    
+              <div class="dm-stats">
+                <div class="dm-stat">
+                  <div class="dm-stat-l">Prioritarios</div>
+                  <div class="dm-stat-row"><span class="dm-chip t-caliente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg></span><span class="dm-stat-n">5</span></div>
+                </div>
+                <div class="dm-stat">
+                  <div class="dm-stat-l">Nuevos</div>
+                  <div class="dm-stat-row"><span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-person-plus"/></svg></span><span class="dm-stat-n">2</span></div>
+                </div>
+                <div class="dm-stat">
+                  <div class="dm-stat-l">Seguimientos</div>
+                  <div class="dm-stat-row"><span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="dm-stat-n">3</span></div>
+                </div>
+                <div class="dm-stat">
+                  <div class="dm-stat-l">Visitas hoy</div>
+                  <div class="dm-stat-row"><span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span><span class="dm-stat-n">1</span></div>
+                </div>
+              </div>
+    
+              <div class="dm-pair">
+                <div class="dm-card">
+              <div class="dm-card-head">
+                <span class="dm-chip t-caliente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-warning"/></svg></span>
+                <span class="dm-card-title">Leads prioritarios</span>
+                <span class="dm-pill t-caliente">2 urgentes</span>
+                <span class="dm-all">Ver todos (5)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              </div>
+              <p class="dm-card-sub">Calientes o con el seguimiento vencido</p>
+                  <div class="dm-list">
+                <div class="dm-row">
+                  <span class="dm-av caliente">JG</span>
+                  <span class="dm-body">
+                    <span class="dm-name">Juan García</span>
+                    <span class="dm-ctx">223 478-2214 · hace 2 días</span>
+                  </span>
+                  <span class="dm-act">
+                    <span class="bdg caliente sm">Caliente</span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                    <span class="dm-mini">Interacción</span>
+                  </span>
+                </div>
+                <div class="dm-row">
+                  <span class="dm-av caliente">MB</span>
+                  <span class="dm-body">
+                    <span class="dm-name">Martina Beltrán</span>
+                    <span class="dm-ctx">223 545-1180 · hace 5 horas</span>
+                  </span>
+                  <span class="dm-act">
+                    <span class="bdg caliente sm">Caliente</span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                    <span class="dm-mini">Interacción</span>
+                  </span>
+                </div>
+                  </div>
+                </div>
+                <div class="dm-card">
+              <div class="dm-card-head">
+                <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-person-plus"/></svg></span>
+                <span class="dm-card-title">Nuevos leads</span>
+                <span class="dm-pill t-brand">2 nuevos</span>
+                <span class="dm-all">Ver todos (2)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              </div>
+              <p class="dm-card-sub">Todavía no tuvieron un primer contacto</p>
+                  <div class="dm-list">
+                <div class="dm-row">
+                  <span class="dm-av nuevo">IS</span>
+                  <span class="dm-body">
+                    <span class="dm-name">Ignacio Sosa</span>
+                    <span class="dm-ctx">Todavía sin contactar</span>
+                  </span>
+                  <span class="dm-act">
+                    <span class="bdg nuevo sm">Nuevo</span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                    <span class="dm-mini">Interacción</span>
+                  </span>
+                </div>
+                <div class="dm-row">
+                  <span class="dm-av nuevo">PC</span>
+                  <span class="dm-body">
+                    <span class="dm-name">Paula Cordero</span>
+                    <span class="dm-ctx">Todavía sin contactar</span>
+                  </span>
+                  <span class="dm-act">
+                    <span class="bdg nuevo sm">Nuevo</span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                    <span class="dm-mini">Interacción</span>
+                  </span>
+                </div>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="dm-pair">
+                <div class="dm-card">
+              <div class="dm-card-head">
+                <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span>
+                <span class="dm-card-title">Seguimientos</span>
+                <span class="dm-pill t-tibio">3 hoy</span>
+                <span class="dm-all">Ver todos (3)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              </div>
+              <p class="dm-card-sub">Contactos que necesitan un recordatorio hoy</p>
+                  <div class="dm-list">
+                <div class="dm-row">
+                  <span class="dm-av tibio">CV</span>
+                  <span class="dm-body">
+                    <span class="dm-name">Carolina Vega</span>
+                    <span class="dm-ctx">223 566-9021 · hace 8 días</span>
+                  </span>
+                  <span class="dm-act">
+                    <span class="bdg tibio sm">Tibio</span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                    <span class="dm-mini">Interacción</span>
+                  </span>
+                </div>
+                <div class="dm-row">
+                  <span class="dm-av tibio">AS</span>
+                  <span class="dm-body">
+                    <span class="dm-name">Ana Soria</span>
+                    <span class="dm-ctx">223 533-6047 · hace 6 días</span>
+                  </span>
+                  <span class="dm-act">
+                    <span class="bdg tibio sm">Tibio</span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                    <span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                    <span class="dm-mini">Interacción</span>
+                  </span>
+                </div>
+                  </div>
+                </div>
+                <div class="dm-card">
+              <div class="dm-card-head">
+                <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg></span>
+                <span class="dm-card-title">Agenda de hoy</span>
+                <span class="dm-pill t-frio">6 eventos</span>
+                <span class="dm-all">Ver todos (6)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              </div>
+              <p class="dm-card-sub">Tareas, seguimientos y visitas del día</p>
+                  <div class="dm-list">
+                    <div class="dm-row">
+                      <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Llamar a Martina Beltrán</span><span class="dm-ctx">Tarea</span></span>
+                      <span class="dm-time">10:00</span>
+                    </div>
+                    <div class="dm-row">
+                      <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Seguimiento a Carolina Vega</span><span class="dm-ctx">Seguimiento</span></span>
+                      <span class="dm-time">11:30</span>
+                    </div>
+                    <div class="dm-row">
+                      <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Llamar a Juan García</span><span class="dm-ctx">Tarea</span></span>
+                      <span class="dm-time">12:30</span>
+                    </div>
+                    <div class="dm-row">
+                      <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Visita a Alsina 3300</span><span class="dm-ctx">Visita</span></span>
+                      <span class="dm-time">16:00</span>
+                    </div>
+                    <div class="dm-row">
+                      <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Armar comparativa de expensas</span><span class="dm-ctx">Tarea</span></span>
+                      <span class="dm-time">18:00</span>
+                    </div>
+                    <div class="dm-row dm-done">
+                      <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Actualizar estado de Belgrano 2450</span><span class="dm-ctx">Tarea</span></span>
+                      <span class="dm-time">09:00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="dm-card">
+              <div class="dm-card-head">
+                <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-star"/></svg></span>
+                <span class="dm-card-title">Coincidencias encontradas</span>
+                <span class="dm-pill t-tibio">2 nuevas</span>
+                <span class="dm-all">Ver todas (2)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              </div>
+              <p class="dm-card-sub">Interesados de tu cartera que buscan propiedades como las tuyas</p>
+                <div class="dm-list">
+                  <div class="dm-match">
+                    <span class="dm-cell">
+                      <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Alsina 3300</span><span class="dm-ctx">Centro · USD 95.000</span></span>
+                    </span>
+                    <span class="dm-cross"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cross"/></svg></span>
+                    <span class="dm-cell">
+                      <span class="dm-body">
+                        <span class="dm-meta"><span class="dm-name">Martina Beltrán</span><span class="bdg caliente sm">Caliente</span></span>
+                        <span class="dm-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>Busca depto en Centro</span>
+                      </span>
+                    </span>
+                    <span class="dm-score">92%</span>
+                  </div>
+                  <div class="dm-match">
+                    <span class="dm-cell">
+                      <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">San Luis 1750</span><span class="dm-ctx">Centro · USD 78.000</span></span>
+                    </span>
+                    <span class="dm-cross"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cross"/></svg></span>
+                    <span class="dm-cell">
+                      <span class="dm-body">
+                        <span class="dm-meta"><span class="dm-name">Juan García</span><span class="bdg caliente sm">Caliente</span></span>
+                        <span class="dm-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>Busca 2 o 3 amb. en Centro</span>
+                      </span>
+                    </span>
+                    <span class="dm-score">78%</span>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="dm-pair">
+                <div class="dm-card">
+              <div class="dm-card-head">
+                <span class="dm-chip t-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                <span class="dm-card-title">Propiedades recientes</span>
+                
+                <span class="dm-all">Ver todas (12)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              </div>
+              <p class="dm-card-sub">Lo último que sumaste a la cartera</p>
+                  <div class="dm-list">
+                    <div class="dm-row">
+                      <span class="dm-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Alsina 3300</span><span class="dm-ctx">Departamento · Centro</span></span>
+                      <span class="dm-right">
+                        <span class="dm-price">USD 95.000</span><br>
+                        <span class="bdg-prop disponible">Disponible</span>
+                      </span>
+                    </div>
+                    <div class="dm-row">
+                      <span class="dm-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Güemes 2915</span><span class="dm-ctx">Departamento · Güemes</span></span>
+                      <span class="dm-right">
+                        <span class="dm-price">USD 140.000</span><br>
+                        <span class="bdg-prop reservada">Reservada</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="dm-card">
+              <div class="dm-card-head">
+                <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span>
+                <span class="dm-card-title">Actividad reciente</span>
+                
+                <span class="dm-all">Ver toda<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              </div>
+              <p class="dm-card-sub">Lo último que registraste</p>
+                  <div class="dm-list">
+                    <div class="dm-row">
+                      <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Interacción con Juan García</span><span class="dm-ctx">Llamada · sin respuesta</span></span>
+                      <span class="dm-time">hace 2 h</span>
+                    </div>
+                    <div class="dm-row">
+                      <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Interacción con Martina Beltrán</span><span class="dm-ctx">Llamada · confirmó la visita de hoy</span></span>
+                      <span class="dm-time">ayer</span>
+                    </div>
+                    <div class="dm-row">
+                      <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-checklist"/></svg></span>
+                      <span class="dm-body"><span class="dm-name">Propiedad creada</span><span class="dm-ctx">Güemes 2915</span></span>
+                      <span class="dm-time">hace 3 d</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="dm-card">
+              <div class="dm-card-head">
+                <span class="dm-chip t-tibio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pipeline"/></svg></span>
+                <span class="dm-card-title">Operaciones en curso</span>
+                
+                <span class="dm-all">Ver todas (4)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              </div>
+              <p class="dm-card-sub">Todavía no están cerradas ni canceladas</p>
+                <div class="dm-list">
+                  <div class="dm-row">
+                    <span class="dm-body"><span class="dm-name">Venta Alsina 3300</span><span class="dm-ctx">Venta · Martina Beltrán</span></span>
+                    <span class="dm-right">
+                      <span class="dm-price">USD 95.000</span><br>
+                      <span class="bdg-op publicada">Publicada</span>
+                    </span>
+                  </div>
+                  <div class="dm-row">
+                    <span class="dm-body"><span class="dm-name">Alquiler Belgrano 2450</span><span class="dm-ctx">Alquiler · Carolina Vega</span></span>
+                    <span class="dm-right">
+                      <span class="dm-price">ARS 380.000</span><br>
+                      <span class="bdg-op negociacion">En negociación</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="cal-panel" id="calPanel"></div>
+    
+            <div class="demo-panel" data-panel="leads" hidden>
+              <div class="ld-head">
+                <div>
+                  <div class="ld-kicker">Gestión de leads</div>
+                  <div class="ld-h1">Todos los leads</div>
+                  <p class="ld-count" id="ldCount">9 leads encontrados</p>
+                </div>
+                <div class="ld-tools">
+                  <span class="ld-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>Buscar leads...</span>
+                  <span class="ld-btn primary">+ Nuevo Lead</span>
+                  <span class="ld-btn ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-sheet"/></svg>Exportar Excel</span>
+                </div>
+              </div>
+    
+              <div class="ld-filters">
+                <div class="ld-chips" id="ldChips">
+                  <button type="button" class="ld-chip is-on" data-temp="todos"><span class="ld-dot"></span>Todos (9)</button>
+                  <button type="button" class="ld-chip" data-temp="caliente"><span class="ld-dot"></span>Calientes</button>
+                  <button type="button" class="ld-chip" data-temp="tibio"><span class="ld-dot"></span>Tibios</button>
+                  <button type="button" class="ld-chip" data-temp="frio"><span class="ld-dot"></span>Fríos</button>
+                  <button type="button" class="ld-chip" data-temp="inactivo"><span class="ld-dot"></span>Inactivos</button>
+                </div>
+                <div class="ld-seg" id="ldSeg" role="group" aria-label="Filtrar por rol">
+                  <button type="button" class="is-on" data-rol="todos">Todos</button>
+                  <button type="button" data-rol="comprador">Compradores</button>
+                  <button type="button" data-rol="vendedor">Vendedores</button>
+                </div>
+              </div>
+    
+              <div class="ld-tablecard">
+                <table class="ld-table">
+                  <colgroup>
+                    <col style="width:26%"><col style="width:11%"><col style="width:11%">
+                    <col style="width:13%"><col style="width:13%"><col style="width:26%">
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th scope="col">Lead</th>
+                      <th scope="col">Temperatura</th>
+                      <th scope="col">Origen</th>
+                      <th scope="col">Último contacto</th>
+                      <th scope="col">Próx. seguimiento</th>
+                      <th scope="col">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ldRows"></tbody>
+                </table>
+              </div>
+    
+              <div class="ld-cards" id="ldCards"></div>
+            </div>
+    
+            <!-- Propiedades -->
+            <div class="demo-panel" data-panel="propiedades" hidden>
+              <div class="ld-head">
+                <div>
+                  <div class="ld-kicker">Propiedades</div>
+                  <div class="ld-h1">Propiedades</div>
+                  <p class="ld-count" id="prCount">8 propiedades en tu cartera.</p>
+                </div>
+                <div class="ld-tools">
+                  <span class="ld-btn primary">+ Nueva Propiedad</span>
+                </div>
+              </div>
+    
+              <div class="pr-filters">
+                <input class="pr-ctl" id="prSearch" type="search" placeholder="Buscar por dirección o zona..." aria-label="Buscar propiedades">
+                <select class="pr-ctl" id="prEstado" aria-label="Estado">
+                  <option value="">Todos los estados</option>
+                  <option value="disponible">Disponible</option>
+                  <option value="reservada">Reservada</option>
+                  <option value="vendida">Vendida</option>
+                  <option value="alquilada">Alquilada</option>
+                  <option value="pausada">Pausada</option>
+                </select>
+                <button type="button" class="pr-ctl pr-more" id="prMore" aria-expanded="false" aria-controls="prAdv">
+                  Más filtros <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chevron-down"/></svg><span class="pr-more-n" id="prMoreN" hidden>0</span>
+                </button>
+              </div>
+    
+              <div class="pr-adv" id="prAdv" hidden>
+                <select class="pr-ctl" id="prTipo" aria-label="Tipo de propiedad">
+                  <option value="">Todos los tipos</option>
+                  <option value="Departamento">Departamento</option>
+                  <option value="Casa">Casa</option>
+                  <option value="PH">PH</option>
+                  <option value="Local">Local</option>
+                  <option value="Terreno">Terreno</option>
+                </select>
+                <input class="pr-ctl" id="prMin" type="number" min="0" placeholder="Precio mín." aria-label="Precio mínimo">
+                <input class="pr-ctl" id="prMax" type="number" min="0" placeholder="Precio máx." aria-label="Precio máximo">
+                <input class="pr-ctl" id="prAmb" type="number" min="0" placeholder="Ambientes mín." aria-label="Ambientes mínimos">
+              </div>
+    
+              <div class="pr-tablecard">
+                <table class="pr-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Dirección</th>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Estado</th>
+                      <th scope="col" class="num">Precio</th>
+                      <th scope="col">Propietario</th>
+                      <th scope="col"><span class="sr-only">Detalle</span></th>
+                    </tr>
+                  </thead>
+                  <tbody id="prRows"></tbody>
+                </table>
+              </div>
+    
+              <div class="pr-cards" id="prCards"></div>
+    
+              <div class="pr-pager">
+                <span class="pr-page">‹</span>
+                <span class="pr-page is-on">1</span>
+                <span class="pr-page">2</span>
+                <span class="pr-page">›</span>
+              </div>
+            </div>
+    
+            <!-- Operaciones (kanban) -->
+            <div class="demo-panel" data-panel="operaciones" hidden>
+              <div class="ld-head">
+                <div>
+                  <div class="ld-kicker">Operaciones</div>
+                  <div class="ld-h1">Tablero</div>
+                  <p class="ld-count">Arrastrá una operación para cambiarle el estado.</p>
+                </div>
+                <div class="ld-tools">
+                  <span class="kb-toggle">
+                    <button type="button" data-view="lista">Lista</button>
+                    <button type="button" class="is-on" data-view="tablero">Tablero</button>
+                  </span>
+                  <span class="ld-btn primary">+ Nueva Operación</span>
+                </div>
+              </div>
+    
+              <div class="kb-alert" id="kbAlert" role="status" hidden></div>
+              <div class="kb-board" id="kbBoard"></div>
+            </div>
+    
+            <!-- Calendario -->
+            <div class="demo-panel" data-panel="calendario" hidden>
+              <div class="ld-head">
+                <div>
+                  <div class="ld-kicker">Agenda</div>
+                  <div class="ld-h1">Calendario</div>
+                  <p class="ld-count">Tu agenda: tus tareas, tus visitas y tus seguimientos de leads.</p>
+                </div>
+                <div class="ld-tools">
+                  <span class="cal-nav">
+                    <button type="button" id="calPrev" aria-label="Mes anterior">‹</button>
+                    <span class="cal-mes" id="calMes">Calendario</span>
+                    <button type="button" id="calNext" aria-label="Mes siguiente">›</button>
+                  </span>
+                  <span class="ld-btn primary">+ Nueva tarea</span>
+                  <span class="ld-btn ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg>Agendar visita</span>
+                </div>
+              </div>
+    
+              <div class="cal-wrap">
+                <div class="cal-grid">
+                  <div class="cal-dows">
+                    <span><span class="largo">Lun</span><span class="corto">L</span></span>
+                    <span><span class="largo">Mar</span><span class="corto">M</span></span>
+                    <span><span class="largo">Mié</span><span class="corto">M</span></span>
+                    <span><span class="largo">Jue</span><span class="corto">J</span></span>
+                    <span><span class="largo">Vie</span><span class="corto">V</span></span>
+                    <span><span class="largo">Sáb</span><span class="corto">S</span></span>
+                    <span><span class="largo">Dom</span><span class="corto">D</span></span>
+                  </div>
+                  <div class="cal-days" id="calDays"></div>
+                </div>
+                <div class="cal-panel" id="calPanel"></div>
+              </div>
+            </div>
+    
+            <!-- Ficha de lead -->
+            <div class="demo-panel" data-panel="ficha" hidden tabindex="-1" id="demoFicha"></div>
+    
           </div>
-        </div>
-
-        <!-- Ficha de lead -->
-        <div class="demo-panel" data-panel="ficha" hidden tabindex="-1" id="demoFicha"></div>
-
-      </div>
-
-      <div class="kb-modal" id="kbModal" hidden>
-        <div class="kb-dialog" role="dialog" aria-modal="true" aria-labelledby="kbModalTitle">
-          <div class="kb-dialog-title" id="kbModalTitle">Confirmar cambio</div>
-          <p id="kbModalText"></p>
-          <div class="kb-dialog-btns">
-            <button type="button" class="ld-a ghost" data-kb="cancel">Cancelar</button>
-            <button type="button" class="ld-a primary" data-kb="ok">Confirmar</button>
+    
+          <div class="kb-modal" id="kbModal" hidden>
+            <div class="kb-dialog" role="dialog" aria-modal="true" aria-labelledby="kbModalTitle">
+              <div class="kb-dialog-title" id="kbModalTitle">Confirmar cambio</div>
+              <p id="kbModalText"></p>
+              <div class="kb-dialog-btns">
+                <button type="button" class="ld-a ghost" data-kb="cancel">Cancelar</button>
+                <button type="button" class="ld-a primary" data-kb="ok">Confirmar</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <p class="sr-only" id="diaAnuncio" aria-live="polite"></p>
 
     <div class="demo-exit">
       <p class="demo-exit-q reveal" data-split>¿Te imaginás tus leads acá?<span>Cargá los tuyos y probá LeadEra 14 días gratis, sin tarjeta.</span></p>
@@ -4416,8 +4475,8 @@
      irAPaso(n) lleva la demo a uno de los cuatro momentos sin mover el
      foco ni la página: solo cambia el panel y, si hace falta, el
      scroll DENTRO de .demo-main (en teléfono no tiene scroll propio, así
-     que ahí no se mueve nada). alTocar(cb) avisa, una sola vez, cuando
-     el visitante toca la demo: para que los pasos le dejen el control.
+     que ahí no se mueve nada). alTocar(cb) avisa, una vez, en el próximo
+     toque del visitante: para que los pasos le dejen el control.
      Las llamadas a irAPaso no disparan eventos, así que no cuentan. */
   const main = frame.querySelector('.demo-main');
   const MARTINA = LEADS.findIndex(l => l.name === 'Martina Beltrán');
@@ -4441,19 +4500,92 @@
     }
   };
 
-  let demoTocada = false;
   const esperando = [];
-  const avisar = () => {
-    if (demoTocada) return;
-    demoTocada = true;
-    esperando.splice(0).forEach(cb => cb());
-  };
+  const avisar = () => esperando.splice(0).forEach(cb => cb());
   ['pointerdown', 'keydown', 'change'].forEach(t => frame.addEventListener(t, avisar));
 
   window.LeadEraDemo = {
     irAPaso(n) { PASOS[n]?.(); },
-    alTocar(cb) { if (demoTocada) cb(); else esperando.push(cb); }
+    // cb se llama una vez, en el próximo toque del visitante; para seguir escuchando hay que volver a registrarlo.
+    alTocar(cb) { esperando.push(cb); }
   };
+})();
+</script>
+
+<script>
+/* Un día con LeadEra (desde 1024px): el momento que cruza el centro de la
+   pantalla maneja la demo (LeadEraDemo.irAPaso). El primer toque del
+   visitante en la demo corta la guía hasta "Volver a la guía". Por debajo
+   de 1024px no corre nada de esto. Nunca mueve el foco. */
+(() => {
+  const sec = document.getElementById('como-funciona');
+  const demo = window.LeadEraDemo;
+  if (!sec || !demo || !('IntersectionObserver' in window)) return;
+  const items = [...sec.querySelectorAll('.dia-pasos li')];
+  const btns = items.map(li => li.querySelector('button'));
+  const volver = sec.querySelector('.dia-volver');
+  const anuncio = document.getElementById('diaAnuncio');
+  const ancho = matchMedia('(min-width: 1024px)');
+  const reducido = matchMedia('(prefers-reduced-motion: reduce)');
+  const PANELES = ['Mi día', 'ficha de Martina', 'coincidencias', 'calendario'];
+  let on = false, guiado = true, armado = false, activo = 0, moviendo = false, timer;
+  const visibles = new Set();
+
+  const marcar = i => btns.forEach((b, j) => j === i ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
+  const mostrar = i => {
+    demo.irAPaso(i + 1);
+    anuncio.textContent = items[i].querySelector('.dia-hora').textContent + ': ' + PANELES[i];
+  };
+  function poner(i) {
+    if (i === activo) return;
+    activo = i; marcar(i);
+    if (guiado) mostrar(i);
+  }
+  function evaluar() {
+    if (!visibles.size) return;
+    const c = innerHeight / 2; let mejor = null, d = Infinity;
+    visibles.forEach(li => { const r = li.getBoundingClientRect(), x = Math.abs((r.top + r.bottom) / 2 - c); if (x < d) { d = x; mejor = li; } });
+    poner(items.indexOf(mejor));
+  }
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target));
+    if (!moviendo) evaluar();
+  }, { rootMargin: '-45% 0px -45% 0px' });
+
+  function cortar() { armado = false; if (!on) return; guiado = false; volver.hidden = false; }
+  function armar() { if (!armado) { armado = true; demo.alTocar(cortar); } }
+  function alClick(i) {
+    activo = i; marcar(i); mostrar(i);
+    moviendo = true; clearTimeout(timer);
+    const fin = () => { clearTimeout(timer); moviendo = false; evaluar(); };
+    addEventListener('scrollend', fin, { once: true });
+    timer = setTimeout(fin, 1500);
+    items[i].scrollIntoView({ block: 'center', behavior: reducido.matches ? 'auto' : 'smooth' });
+  }
+  const clicks = btns.map((b, i) => () => alClick(i));
+  const alVolver = () => {
+    guiado = true; volver.hidden = true; armar(); mostrar(activo);
+    btns[activo].focus({ preventScroll: true });   // el botón desaparece: el foco pasa al momento actual
+  };
+
+  function activar() {
+    if (on) return; on = true; guiado = true; volver.hidden = true;
+    sec.classList.add('dia-sync');
+    btns.forEach((b, i) => { b.disabled = false; b.addEventListener('click', clicks[i]); });
+    volver.addEventListener('click', alVolver);
+    marcar(activo); demo.irAPaso(activo + 1); armar();
+    items.forEach(li => io.observe(li));
+  }
+  function desactivar() {
+    if (!on) return; on = false;
+    sec.classList.remove('dia-sync');
+    btns.forEach((b, i) => { b.disabled = true; b.removeEventListener('click', clicks[i]); b.removeAttribute('aria-current'); });
+    volver.removeEventListener('click', alVolver); volver.hidden = true;
+    io.disconnect(); visibles.clear();
+  }
+  const ajustar = () => ancho.matches ? activar() : desactivar();
+  ancho.addEventListener('change', ajustar);
+  ajustar();
 })();
 </script>
 
