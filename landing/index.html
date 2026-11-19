@@ -751,12 +751,11 @@
     /* ============================================================
        EL PROBLEMA — corto, con Martina como eje
 
-       Cierra en el verde de la historia: el degradé del fondo empalma
-       con .story-section, así que la frase puente queda en la costura
-       y la transición no ocupa más que su propio renglón.
+       Fondo oscuro parejo: la sección que sigue ("Un día con LeadEra")
+       es clara, así que ya no hay degradé hacia el verde.
     ============================================================ */
     #problema {
-      background: linear-gradient(180deg, var(--dark) 0%, var(--dark) 52%, var(--story) 100%);
+      background: var(--dark);
       padding-bottom: clamp(56px, 7vw, 88px);
     }
     #problema .section-h2 { color: #fff; max-width: 16ch; }
@@ -1007,7 +1006,21 @@
       overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
     }
 
-    #explorar, #flyers { background: var(--bg-white); }
+    .un-dia, #flyers { background: var(--bg-white); }
+
+    /* ---- Un día con LeadEra: los cuatro momentos ----
+       Por ahora apilados arriba de la demo; la sincronización con el
+       scroll llega después. */
+    .dia-pasos {
+      list-style: none; display: grid; gap: 20px 32px; margin: 36px 0 40px;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    }
+    .dia-pasos li { padding-top: 14px; border-top: 2px solid var(--border); }
+    .dia-hora { display: block; font-size: var(--fs-sm); font-weight: 700; color: var(--teal); font-variant-numeric: tabular-nums; }
+    .dia-h3 { margin: 6px 0 4px; font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; color: var(--text); }
+    .dia-pasos p { font-size: var(--fs-sm); line-height: 1.55; color: var(--text-2); }
+    .dia-ancla { display: block; scroll-margin-top: 88px; }
+    .dia-nota { margin-bottom: 10px; font-size: var(--fs-xs); font-weight: 600; color: var(--text-muted); }
     .demo-frame, .hero-dev, .avisos {
       /* marca */
       --c-primary:       #0f6e5c;
@@ -2591,162 +2604,28 @@
 </section>
 
 <!-- ================================================================
-     STORY — el recorrido de Martina dentro de LeadEra
+     UN DÍA CON LEADERA — cuatro momentos del día de Martina y la demo
+     navegable. Cada paso tiene su panel (LeadEraDemo.irAPaso); por
+     ahora van apilados, sin sincronización. Sin JS: los pasos como
+     texto y la demo en Mi día.
 ================================================================ -->
-<section id="como-funciona" class="story-section" aria-labelledby="story-title" data-martina="1">
- <div class="inner story-layout">
-  <div class="story-copy">
-   <h2 class="section-h2 reveal" id="story-title" data-split>Retomá cada conversación<br><em>donde la dejaste.</em></h2>
-   <p class="section-lead">Revisá qué hablaron, encontrá una propiedad que encaje y organizá el próximo encuentro.</p>
-   <a class="story-link" href="#explorar">Explorá la demo de LeadEra <span aria-hidden="true"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span></a>
-   <p class="story-end" id="storyEnd">
-     <span>¿Lo querés para tus leads?</span>
-     <a href="https://app.leadera.com.ar/signup" data-cta="historia-fin">Probar gratis 14 días <svg viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-   </p>
-  </div>
-  <div class="story-case" aria-label="Ejemplo de seguimiento de Martina Beltrán">
-   <div class="story-person"><span class="story-avatar">MB</span><div><strong>Martina Beltrán</strong><span>Compradora · busca en Centro</span></div><small>Recorrido de ejemplo</small></div>
-   <ol class="story-timeline"><li><span class="story-number">Paso 1 de 4 · Priorizá</span><div class="scene-detail"><h3 class="real-heading">Sabés a quién retomar.</h3><div class="rp-ui rp-priority"><div class="rp-card"><div class="rp-card-title"><span class="rp-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 18H2L12 3Z M12 9v5 M12 17v.1"/></svg></span><strong>Leads prioritarios</strong><span class="rp-count">5 urgentes</span><span class="rp-link">Ver todos (7)<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span></div><div class="rp-muted rp-card-sub">Calientes o con el seguimiento vencido</div><div class="rp-row "><span class="rp-avatar rp-nuevo">IS</span><div class="rp-contact"><strong>Ignacio Sosa</strong><span>Todavía sin contactar</span></div><span class="rp-badge rp-nuevo">nuevo</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div><div class="rp-row "><span class="rp-avatar rp-tibio">CV</span><div class="rp-contact"><strong>Carolina Vega</strong><span>19 días sin contacto</span></div><span class="rp-badge rp-tibio">tibio</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div><div class="rp-row "><span class="rp-avatar rp-tibio">AS</span><div class="rp-contact"><strong>Ana Soria</strong><span>19 días sin contacto</span></div><span class="rp-badge rp-tibio">tibio</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div><div class="rp-row rp-focus"><span class="rp-avatar rp-caliente">MB</span><div class="rp-contact"><strong>Martina Beltrán</strong><span>13 días sin contacto</span></div><span class="rp-badge rp-caliente">caliente</span><span class="rp-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><span class="rp-action">Interacción</span></div></div></div><p>Mi día reúne los leads que necesitan atención.</p></div></li><li><span class="story-number">Paso 2 de 4 · Recordá</span><div class="scene-detail"><h3 class="real-heading">La conversación sigue acá.</h3><div class="rp-ui rp-history"><div class="rp-lead-header"><span class="rp-avatar rp-caliente">MB</span><div><span class="rp-eyebrow">Ficha de lead</span><strong>Martina Beltrán</strong></div><span class="rp-badge rp-caliente">Caliente</span></div><div class="rp-tabs"><span>Resumen</span><span class="rp-tab-active">Interacciones (3)</span><span>Operaciones (1)</span><span>Tareas (1)</span></div><div class="rp-history-list"><div class="rp-event"><div class="rp-event-top"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><strong>WhatsApp</strong><time data-dias="-13" data-hora="10:35">22 de septiembre, 10:35</time></div><div class="rp-event-text">Le mandé un mensaje para consultar si volvió de viaje. La idea es agendar visita para esta semana.</div></div><div class="rp-event"><div class="rp-event-top"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.4 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg></span><strong>Llamada</strong><time data-dias="-22" data-hora="20:30">13 de septiembre, 20:30</time></div><div class="rp-event-text">Quiere visitar el departamento esta semana.</div></div><div class="rp-event"><div class="rp-event-top"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></span><strong>WhatsApp</strong><time data-dias="-29" data-hora="20:30">6 de septiembre, 20:30</time></div><div class="rp-event-text">Le pasé tres opciones en Centro, le gustó la de Alsina 3300.</div></div></div></div><p>Revisás qué hablaron y qué opciones le interesaron.</p></div></li><li><span class="story-number">Paso 3 de 4 · Conectá</span><div class="scene-detail"><h3 class="real-heading">Una propiedad. Una coincidencia.</h3><div class="rp-ui rp-matches"><div class="rp-card"><div class="rp-card-title"><span class="rp-title-icon rp-gold"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-star"/></svg></span><strong>Coincidencias encontradas</strong><span class="rp-count rp-gold">3</span></div><div class="rp-muted rp-card-sub">Interesados de tu cartera que buscan propiedades como las tuyas</div><div class="rp-match-row rp-focus"><div class="rp-property"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-8h6v8"/></svg></span><div><strong>Alsina 3300</strong><span>Centro · USD 95.000</span></div></div><span class="rp-arrow"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span><div class="rp-buyer"><strong>Martina Beltrán</strong><span class="rp-badge rp-caliente">Caliente</span><div class="rp-chips"><span>Busca departamento en Centro</span><span>Hasta USD 95.000</span><span>2 amb.</span></div></div></div><div class="rp-match-row"><div class="rp-property"><span class="rp-event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-8h6v8"/></svg></span><div><strong>San Luis 1750</strong><span>Centro · USD 78.000</span></div></div><span class="rp-arrow"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span><div class="rp-buyer"><strong>Juan García</strong><span class="rp-badge rp-caliente">Caliente</span><div class="rp-chips"><span>Busca 2 o 3 amb. en Centro o Güemes</span><span>Hasta USD 110.000</span></div></div></div></div></div><p>Su búsqueda aparece relacionada con Alsina 3300.</p></div></li><li><span class="story-number">Paso 4 de 4 · Organizá</span><div class="scene-detail"><h3 class="real-heading">Dale lugar al próximo paso.</h3><div class="rp-ui rp-calendar"><div class="rp-cal-top"><div><span class="rp-eyebrow">Agenda</span><strong>Calendario</strong></div><span class="rp-month" id="storyCalMes">Octubre de 2026</span><span class="rp-action">+ Nueva tarea</span><span class="rp-outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-8h6v8"/></svg> Agendar visita</span></div><div class="rp-google"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4 M17 3v4 M3 11h18"/></svg><div><strong>Sincronizá tu agenda con Google Calendar</strong><span>Tu agenda: tareas, visitas y seguimientos de leads.</span></div></div><div class="rp-cal-layout"><div class="rp-grid" id="storyCalGrid"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span><div class="rp-day rp-otro"><span>28</span></div><div class="rp-day rp-otro"><span>29</span></div><div class="rp-day rp-otro"><span>30</span></div><div class="rp-day"><span>1</span></div><div class="rp-day"><span>2</span></div><div class="rp-day"><span>3</span></div><div class="rp-day"><span>4</span><small>09:00 Seguimiento</small></div><div class="rp-day rp-today"><span>5</span></div><div class="rp-day"><span>6</span></div><div class="rp-day rp-selected"><span>7</span></div><div class="rp-day"><span>8</span></div><div class="rp-day"><span>9</span></div><div class="rp-day"><span>10</span></div><div class="rp-day"><span>11</span></div><div class="rp-day"><span>12</span></div><div class="rp-day"><span>13</span></div><div class="rp-day"><span>14</span></div><div class="rp-day"><span>15</span></div><div class="rp-day"><span>16</span></div><div class="rp-day"><span>17</span></div><div class="rp-day"><span>18</span></div><div class="rp-day"><span>19</span></div><div class="rp-day"><span>20</span></div><div class="rp-day"><span>21</span></div><div class="rp-day"><span>22</span></div><div class="rp-day"><span>23</span></div><div class="rp-day"><span>24</span></div><div class="rp-day"><span>25</span></div><div class="rp-day"><span>26</span></div><div class="rp-day"><span>27</span></div><div class="rp-day"><span>28</span></div><div class="rp-day"><span>29</span></div><div class="rp-day"><span>30</span></div><div class="rp-day"><span>31</span></div><div class="rp-day rp-otro"><span>1</span></div></div><div class="rp-day-detail" id="storyCalDetalle"><strong>Miércoles, 7 de octubre</strong><span>No hay nada agendado para este día.</span></div></div></div><p>Desde Calendario podés agendar la visita y elegir propiedad, lead, fecha y hora.</p></div></li></ol>
-   <div class="story-timer" aria-hidden="true"><span></span></div>
-   <div class="story-caption">La información conectada. La decisión, en tus manos.</div>
-  </div>
- </div>
-</section>
-
-<!-- ================================================================
-     LEADERA TE AVISA — los tres avisos reales (textos de la app, desde
-     site.config.json) y cómo instalarla para recibirlos.
-================================================================ -->
-<section id="avisos" class="avisos" aria-labelledby="avisos-titulo" data-martina="1">
-  <div class="inner">
-    <h2 class="section-h2 reveal" id="avisos-titulo">LeadEra te avisa lo que toca hoy.</h2>
-    <p class="section-lead reveal d1">Instalala como app en tu celu o en tu compu y recibí los avisos sin tener LeadEra abierto.</p>
-
-    <ul class="av-avisos" aria-label="Avisos de ejemplo">
-      <li class="av-aviso" style="--i:0">
-        <div class="hd-card">
-          <span class="hd-ico" aria-hidden="true"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
-          <span class="hd-txt">
-            <span class="hd-meta"><b>LeadEra</b>ahora</span>
-            <span class="hd-tit">Hoy: 1 visita y 3 seguimientos</span>
-            <span class="hd-cuerpo">5 prioritarios y 2 leads nuevos. Empezá por Mi día.</span>
-          </span>
-        </div>
-        <p class="av-cuando">Resumen diario · 9:05</p>
-      </li>
-      <li class="av-aviso" style="--i:1">
-        <div class="hd-card">
-          <span class="hd-ico" aria-hidden="true"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
-          <span class="hd-txt">
-            <span class="hd-meta"><b>LeadEra</b>ahora</span>
-            <span class="hd-tit">Visita a las 16:00 con Martina Beltrán en Alsina 3300</span>
-            <span class="hd-cuerpo">Empieza a las 16:00. Alsina 3300. Con Martina Beltrán.</span>
-          </span>
-        </div>
-        <p class="av-cuando">Recordatorio · 1 hora antes de la visita</p>
-      </li>
-      <li class="av-aviso" style="--i:2">
-        <div class="hd-card">
-          <span class="hd-ico" aria-hidden="true"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
-          <span class="hd-txt">
-            <span class="hd-meta"><b>LeadEra</b>ahora</span>
-            <span class="hd-tit">¿Cómo te fue con Martina Beltrán en Alsina 3300?</span>
-            <span class="hd-cuerpo">Registrá cómo fue en la ficha del lead.</span>
-          </span>
-        </div>
-        <p class="av-cuando">Post-visita · 30 minutos después</p>
-      </li>
-    </ul>
-
-    <div class="av-instalar">
-      <h3 class="av-h3" id="av-instalar-titulo">Instalala en 2 pasos</h3>
-      <!-- Sin JS las pestañas no existen: se ven las tres listas, cada una con su título. -->
-      <div class="av-tabs" role="tablist" aria-labelledby="av-instalar-titulo" hidden>
-        <button type="button" role="tab" id="av-tab-iphone" aria-controls="av-iphone" aria-selected="false" tabindex="-1">iPhone</button>
-        <button type="button" role="tab" id="av-tab-android" aria-controls="av-android" aria-selected="false" tabindex="-1">Android</button>
-        <button type="button" role="tab" id="av-tab-compu" aria-controls="av-compu" aria-selected="false" tabindex="-1">Compu</button>
-      </div>
-
-      <div class="av-panel" id="av-iphone">
-        <h4 class="av-plat">iPhone</h4>
-        <ol class="av-pasos">
-          <li><strong>Instalala desde Safari.</strong> Abrí LeadEra en Safari y tocá el botón Compartir (el cuadrado con una flecha hacia arriba). Elegí «Agregar a pantalla de inicio» y tocá «Agregar». Después abrí LeadEra desde ese ícono, no desde Safari.</li>
-          <li><strong>Activá los avisos.</strong> En Configuración › Notificaciones, prendé «Notificaciones en este dispositivo».</li>
-        </ol>
-        <p class="av-nota">En iPhone, los avisos solo llegan si instalaste LeadEra en la pantalla de inicio.</p>
-      </div>
-      <div class="av-panel" id="av-android">
-        <h4 class="av-plat">Android</h4>
-        <ol class="av-pasos">
-          <li><strong>Instalala desde Chrome.</strong> Abrí LeadEra en Chrome, tocá tu nombre arriba a la derecha y elegí «Instalar app». Confirmá en el aviso del navegador.</li>
-          <li><strong>Activá los avisos.</strong> En Configuración › Notificaciones, prendé «Notificaciones en este dispositivo».</li>
-        </ol>
-      </div>
-      <div class="av-panel" id="av-compu">
-        <h4 class="av-plat">Compu</h4>
-        <ol class="av-pasos">
-          <li><strong>Instalala desde Chrome o Edge.</strong> Abrí LeadEra, hacé clic en tu nombre arriba a la derecha y elegí «Instalar app». Confirmá en el aviso del navegador.</li>
-          <li><strong>Activá los avisos.</strong> En Configuración › Notificaciones, prendé «Notificaciones en este dispositivo». Se activan por dispositivo: hacelo en cada uno donde quieras recibirlos.</li>
-        </ol>
-      </div>
-    </div>
-
-    <a href="https://app.leadera.com.ar/signup" class="btn-main-lg av-cta" data-cta="avisos">
-      Probar gratis 14 días
-      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" aria-hidden="true">
-        <path d="M2.5 8.5h12M9.5 4.5l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-  </div>
-  <script>
-    /* Avisos: entran escalonados una vez al verse. Pestañas de instalación:
-       se arman acá (sin JS se ven las tres listas) y arrancan en la
-       plataforma del visitante, con la misma detección que la app. */
-    (() => {
-      const sec = document.getElementById('avisos');
-      const lista = sec.querySelector('.av-avisos');
-      const r = lista.getBoundingClientRect();
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window && r.top > innerHeight) {
-        sec.classList.add('av-espera');
-        const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); sec.classList.remove('av-espera'); } }, { threshold: .35 });
-        io.observe(lista);
-      }
-
-      const tabs = [...sec.querySelectorAll('[role=tab]')];
-      const panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
-      const n = navigator, ua = n.userAgent;
-      const ios = /iPhone|iPad|iPod/.test(ua) || (n.platform === 'MacIntel' && n.maxTouchPoints > 1);
-      const elegir = (i, foco) => tabs.forEach((t, j) => {
-        const on = i === j;
-        t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; panels[j].hidden = !on;
-        if (on && foco) t.focus();
-      });
-      panels.forEach((p, j) => { p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', tabs[j].id); p.tabIndex = 0; });
-      tabs.forEach((t, i) => {
-        t.addEventListener('click', () => elegir(i));
-        t.addEventListener('keydown', e => {
-          const k = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
-          if (k === undefined) return;
-          e.preventDefault(); elegir((k + tabs.length) % tabs.length, true);
-        });
-      });
-      sec.querySelector('.av-tabs').hidden = false;
-      sec.classList.add('av-con-tabs');
-      elegir(ios ? 0 : /Android/.test(ua) ? 1 : 2);
-    })();
-  </script>
-</section>
-
-<!-- ================================================================
-     DEMO NAVEGABLE
-================================================================ -->
-<section id="explorar" aria-labelledby="demo-titulo" data-martina="2">
+<section id="como-funciona" class="un-dia" aria-labelledby="dia-titulo" data-martina="1">
   <div class="inner">
     <div class="demo-head">
-      <h2 class="section-h2 reveal" id="demo-titulo" data-split>Ahora recorré la historia dentro de LeadEra.</h2>
-      <p class="section-lead reveal d1">Entrá a Leads y abrí la ficha de Martina Beltrán. Después, mirá la agenda y las operaciones. Son datos de ejemplo; crear y editar se habilita cuando abrís tu cuenta.</p>
+      <h2 class="section-h2 reveal" id="dia-titulo" data-split>Un día con LeadEra</h2>
+      <p class="section-lead reveal d1">Retomá cada conversación donde la dejaste. Tocá la demo cuando quieras: es interactiva.</p>
     </div>
 
+    <ol class="dia-pasos">
+      <li data-paso="1"><span class="dia-hora"><time>9:05</time> · Priorizá</span><h3 class="dia-h3">Sabés a quién retomar.</h3><p>Mi día reúne los leads que necesitan atención.</p></li>
+      <li data-paso="2"><span class="dia-hora"><time>9:50</time> · Recordá</span><h3 class="dia-h3">La conversación sigue acá.</h3><p>Revisás qué hablaron y qué opciones le interesaron.</p></li>
+      <li data-paso="3"><span class="dia-hora"><time>12:15</time> · Conectá</span><h3 class="dia-h3">Una propiedad. Una coincidencia.</h3><p>Su búsqueda aparece relacionada con Alsina 3300.</p></li>
+      <li data-paso="4"><span class="dia-hora"><time>16:00</time> · Organizá</span><h3 class="dia-h3">Dale lugar al próximo paso.</h3><p>Desde Calendario podés agendar la visita y elegir propiedad, lead, fecha y hora.</p></li>
+    </ol>
+
+    <!-- Ancla vieja de la demo: puede estar en mensajes o anuncios ya enviados. -->
+    <span id="explorar" class="dia-ancla"></span>
+    <p class="dia-nota">Datos de ejemplo</p>
     <div class="demo-frame reveal d2">
       <!-- teléfono: el sidebar se reemplaza por un desplegable -->
       <div class="demo-picker">
@@ -3277,6 +3156,132 @@
     </div>
   </div>
 </section>
+
+
+<!-- ================================================================
+     LEADERA TE AVISA — los tres avisos reales (textos de la app, desde
+     site.config.json) y cómo instalarla para recibirlos.
+================================================================ -->
+<section id="avisos" class="avisos" aria-labelledby="avisos-titulo" data-martina="1">
+  <div class="inner">
+    <h2 class="section-h2 reveal" id="avisos-titulo">LeadEra te avisa lo que toca hoy.</h2>
+    <p class="section-lead reveal d1">Instalala como app en tu celu o en tu compu y recibí los avisos sin tener LeadEra abierto.</p>
+
+    <ul class="av-avisos" aria-label="Avisos de ejemplo">
+      <li class="av-aviso" style="--i:0">
+        <div class="hd-card">
+          <span class="hd-ico" aria-hidden="true"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
+          <span class="hd-txt">
+            <span class="hd-meta"><b>LeadEra</b>ahora</span>
+            <span class="hd-tit">Hoy: 1 visita y 3 seguimientos</span>
+            <span class="hd-cuerpo">5 prioritarios y 2 leads nuevos. Empezá por Mi día.</span>
+          </span>
+        </div>
+        <p class="av-cuando">Resumen diario · 9:05</p>
+      </li>
+      <li class="av-aviso" style="--i:1">
+        <div class="hd-card">
+          <span class="hd-ico" aria-hidden="true"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
+          <span class="hd-txt">
+            <span class="hd-meta"><b>LeadEra</b>ahora</span>
+            <span class="hd-tit">Visita a las 16:00 con Martina Beltrán en Alsina 3300</span>
+            <span class="hd-cuerpo">Empieza a las 16:00. Alsina 3300. Con Martina Beltrán.</span>
+          </span>
+        </div>
+        <p class="av-cuando">Recordatorio · 1 hora antes de la visita</p>
+      </li>
+      <li class="av-aviso" style="--i:2">
+        <div class="hd-card">
+          <span class="hd-ico" aria-hidden="true"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
+          <span class="hd-txt">
+            <span class="hd-meta"><b>LeadEra</b>ahora</span>
+            <span class="hd-tit">¿Cómo te fue con Martina Beltrán en Alsina 3300?</span>
+            <span class="hd-cuerpo">Registrá cómo fue en la ficha del lead.</span>
+          </span>
+        </div>
+        <p class="av-cuando">Post-visita · 30 minutos después</p>
+      </li>
+    </ul>
+
+    <div class="av-instalar">
+      <h3 class="av-h3" id="av-instalar-titulo">Instalala en 2 pasos</h3>
+      <!-- Sin JS las pestañas no existen: se ven las tres listas, cada una con su título. -->
+      <div class="av-tabs" role="tablist" aria-labelledby="av-instalar-titulo" hidden>
+        <button type="button" role="tab" id="av-tab-iphone" aria-controls="av-iphone" aria-selected="false" tabindex="-1">iPhone</button>
+        <button type="button" role="tab" id="av-tab-android" aria-controls="av-android" aria-selected="false" tabindex="-1">Android</button>
+        <button type="button" role="tab" id="av-tab-compu" aria-controls="av-compu" aria-selected="false" tabindex="-1">Compu</button>
+      </div>
+
+      <div class="av-panel" id="av-iphone">
+        <h4 class="av-plat">iPhone</h4>
+        <ol class="av-pasos">
+          <li><strong>Instalala desde Safari.</strong> Abrí LeadEra en Safari y tocá el botón Compartir (el cuadrado con una flecha hacia arriba). Elegí «Agregar a pantalla de inicio» y tocá «Agregar». Después abrí LeadEra desde ese ícono, no desde Safari.</li>
+          <li><strong>Activá los avisos.</strong> En Configuración › Notificaciones, prendé «Notificaciones en este dispositivo».</li>
+        </ol>
+        <p class="av-nota">En iPhone, los avisos solo llegan si instalaste LeadEra en la pantalla de inicio.</p>
+      </div>
+      <div class="av-panel" id="av-android">
+        <h4 class="av-plat">Android</h4>
+        <ol class="av-pasos">
+          <li><strong>Instalala desde Chrome.</strong> Abrí LeadEra en Chrome, tocá tu nombre arriba a la derecha y elegí «Instalar app». Confirmá en el aviso del navegador.</li>
+          <li><strong>Activá los avisos.</strong> En Configuración › Notificaciones, prendé «Notificaciones en este dispositivo».</li>
+        </ol>
+      </div>
+      <div class="av-panel" id="av-compu">
+        <h4 class="av-plat">Compu</h4>
+        <ol class="av-pasos">
+          <li><strong>Instalala desde Chrome o Edge.</strong> Abrí LeadEra, hacé clic en tu nombre arriba a la derecha y elegí «Instalar app». Confirmá en el aviso del navegador.</li>
+          <li><strong>Activá los avisos.</strong> En Configuración › Notificaciones, prendé «Notificaciones en este dispositivo». Se activan por dispositivo: hacelo en cada uno donde quieras recibirlos.</li>
+        </ol>
+      </div>
+    </div>
+
+    <a href="https://app.leadera.com.ar/signup" class="btn-main-lg av-cta" data-cta="avisos">
+      Probar gratis 14 días
+      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" aria-hidden="true">
+        <path d="M2.5 8.5h12M9.5 4.5l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+  <script>
+    /* Avisos: entran escalonados una vez al verse. Pestañas de instalación:
+       se arman acá (sin JS se ven las tres listas) y arrancan en la
+       plataforma del visitante, con la misma detección que la app. */
+    (() => {
+      const sec = document.getElementById('avisos');
+      const lista = sec.querySelector('.av-avisos');
+      const r = lista.getBoundingClientRect();
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window && r.top > innerHeight) {
+        sec.classList.add('av-espera');
+        const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); sec.classList.remove('av-espera'); } }, { threshold: .35 });
+        io.observe(lista);
+      }
+
+      const tabs = [...sec.querySelectorAll('[role=tab]')];
+      const panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
+      const n = navigator, ua = n.userAgent;
+      const ios = /iPhone|iPad|iPod/.test(ua) || (n.platform === 'MacIntel' && n.maxTouchPoints > 1);
+      const elegir = (i, foco) => tabs.forEach((t, j) => {
+        const on = i === j;
+        t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; panels[j].hidden = !on;
+        if (on && foco) t.focus();
+      });
+      panels.forEach((p, j) => { p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', tabs[j].id); p.tabIndex = 0; });
+      tabs.forEach((t, i) => {
+        t.addEventListener('click', () => elegir(i));
+        t.addEventListener('keydown', e => {
+          const k = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+          if (k === undefined) return;
+          e.preventDefault(); elegir((k + tabs.length) % tabs.length, true);
+        });
+      });
+      sec.querySelector('.av-tabs').hidden = false;
+      sec.classList.add('av-con-tabs');
+      elegir(ios ? 0 : /Android/.test(ua) ? 1 : 2);
+    })();
+  </script>
+</section>
+
 
 <!-- ================================================================
      FLYERS — la función "Flyers de propiedades". Imágenes de ejemplo
