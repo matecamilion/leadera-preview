@@ -1,0 +1,9 @@
+<!-- Isotipo blanco con acento: misma geometría que favicon.svg, encuadre igual a leadera-logo-icon.png (que queda para los emails). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2.9 2.9 42.1 43.5">
+<g transform="rotate(45 24 24)">
+  <path d="M9 12.5 A3.5 3.5 0 0 1 12.5 9 H22 V22 H9 Z" fill="#fff"/>
+  <path d="M9 26 H22 V39 H12.5 A3.5 3.5 0 0 1 9 35.5 Z" fill="#fff"/>
+  <path d="M26 26 H35.5 A3.5 3.5 0 0 1 39 29.5 V39 H26 Z" fill="#fff"/>
+  <path d="M26 9 H35.5 A3.5 3.5 0 0 1 39 12.5 V22 H26 Z" fill="#66a89e"/>
+</g>
+</svg>
