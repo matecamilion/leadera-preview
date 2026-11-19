@@ -442,7 +442,6 @@
     .hero-actions { margin-top: 22px; display: flex; flex-direction: column; gap: 6px; }
     .btn-hero { min-height: 52px; justify-content: center; font-size: 16px; padding: 0 28px; transition: background .18s, transform 90ms, box-shadow .2s; }
     .btn-hero:active { transform: scale(.98); }
-    .hero-links { display: flex; flex-wrap: wrap; gap: 8px; }
     .hero-link {
       display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 10px 0 0;
       font-size: 15px; font-weight: 600; color: var(--teal);
@@ -453,6 +452,8 @@
     .hero-link:hover { text-decoration-color: var(--teal); }
     .hero-link:active { transform: scale(.98); }
     .hero-link .ar { margin: 0; }
+    .hero-actions > .hero-link { align-self: flex-start; }
+    .hero-link-wa { font-size: 14px; font-weight: 500; }
 
     .hero-trust { margin-top: 6px; font-size: var(--fs-xs); line-height: 1.45; color: var(--text-2); }
     .hero-trust span { white-space: nowrap; }
@@ -533,7 +534,9 @@
       .hero-copy { grid-column: 2; max-width: none; }
       .hero-h1 { font-size: calc(var(--hero-col) / 9.2); }
       .hero-sub { max-width: 36ch; }
-      .hero-actions { margin-top: 28px; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 8px 20px; }
+      .hero-actions { margin-top: 28px; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 0 24px; }
+      .hero-actions > .hero-link { align-self: center; }
+      .hero-link-wa { flex-basis: 100%; }
       .btn-hero { padding: 0 32px; }
       .hero-trust { margin-top: 18px; max-width: 40ch; }
 
@@ -2278,7 +2281,7 @@
 <div class="hero">
   <div class="hero-copy">
     <h1 class="hero-h1">Abrís LeadEra y sabés <span class="hero-acento">a&nbsp;quién llamar&nbsp;hoy.</span></h1>
-    <p class="hero-sub">El CRM para agentes inmobiliarios de Argentina: tus contactos, seguimientos y visitas en un solo lugar.</p>
+    <p class="hero-sub">CRM para agentes inmobiliarios de Argentina: tus contactos, seguimientos y visitas en un solo lugar, con avisos en el celu y en la compu.</p>
 
     <div class="hero-actions">
       <a href="https://app.leadera.com.ar/signup" class="btn-main btn-hero" data-cta="hero">
@@ -2287,13 +2290,11 @@
           <path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
-      <div class="hero-links">
-        <a href="#explorar" class="hero-link">Ver la demo<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
-        <a href="https://wa.me/542235827465?text=Hola!%20Vi%20la%20landing%20de%20LeadEra%20y%20tengo%20una%20consulta." class="hero-link" data-wa="hero" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a>
-      </div>
+      <a href="#como-funciona" class="hero-link">Ver un día de ejemplo<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+      <a href="https://wa.me/542235827465?text=Hola!%20Vi%20la%20landing%20de%20LeadEra%20y%20tengo%20una%20consulta." class="hero-link hero-link-wa" data-wa="hero" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a>
     </div>
 
-    <p class="hero-trust"><span>14 días gratis ·</span> <span>Sin tarjeta ·</span> <span>Sin límite de leads ·</span> <span>Hecho en Mar del Plata ·</span> <span>Sincroniza con Google Calendar</span></p>
+    <p class="hero-trust"><span>14 días gratis ·</span> <span>Sin tarjeta ·</span> <span>Sin límite de leads ·</span> <span>Se instala en tu celu y tu compu ·</span> <span>Sincroniza con Google Calendar</span></p>
   </div>
 
   <figure class="hero-app" role="img" aria-label="Pantalla Mi día de LeadEra, con datos de ejemplo: el próximo paso es llamar a Martina Beltrán hoy a las 10:00.">
