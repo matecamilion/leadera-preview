@@ -4160,7 +4160,7 @@
       : `<div class="ld-empty">No hay leads que coincidan con el filtro.</div>`;
   }
 
-  function openFicha(i) {
+  function openFicha(i, guiado = false) {
     const l = LEADS[i];
     ficha.innerHTML = `
       <button type="button" class="demo-back" data-back>${icon('arrow-left')}Volver a Leads</button>
@@ -4226,6 +4226,8 @@
         </div>
       </div>`;
     showPanel('ficha');
+    // Desde la API (los pasos) no se mueve el foco ni la página.
+    if (guiado) return;
     ficha.focus({ preventScroll: true });
     alInicio();
   }
@@ -4687,6 +4689,49 @@
   });
 
   renderCalendario();
+
+  /* ---- API para los pasos de "Un día con LeadEra" ----
+     irAPaso(n) lleva la demo a uno de los cuatro momentos sin mover el
+     foco ni la página: solo cambia el panel y, si hace falta, el
+     scroll DENTRO de .demo-main (en teléfono no tiene scroll propio, así
+     que ahí no se mueve nada). alTocar(cb) avisa, una sola vez, cuando
+     el visitante toca la demo: para que los pasos le dejen el control.
+     Las llamadas a irAPaso no disparan eventos, así que no cuentan. */
+  const main = frame.querySelector('.demo-main');
+  const MARTINA = LEADS.findIndex(l => l.name === 'Martina Beltrán');
+  const coincidencias = [...frame.querySelectorAll('[data-panel="midia"] .dm-card')]
+    .find(c => c.querySelector('.dm-card-title')?.textContent.includes('Coincidencias'));
+  const subir = () => { main.scrollTop = 0; };
+
+  const PASOS = {
+    1: () => { goTo('midia'); subir(); },
+    2: () => { goTo('leads'); openFicha(MARTINA, true); subir(); },
+    3: () => {
+      goTo('midia');
+      main.scrollTop += coincidencias.getBoundingClientRect().top - main.getBoundingClientRect().top - 12;
+    },
+    4: () => {
+      goTo('calendario');
+      mesActual = new Date(F.hoy.getFullYear(), F.hoy.getMonth(), 1);
+      seleccion = HOY;
+      renderCalendario();
+      subir();
+    }
+  };
+
+  let demoTocada = false;
+  const esperando = [];
+  const avisar = () => {
+    if (demoTocada) return;
+    demoTocada = true;
+    esperando.splice(0).forEach(cb => cb());
+  };
+  ['pointerdown', 'keydown', 'change'].forEach(t => frame.addEventListener(t, avisar));
+
+  window.LeadEraDemo = {
+    irAPaso(n) { PASOS[n]?.(); },
+    alTocar(cb) { if (demoTocada) cb(); else esperando.push(cb); }
+  };
 })();
 </script>
 
