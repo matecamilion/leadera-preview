@@ -167,6 +167,13 @@
 
     img { display: block; max-width: 100%; }
     :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+    .skip-link {
+      position: fixed; left: 16px; top: 12px; z-index: 1000; padding: 12px 18px; border-radius: var(--r-sm);
+      background: var(--teal); color: #fff; font-weight: 600; box-shadow: var(--shadow-md);
+      transform: translateY(-200%);
+    }
+    .skip-link:focus-visible { transform: none; outline-color: var(--teal-dark); }
+    main:focus { outline: none; }
     ::selection { background: var(--teal-light); color: var(--teal-darker); }
     h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; }
     p, li, dd, summary { text-wrap: pretty; }
@@ -472,7 +479,7 @@
     }
     .hero-app::after {
       content: ''; position: absolute; left: -24px; right: -24px; bottom: 0; height: 104px;
-      background: linear-gradient(180deg, rgba(247,248,250,0), var(--bg) 88%);
+      background: linear-gradient(180deg, rgba(247,248,250,0), var(--bg) 70%);
       pointer-events: none;
     }
     .ha-win {
@@ -735,7 +742,7 @@
 .rp-card {background:white;border:1px solid #dfe4e9;border-radius:12px;padding:16px;}
 .rp-card-title {display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:#1e2b38;}
 .rp-title-icon {color:#da673e;display:inline-flex;}
-.rp-count {font-size:10px;background:#fff0e9;color:#d65b36;border-radius:5px;padding:2px 6px;}
+.rp-count {font-size:10px;background:#fff0e9;color:#bb4826;border-radius:5px;padding:2px 6px;}
 .rp-link {margin-left:auto;font-size:10px;color:#087669;}
 .rp-muted {color:#5f6b7d;font-size:11px;}
 .rp-card-sub {margin:4px 0 12px;}
@@ -746,9 +753,9 @@
 .rp-contact strong {display:block;font-size:12px;font-weight:600;color:#202a34;}
 .rp-contact > span {display:block;font-size:10px;color:#5f6b7d;margin-top:2px;}
 .rp-badge {display:inline-block;font-size:8px;font-weight:700;line-height:1.3;padding:4px 6px;border-radius:4px;white-space:nowrap;}
-.rp-nuevo {background:#e3efeb;color:#087a70;}
-.rp-tibio {background:#fff3c3;color:#9e6500;}
-.rp-caliente {background:#fce7df;color:#dc5934;}
+.rp-nuevo {background:#e3efeb;color:#08756c;}
+.rp-tibio {background:#fff3c3;color:#966000;}
+.rp-caliente {background:#fce7df;color:#b84120;}
 .rp-icons {display:flex;gap:10px;color:#5f6b7d;margin:0 3px;}
 .rp-icons svg {width:13px;height:13px;}
 .rp-action {display:inline-flex;padding:6px 9px;border-radius:8px;background:#e3efec;color:#08756a;font-size:10px;white-space:nowrap;}
@@ -790,7 +797,7 @@
 .rp-grid {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid #dfe4e9;border-radius:7px;overflow:hidden;background:#fff;}
 .rp-grid > span {font-size:8px;text-align:center;padding:5px 0;color:#4f6478;background:#f1f3f6;}
 .rp-day {height:32px;border-top:1px solid #e1e5eb;border-right:1px solid #e1e5eb;padding:3px;min-width:0;overflow:hidden;font-size:8px;color:#4f6478;}
-.rp-day small {display:block;font-size:5px;white-space:nowrap;background:#eaf1ff;color:#4f88cb;margin-top:3px;}
+.rp-day small {display:block;font-size:5px;white-space:nowrap;background:#eaf1ff;color:#3069aa;margin-top:3px;}
 .rp-today > span {background:#117564;color:#fff;border-radius:50%;padding:2px 4px;}
 .rp-selected {outline:1px solid #137766;outline-offset:-1px;}
 .rp-day-detail {padding:10px;background:#fff;border:1px solid #dfe4e9;border-radius:7px;}
@@ -863,6 +870,8 @@
       --c-caliente:      #d85a30;
       --c-tibio:         #ef9f27;
       --c-frio:          #378add;
+      --c-caliente-ink:  #b34622;   /* texto sobre fondos suaves: 4.6:1 o más */
+      --c-frio-ink:      #1e69b3;
       --c-inactivo:      #64748b;
       --c-hot-soft:      #fdeee8;
       --c-warm-soft:     #fef5e0;
@@ -948,9 +957,9 @@
       font-size: 10px; font-weight: 700; white-space: nowrap;
     }
     .bdg.sm { padding: 2px 8px; font-size: 9.5px; }
-    .bdg.caliente { background: var(--c-badge-caliente-bg); color: var(--c-caliente); }
+    .bdg.caliente { background: var(--c-badge-caliente-bg); color: var(--c-caliente-ink); }
     .bdg.tibio    { background: var(--c-badge-tibio-bg); color: var(--c-badge-tibio-ink); }
-    .bdg.frio     { background: var(--c-badge-frio-bg); color: var(--c-frio); }
+    .bdg.frio     { background: var(--c-badge-frio-bg); color: var(--c-frio-ink); }
     .bdg.inactivo { background: var(--c-bg); color: var(--c-inactivo); }
     .bdg.nuevo    { background: var(--c-brand-soft); color: var(--c-primary); }
     .bdg.ganado   { background: var(--c-badge-ganado-bg); color: var(--c-primary-dark); }
@@ -972,9 +981,9 @@
     }
     .bdg-prop.disponible { background: var(--c-badge-ganado-bg); color: var(--c-primary); }
     .bdg-prop.reservada  { background: var(--c-badge-tibio-bg); color: var(--c-badge-tibio-ink); }
-    .bdg-prop.vendida    { background: var(--c-surface-2); color: var(--c-inactivo); }
-    .bdg-prop.alquilada  { background: var(--c-badge-frio-bg); color: var(--c-frio); }
-    .bdg-prop.pausada    { background: var(--c-hot-soft); color: var(--c-caliente); }
+    .bdg-prop.vendida    { background: var(--c-surface-2); color: var(--c-ink-3); }
+    .bdg-prop.alquilada  { background: var(--c-badge-frio-bg); color: var(--c-frio-ink); }
+    .bdg-prop.pausada    { background: var(--c-hot-soft); color: var(--c-caliente-ink); }
 
     .bdg-op {
       display: inline-block; border-radius: 999px; padding: 4px 10px;
@@ -990,9 +999,9 @@
       display: flex; align-items: center; justify-content: center;
       font-size: .8rem; font-weight: 700;
     }
-    .dm-av.caliente { background: var(--c-badge-caliente-bg); color: var(--c-caliente); }
+    .dm-av.caliente { background: var(--c-badge-caliente-bg); color: var(--c-caliente-ink); }
     .dm-av.tibio    { background: var(--c-badge-tibio-bg); color: var(--c-badge-tibio-ink); }
-    .dm-av.frio     { background: var(--c-badge-frio-bg); color: var(--c-frio); }
+    .dm-av.frio     { background: var(--c-badge-frio-bg); color: var(--c-frio-ink); }
     .dm-av.nuevo    { background: var(--c-brand-soft); color: var(--c-primary); }
     .dm-av.inactivo { background: var(--c-surface-2); color: var(--c-inactivo); }
     .dm-av.ganado   { background: var(--c-badge-ganado-bg); color: var(--c-primary-dark); }
@@ -1003,10 +1012,10 @@
       display: flex; align-items: center; justify-content: center;
     }
     .dm-chip svg { width: 15px; height: 15px; }
-    .t-caliente { background: var(--c-hot-soft); color: var(--c-caliente); }
+    .t-caliente { background: var(--c-hot-soft); color: var(--c-caliente-ink); }
     .t-brand    { background: var(--c-brand-soft); color: var(--c-primary); }
     .t-tibio    { background: var(--c-warm-soft); color: var(--c-badge-tibio-ink); }
-    .t-frio     { background: var(--c-cool-soft); color: var(--c-frio); }
+    .t-frio     { background: var(--c-cool-soft); color: var(--c-frio-ink); }
     .t-neutro   { background: var(--c-surface-2); color: var(--c-ink-3); }
 
     /* ============================================================
@@ -1014,6 +1023,7 @@
        4 stat cards y secciones en pares de dos columnas.
     ============================================================ */
     .dm-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .demo-panel .dm-h1, .ld-h1 { font-family: var(--font-display); text-wrap: balance; }
     .dm-h1 { font-size: 1.4rem; font-weight: 700; color: var(--c-ink); line-height: 1.2; letter-spacing: -.01em; }
     .dm-h1 span { color: var(--c-primary); }
     .dm-sub { font-size: .85rem; color: var(--c-ink-3); margin-top: 3px; }
@@ -1158,7 +1168,7 @@
     .ld-lead strong { font-weight: 700; color: var(--c-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ld-lead .bdg-rol { flex-shrink: 0; }
     .ld-lead-sub { font-size: .78rem; color: var(--c-ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ld-venc { font-weight: 700; color: var(--c-caliente); }
+    .ld-venc { font-weight: 700; color: var(--c-caliente-ink); }
     .ld-muted { color: var(--c-ink-4); }
     .ld-actions { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; }
     .ld-a {
@@ -1389,7 +1399,7 @@
       width: 100%; max-width: 340px; background: var(--c-surface);
       border-radius: 14px; padding: 20px; box-shadow: 0 12px 32px rgba(16,24,40,.22);
     }
-    .kb-dialog h4 { font-size: 1rem; font-weight: 700; color: var(--c-ink); }
+    .kb-dialog-title { font-size: 1rem; font-weight: 700; color: var(--c-ink); }
     .kb-dialog p { font-size: .85rem; color: var(--c-ink-3); margin-top: 6px; }
     .kb-dialog-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
     /* "Mover a…": la alternativa táctil al arrastre. */
@@ -1467,9 +1477,9 @@
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .cal-chip.tarea       { background: var(--c-brand-soft); color: var(--c-primary-dark); }
-    .cal-chip.seguimiento { background: var(--c-cool-soft); color: var(--c-frio); }
+    .cal-chip.seguimiento { background: var(--c-cool-soft); color: var(--c-frio-ink); }
     .cal-chip.visita      { background: var(--c-warm-soft); color: var(--c-badge-tibio-ink); }
-    .cal-chip.listo { text-decoration: line-through; opacity: .6; }
+    .cal-chip.listo { text-decoration: line-through; opacity: .8; }
     .cal-mas { font-size: .64rem; color: var(--c-ink-3); }
     .cal-dots { display: none; align-items: center; gap: 3px; flex-wrap: wrap; }
     .cal-dot { width: 6px; height: 6px; border-radius: 50%; }
@@ -1747,6 +1757,10 @@
       transition: text-decoration-color .18s;
     }
     .plan-notes a:hover, .faq-a a:hover, .cercania a.link:hover { text-decoration-color: var(--teal); }
+    /* Área táctil de 44px: el padding vertical de un link en línea agranda
+       la zona que se toca sin mover el renglón. */
+    .plan-notes a, .faq-a a, .cta-footnote a { padding-block: 14px; }
+    .cercania a.link { padding-block: 9px; }
 
     /* ============================================================
        CERCANÍA — hecho en Mar del Plata, con nombre y apellido
@@ -2179,7 +2193,7 @@
       .rp-grid > span { font-size: 11px; }
       .rp-day { font-size: 11px; }
       /* En el calendario mini, el evento pasa a ser un punto. */
-      .rp-day small { font-size: 0; width: 6px; height: 6px; padding: 0; border-radius: 50%; background: #4f88cb; margin-top: 4px; }
+      .rp-day small { font-size: 0; width: 6px; height: 6px; padding: 0; border-radius: 50%; background: #4f88cb; color: #4f88cb; margin-top: 4px; }
       .rp-tabs { gap: 14px; }
 
     }
@@ -2245,6 +2259,7 @@
   </script>
 </head>
 <body>
+<a class="skip-link" href="#top">Saltar al contenido</a>
 <!-- ================================================================
      ICON SPRITE — trazo lineal, viewBox 0 0 24 24, stroke-width 1.75
 ================================================================ -->
@@ -2307,7 +2322,7 @@
   </div>
 </nav>
 
-<main id="top">
+<main id="top" tabindex="-1">
 
 <!-- ================================================================
      HERO — el producto abre la página: titular, subtítulo, CTA y línea
@@ -2462,11 +2477,11 @@
         </nav>
       </div>
 
-      <div class="demo-main">
+      <div class="demo-main" tabindex="0" aria-label="Pantalla de ejemplo de LeadEra">
         <div class="demo-panel" data-panel="midia">
           <div class="dm-head">
             <div>
-              <h3 class="dm-h1">Hoy te quedan <span>11</span> tareas</h3>
+              <div class="dm-h1">Hoy te quedan <span>11</span> tareas</div>
               <p class="dm-sub">Gestioná tus contactos y hacé crecer tu cartera</p>
             </div>
             <span class="dm-toplink">Ver contactados hoy<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
@@ -2766,7 +2781,7 @@
           <div class="ld-head">
             <div>
               <div class="ld-kicker">Gestión de leads</div>
-              <h3 class="ld-h1">Todos los leads</h3>
+              <div class="ld-h1">Todos los leads</div>
               <p class="ld-count" id="ldCount">9 leads encontrados</p>
             </div>
             <div class="ld-tools">
@@ -2819,7 +2834,7 @@
           <div class="ld-head">
             <div>
               <div class="ld-kicker">Propiedades</div>
-              <h3 class="ld-h1">Propiedades</h3>
+              <div class="ld-h1">Propiedades</div>
               <p class="ld-count" id="prCount">8 propiedades en tu cartera.</p>
             </div>
             <div class="ld-tools">
@@ -2887,7 +2902,7 @@
           <div class="ld-head">
             <div>
               <div class="ld-kicker">Operaciones</div>
-              <h3 class="ld-h1">Tablero</h3>
+              <div class="ld-h1">Tablero</div>
               <p class="ld-count">Arrastrá una operación para cambiarle el estado.</p>
             </div>
             <div class="ld-tools">
@@ -2908,7 +2923,7 @@
           <div class="ld-head">
             <div>
               <div class="ld-kicker">Agenda</div>
-              <h3 class="ld-h1">Calendario</h3>
+              <div class="ld-h1">Calendario</div>
               <p class="ld-count">Tu agenda: tus tareas, tus visitas y tus seguimientos de leads.</p>
             </div>
             <div class="ld-tools">
@@ -2946,7 +2961,7 @@
 
       <div class="kb-modal" id="kbModal" hidden>
         <div class="kb-dialog" role="dialog" aria-modal="true" aria-labelledby="kbModalTitle">
-          <h4 id="kbModalTitle">Confirmar cambio</h4>
+          <div class="kb-dialog-title" id="kbModalTitle">Confirmar cambio</div>
           <p id="kbModalText"></p>
           <div class="kb-dialog-btns">
             <button type="button" class="ld-a ghost" data-kb="cancel">Cancelar</button>
@@ -3446,7 +3461,8 @@
      una sección con estado.
      Teléfono: la ficha es el dock — estado de Martina + "Probar
      gratis" — y está siempre a mano desde que el hero sale de
-     pantalla hasta que aparece el CTA final. Se esconde si hay un
+     pantalla hasta que aparece el CTA final, y se corre mientras se
+     ven los precios (ahí ya hay un botón por plan). Se esconde si hay un
      campo con foco (teclado abierto) o el menú abierto.
   ---------------------------------------------------------------- */
   (() => {
@@ -3456,7 +3472,7 @@
     const label = ficha.querySelector('.ficha-estado');
     const segs = [...ficha.querySelectorAll('.ficha-pasos li')];
     const mobile = matchMedia('(max-width: 768px)');
-    let actual = null, max = -1, ctaCerca = false, heroVisible = true, tecleando = false;
+    let actual = null, max = -1, ctaCerca = false, preciosVisibles = false, heroVisible = true, tecleando = false;
 
     function ponerEstado(i) {
       const viejo = label.querySelector('span:not(.out)');
@@ -3478,7 +3494,7 @@
     function decidir() {
       let ver;
       if (mobile.matches) {
-        ver = !heroVisible && !ctaCerca && !tecleando;
+        ver = !heroVisible && !ctaCerca && !preciosVisibles && !tecleando;
         if (max < 0) ponerEstado(0);
       } else {
         ver = actual !== null && actual !== 'end' && !ctaCerca;
@@ -3513,7 +3529,11 @@
     if (cta) new IntersectionObserver(([e]) => { ctaCerca = e.isIntersecting; decidir(); },
       { rootMargin: '0px 0px -10% 0px' }).observe(cta);
 
-    // En teléfono el dock no compite con los botones del hero.
+    // En teléfono el dock no compite con los botones de los planes.
+    const precios = document.getElementById('precios');
+    if (precios) new IntersectionObserver(([e]) => { preciosVisibles = e.isIntersecting; decidir(); }).observe(precios);
+
+    // Ni con los del hero.
     const hero = document.querySelector('.hero');
     if (hero) new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; decidir(); },
       { rootMargin: '0px 0px -35% 0px' }).observe(hero);
@@ -3537,6 +3557,8 @@
         if (scrollSuave.activo) scrollSuave.ir(t.getBoundingClientRect().top + scrollY - (t.id === 'top' ? 64 : 72));
         else t.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
         history.replaceState(null, '', id);
+        // "Saltar al contenido": el foco del teclado sigue al ancla.
+        if (t.hasAttribute('tabindex')) t.focus({ preventScroll: true });
       }
     });
   });
@@ -4115,7 +4137,7 @@
         <section class="kb-col ${c.key}" data-col="${c.key}">
           <header class="kb-col-head">
             <div class="kb-col-top">
-              <h4 class="kb-col-name">${c.label}</h4>
+              <div class="kb-col-name">${c.label}</div>
               <span class="kb-col-n">${ops.length}</span>
             </div>
             <div class="kb-col-mont">${totales(ops)}</div>
@@ -4202,7 +4224,7 @@
   hoja.hidden = true;
   hoja.innerHTML = `
     <div class="kb-dialog" role="dialog" aria-modal="true" aria-labelledby="kbMoverTitle">
-      <h4 id="kbMoverTitle">Mover a…</h4>
+      <div class="kb-dialog-title" id="kbMoverTitle">Mover a…</div>
       <p class="kb-mover-op"></p>
       <div class="kb-mover-cols"></div>
       <div class="kb-dialog-btns"><button type="button" class="ld-a ghost" data-mv="cancel">Cancelar</button></div>
