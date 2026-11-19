@@ -614,7 +614,7 @@
         --hero-col: clamp(28rem, 42vw, 36rem);
         display: grid; align-items: start;
         grid-template-columns: max(24px, calc((100% - 1200px) / 2)) var(--hero-col) 48px minmax(0, 1fr);
-        padding: 36px 0 0;
+        padding: 36px 0 64px;   /* aire debajo del celular */
       }
       .hero-copy { grid-column: 2; max-width: none; }
       .hero-h1 { font-size: calc(var(--hero-col) / 9.2); }
