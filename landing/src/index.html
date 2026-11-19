@@ -136,7 +136,6 @@
       --z-overlay: 5;    /* modal dentro del demo                  */
       --z-float:   30;   /* ficha flotante de Martina              */
       --z-nav:     40;   /* barra sticky                           */
-      --z-menu:    45;   /* menú desplegable de mobile             */
       --z-modal:   60;   /* hojas y diálogos de la demo en teléfono */
 
       --max-w: 1200px;
@@ -348,28 +347,22 @@
       font-family: var(--font-display);
       font-size: 19px; font-weight: 800; letter-spacing: -.02em; color: var(--text);
     }
-    .logo-mark {
-      width: 32px; height: 32px; background: var(--teal); border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    /* El isotipo es blanco sobre transparente: sobre el nav blanco
-       necesita la tesela teal para verse. */
-    .logo-mark img { width: 20px; height: auto; display: block; }
+    /* Isotipo del sprite (#i-logo) en teal: se ve directo sobre el nav claro. */
+    .logo-mark { width: 26px; height: 27px; flex-shrink: 0; color: var(--teal); }
     .logo .accent { color: var(--teal); }
 
-    .nav-links { display: flex; align-items: center; gap: 22px; list-style: none; }
-    .nav-links a { font-size: 14px; font-weight: 500; color: var(--text-2); transition: color .18s; }
-    .nav-links a:hover { color: var(--text); }
+    .nav-links { display: flex; align-items: center; gap: 22px; }
+    .nav-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; }
 
     .nav-links a.nav-login {
       font-weight: 600; color: var(--text);
-      padding: 8px 2px;
+      padding: 0 2px; transition: color .18s;
     }
     .nav-links a.nav-login:hover { color: var(--teal); }
 
     .nav-links a.nav-cta {
       background: var(--teal); color: #fff;
-      padding: 8px 18px; border-radius: 8px;
+      padding: 0 18px; border-radius: 8px;
       font-weight: 700; font-size: 14px;
       box-shadow: var(--shadow-teal);
       transition: background .18s, transform .18s, box-shadow .18s;
@@ -378,10 +371,6 @@
       background: var(--teal-dark); color: #fff;
       transform: translateY(-1px);
       box-shadow: var(--shadow-teal-h);
-    }
-    .hamburger {
-      display: none; background: none; border: none;
-      cursor: pointer; padding: 10px; margin-right: -10px; color: var(--text);
     }
     .reading-progress {
       position: absolute; bottom: -1px; left: 0; height: 2px; width: 100%;
@@ -1974,8 +1963,15 @@
     /* ============================================================
        RESPONSIVE
     ============================================================ */
-    @media (max-width: 1040px) {
-      .nav-links { gap: 18px; }
+    /* Teléfono: logo y los dos accesos en una línea. Debajo de 375px
+       queda solo el isotipo (el link conserva su aria-label). */
+    @media (max-width: 420px) {
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 13.5px; }
+      .nav-links a.nav-cta { font-size: 13.5px; padding: 0 14px; }
+    }
+    @media (max-width: 374px) {
+      .logo-word { display: none; }
     }
 
     @media (max-width: 920px) {
@@ -2035,41 +2031,8 @@
       .site-nav { transition: transform .35s var(--ease-out-expo); }
       .site-nav.nav-oculta { transform: translateY(-100%); }
 
-      /* — menú en hoja a pantalla completa — */
-      .nav-links { display: none; }
-      .nav-links.open {
-        display: flex; flex-direction: column; align-items: stretch; gap: 0;
-        position: fixed; left: 0; right: 0; top: 60px; bottom: 0; z-index: var(--z-menu);
-        background: #fff; padding: 12px 20px calc(24px + env(safe-area-inset-bottom));
-        overflow-y: auto; overscroll-behavior: contain;
-        animation: hojaIn .35s var(--ease-out-expo);
-      }
-      .nav-links.open li { list-style: none; }
-      .nav-links.open a {
-        display: flex; align-items: center; min-height: 56px;
-        font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -.02em;
-        color: var(--text); border-bottom: 1px solid var(--border-faint); background-image: none;
-      }
-      .nav-links.open li:nth-last-child(2) { margin-top: auto; }
-      .nav-links.open a.nav-login {
-        font-family: var(--font); font-size: 17px; font-weight: 600; border: 0;
-        justify-content: center; padding: 0;
-      }
-      .nav-links.open a.nav-cta {
-        justify-content: center; margin-top: 8px; min-height: 54px; padding: 0 18px;
-        font-family: var(--font); font-size: 17px; letter-spacing: 0; color: #fff; border: 0; border-radius: 12px;
-      }
-      .hamburger { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; margin-right: -10px; }
       .logo { min-height: 44px; }
-      .hamburger .ico-cerrar { display: none; }
-      .hamburger[aria-expanded="true"] .ico-abrir { display: none; }
-      .hamburger[aria-expanded="true"] .ico-cerrar { display: block; }
-      html.menu-abierto { overflow: hidden; }
-      /* backdrop-filter convierte al nav en contenedor de los fixed:
-         con el menú abierto se apaga, así la hoja ocupa la pantalla. */
-      html.menu-abierto .site-nav { transform: none; background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; }
     }
-    @keyframes hojaIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 
     @media (max-width: 768px) {
       /* — el dock: la ficha de Martina y el CTA, siempre a mano — */
@@ -2100,7 +2063,6 @@
         box-shadow: var(--shadow-teal);
       }
       body.dock-on { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
-      html.menu-abierto .ficha-float { visibility: hidden; }
 
       /* — demo: sin scroll atrapado y con pestañas para el pulgar — */
       .demo-frame { overflow: clip; }
@@ -2286,6 +2248,7 @@
     <g id="i-check"><path d="M5 12.5l4.5 4.5L19 7.5"/></g>
     <g id="i-x"><path d="M6 6l12 12M18 6 6 18"/></g>
     <g id="i-arrow-down"><path d="M12 4v15M6 13l6 6 6-6"/></g>
+    <symbol id="i-logo" viewBox="2.9 2.9 42.1 43.5"><g transform="rotate(45 24 24)" fill="currentColor" stroke="none"><path d="M9 12.5A3.5 3.5 0 0 1 12.5 9H22v13H9Z"/><path d="M9 26h13v13h-9.5A3.5 3.5 0 0 1 9 35.5Z"/><path d="M26 26h9.5a3.5 3.5 0 0 1 3.5 3.5V39H26Z"/><path d="M26 9h9.5a3.5 3.5 0 0 1 3.5 3.5V22H26Z" opacity=".32"/></g></symbol>
   </defs>
 </svg>
 
@@ -2295,30 +2258,13 @@
 <nav class="site-nav" aria-label="Principal">
   <div class="nav-inner">
     <a class="logo" href="#top" aria-label="LeadEra, ir al inicio">
-      <span class="logo-mark">
-        <img src="leadera-logo-icon.svg" alt="" width="317" height="327">
-      </span>
-      <span>Lead<span class="accent">Era</span></span>
+      <svg class="logo-mark" width="26" height="27" aria-hidden="true"><use href="#i-logo"/></svg>
+      <span class="logo-word">Lead<span class="accent">Era</span></span>
     </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#problema">El problema</a></li>
-      <li><a href="#como-funciona">Cómo funciona</a></li>
-      <li><a href="#explorar">Demo</a></li>
-      <li><a href="#precios">Precios</a></li>
-      <li><a href="#faq">Preguntas</a></li>
-      <li><a href="{{LOGIN_URL}}" class="nav-login">Iniciar sesión</a></li>
-      <li><a href="{{SIGNUP_URL}}" class="nav-cta" data-cta="nav">Probar gratis</a></li>
-    </ul>
-    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
-      <svg class="ico-abrir" width="22" height="22" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <rect y="3" width="20" height="2" rx="1"/>
-        <rect y="9" width="20" height="2" rx="1"/>
-        <rect y="15" width="20" height="2" rx="1"/>
-      </svg>
-      <svg class="ico-cerrar" width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-        <path d="M4 4l12 12M16 4L4 16"/>
-      </svg>
-    </button>
+    <div class="nav-links">
+      <a href="{{LOGIN_URL}}" class="nav-login">Iniciar sesión</a>
+      <a href="{{SIGNUP_URL}}" class="nav-cta" data-cta="nav">Probar gratis</a>
+    </div>
   </div>
 </nav>
 
@@ -3568,17 +3514,15 @@
      --nav-offset en <html> para que lo que va pegado arriba (las
      pestañas de la demo) se acomode debajo cuando el nav está.
   ---------------------------------------------------------------- */
-  const ham = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
   const siteNav = document.querySelector('.site-nav');
   const navMovil = matchMedia('(max-width: 920px)');
   (() => {
     let ultimoY = scrollY, pendiente = false;
     const pintar = () => {
       pendiente = false;
-      const y = scrollY, abierto = navLinks.classList.contains('open');
+      const y = scrollY;
       let oculta = siteNav.classList.contains('nav-oculta');
-      if (!navMovil.matches || abierto || y < 120) oculta = false;
+      if (!navMovil.matches || y < 120) oculta = false;
       else if (y > ultimoY + 8) oculta = true;
       else if (y < ultimoY - 8) oculta = false;
       if (Math.abs(y - ultimoY) > 8 || y < 120) ultimoY = y;
@@ -3589,25 +3533,6 @@
     navMovil.addEventListener('change', pintar);
     pintar();
   })();
-
-  /* ----------------------------------------------------------------
-     Menú mobile: hoja a pantalla completa. Bloquea el scroll de la
-     página, se cierra con Esc, con un link o con el mismo botón, y
-     devuelve el foco al botón.
-  ---------------------------------------------------------------- */
-  function menu(abrir) {
-    navLinks.classList.toggle('open', abrir);
-    document.documentElement.classList.toggle('menu-abierto', abrir);
-    ham.setAttribute('aria-expanded', String(abrir));
-    ham.setAttribute('aria-label', abrir ? 'Cerrar menú' : 'Abrir menú');
-    if (abrir) navLinks.querySelector('a').focus({ preventScroll: true });
-  }
-  ham.addEventListener('click', () => menu(!navLinks.classList.contains('open')));
-  navLinks.addEventListener('click', e => { if (e.target.closest('a')) menu(false); });
-  addEventListener('keydown', e => {
-    if (e.key === 'Escape' && navLinks.classList.contains('open')) { menu(false); ham.focus(); }
-  });
-  navMovil.addEventListener('change', () => { if (!navMovil.matches) menu(false); });
 
   /* ----------------------------------------------------------------
      Precios en teléfono: carrusel con snap. Arranca centrado en la
