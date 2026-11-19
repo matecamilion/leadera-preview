@@ -1,0 +1,21 @@
+{
+  "_nota": "Fuente única de los valores repetidos de la landing. Después de cambiar algo, correr: node scripts/build.mjs (desde landing/). Los precios reflejan DETALLE_PLAN de leadera-v2 (src/lib/api/suscripcion.ts) y los precios en dólares de planes_precio: hay que sincronizarlos a mano.",
+  "trialDays": 14,
+  "signupUrl": "https://app.leadera.com.ar/signup",
+  "loginUrl": "https://app.leadera.com.ar/login",
+  "whatsapp": {
+    "number": "542235827465",
+    "display": "223 582-7465",
+    "messages": {
+      "consulta": "Hola! Vi la landing de LeadEra y tengo una consulta.",
+      "demo": "Hola! Quiero agendar una demo de LeadEra"
+    }
+  },
+  "email": "leaderacrm@gmail.com",
+  "plans": {
+    "solo": 15,
+    "agenciaChica": 25,
+    "agenciaGrande": 40
+  },
+  "pixelId": ""
+}
