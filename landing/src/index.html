@@ -804,10 +804,11 @@
 
     /* ---- Un día con LeadEra: los cuatro momentos ----
        Texto plano: cada momento es una hora (.paso-hora) y su texto
-       (.paso-texto, con h3 y p). Debajo de 1024px, y sin JS, se ven así,
-       apilados arriba de la demo. Desde 1024px: dos columnas, momentos a
-       la izquierda y demo fija a la derecha; el script de la sección
-       "sube" cada hora a un botón real y resalta el activo. */
+       (.paso-texto, con h3 y p). Sin JS se ven así, apilados arriba de la
+       demo. Con JS, desde 1024px: dos columnas, momentos a la izquierda
+       y demo fija a la derecha. Con JS, debajo de 1024px: línea de tiempo
+       horizontal y un solo texto a la vez (.dia-movil, más abajo). En los
+       dos casos el script "sube" cada hora a un botón real. */
     .dia-pasos {
       list-style: none; display: grid; gap: 20px 32px; margin: 36px 0 40px;
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
@@ -818,7 +819,7 @@
       display: inline-block; padding: 2px 9px; border-radius: 999px; margin-right: 2px;
       background: var(--teal-faint); color: var(--teal-darker); font-weight: 700; font-variant-numeric: tabular-nums;
     }
-    .paso-texto h3 { display: block; margin: 8px 0 4px; font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; color: var(--text); }
+    .paso-texto h3 { display: block; margin: 8px 0 4px; font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 800; letter-spacing: -.02em; line-height: 1.2; color: var(--text); }
     .paso-texto p { margin: 0; font-size: var(--fs-sm); line-height: 1.55; color: var(--text-2); }
     .dia-ancla { display: block; scroll-margin-top: 88px; }
     .dia-nota { margin-bottom: 10px; font-size: var(--fs-xs); font-weight: 600; color: var(--text-muted); }
@@ -871,7 +872,7 @@
         box-sizing: border-box; border-radius: 50%; background: #fff; border: 2px solid rgba(91,103,121,.55);
       }
       .paso-texto { grid-row: 3; align-self: start; padding-top: 14px; }
-      .paso-texto h3 { margin: 0 0 10px; font-size: clamp(1.5rem, 1.1rem + 1.1vw, 2.125rem); font-weight: 800; line-height: 1.15; }
+      .paso-texto h3 { margin: 0 0 10px; font-size: clamp(1.5rem, 1.1rem + 1.1vw, 2.125rem); line-height: 1.15; }
       .paso-texto p { max-width: 38ch; font-size: 1.125rem; line-height: 1.6; }
 
       /* El marco queda fijo debajo del nav con alto fijo: no hay saltos
@@ -895,6 +896,60 @@
     @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
       .dia-pasos::after { transition: transform .6s cubic-bezier(.25, 1, .5, 1); }
       .dia-pasos .paso-texto h3, .dia-pasos .paso-texto p, .dia-pasos .paso-hora, .dia-pasos .paso-hora time, .paso-hora::before { transition: color .25s, background-color .25s, border-color .25s, box-shadow .25s; }
+    }
+
+    /* Debajo de 1024px, con JS (.dia-movil la pone el script): línea de
+       tiempo horizontal arriba, el texto del momento activo debajo (los
+       cuatro comparten la misma celda: el alto es el del más largo y no
+       hay saltos) y la demo con alto fijo y scroll propio. Las horas se
+       mueven a la línea de tiempo; los puntos son decorativos. */
+    @media (max-width: 1023px) {
+      .dia-movil .dia-linea { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 28px 0 6px; }
+      .dia-movil .dia-linea::before, .dia-movil .dia-linea::after {
+        content: ''; position: absolute; left: 12.5%; right: 12.5%; top: 6px; height: 2px; border-radius: 1px;
+      }
+      .dia-movil .dia-linea::before { background: rgba(91,103,121,.3); }
+      .dia-movil .dia-linea::after { background: var(--teal); transform-origin: left; transform: scaleX(var(--prog, 0)); }
+      .dia-movil .paso-hora { position: relative; text-align: center; font-size: var(--fs-sm); }
+      .dia-movil .paso-hora::before {
+        content: ''; position: absolute; z-index: 1; left: 50%; top: 0; width: 14px; height: 14px; margin-left: -7px;
+        box-sizing: border-box; border-radius: 50%; background: #fff; border: 2px solid rgba(91,103,121,.55);
+        pointer-events: none;
+      }
+      .dia-movil .paso-hora.is-activo::before { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 0 5px rgba(var(--teal-rgb),.18); }
+      .dia-movil .paso-hora button {
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        width: 100%; min-height: 44px; padding: 26px 2px 8px; border: 0; background: none;
+        font: inherit; color: inherit; cursor: pointer;
+      }
+      .dia-movil .paso-hora button:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; border-radius: 8px; }
+      .dia-movil .paso-hora time {
+        margin: 0; padding: 0; border-radius: 0; background: none; color: var(--text-muted);
+        font-family: var(--font-display); font-weight: 800; font-variant-numeric: tabular-nums;
+        font-size: clamp(1.1rem, calc((100vw - 48px) / 12), 2.25rem); line-height: 1; letter-spacing: -.02em;
+      }
+      .dia-movil .paso-nombre { font-size: .8125rem; font-weight: 600; line-height: 1.2; color: var(--text-muted); }
+      .dia-movil .paso-sep { display: none; }
+      .dia-movil .paso-hora.is-activo time { color: var(--teal); }
+      .dia-movil .paso-hora.is-activo .paso-nombre { color: var(--text); }
+
+      .dia-movil .dia-pasos { grid-template-columns: minmax(0, 1fr); gap: 0; margin: 0 0 24px; }
+      .dia-movil .dia-pasos li { grid-area: 1 / 1; padding-top: 0; border-top: 0; visibility: hidden; opacity: 0; }
+      .dia-movil .dia-pasos li.is-activo { visibility: visible; opacity: 1; }
+
+      /* La demo: alto fijo, scroll propio y 12px de página a cada lado
+         (sin overscroll-behavior: el scroll pasa a la página al llegar al final). */
+      .dia-movil .dia-sticky .demo-frame { margin: 0 -12px; height: clamp(460px, 68svh, 620px); min-height: 0; }
+      .dia-movil .demo-main { flex: 1 1 0; min-height: 0; max-height: none; overflow-y: auto; }
+    }
+    @media (max-width: 580px) {
+      .dia-movil .dia-sticky .demo-frame { margin-inline: -4px; }
+    }
+    @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+      .dia-movil .dia-linea::after { transition: transform .5s cubic-bezier(.25, 1, .5, 1); }
+      .dia-movil .paso-hora time, .dia-movil .paso-nombre, .dia-movil .paso-hora::before { transition: color .2s, background-color .2s, border-color .2s, box-shadow .2s; }
+      .dia-movil .dia-pasos li { transition: opacity .14s, visibility 0s .14s; }
+      .dia-movil .dia-pasos li.is-activo { transition: opacity .14s; }
     }
 
     /* La ficha flotante no se muestra mientras la sección está a la vista:
@@ -2124,15 +2179,10 @@
       }
       body.dock-on { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
 
-      /* — demo: sin scroll atrapado y con pestañas para el pulgar — */
-      .demo-frame { overflow: clip; }
+      /* — demo: pestañas para el pulgar (con JS, la sección fija el alto y el scroll del marco) — */
       .demo-main { max-height: none; overflow: visible; }
       .demo-picker { display: none; }
-      .demo-side {
-        display: block; width: auto; padding: 0;
-        position: sticky; top: var(--nav-offset, 0px); z-index: var(--z-raised);
-        transition: top .35s var(--ease-out-expo);
-      }
+      .demo-side { display: block; width: auto; padding: 0; }
       .demo-brand { display: none; }
       .demo-nav {
         flex-direction: row; gap: 8px; padding: 10px 12px;
@@ -2468,19 +2518,19 @@
       <div class="dia-guia">
       <ol class="dia-pasos">
         <li data-paso="1">
-          <div class="paso-hora"><time>9:05</time> · Priorizá</div>
+          <div class="paso-hora"><time>9:05</time><span class="paso-nombre"><span class="paso-sep"> · </span>Priorizá</span></div>
           <div class="paso-texto"><h3>Sabés a quién retomar.</h3><p>Mi día reúne los leads que necesitan atención.</p></div>
         </li>
         <li data-paso="2">
-          <div class="paso-hora"><time>9:50</time> · Recordá</div>
+          <div class="paso-hora"><time>9:50</time><span class="paso-nombre"><span class="paso-sep"> · </span>Recordá</span></div>
           <div class="paso-texto"><h3>La conversación sigue acá.</h3><p>Revisás qué hablaron y qué opciones le interesaron.</p></div>
         </li>
         <li data-paso="3">
-          <div class="paso-hora"><time>12:15</time> · Conectá</div>
+          <div class="paso-hora"><time>12:15</time><span class="paso-nombre"><span class="paso-sep"> · </span>Conectá</span></div>
           <div class="paso-texto"><h3>Una propiedad. Una coincidencia.</h3><p>Su búsqueda aparece relacionada con Alsina 3300.</p></div>
         </li>
         <li data-paso="4">
-          <div class="paso-hora"><time>16:00</time> · Organizá</div>
+          <div class="paso-hora"><time>16:00</time><span class="paso-nombre"><span class="paso-sep"> · </span>Organizá</span></div>
           <div class="paso-texto"><h3>Dale lugar al próximo paso.</h3><p>Desde Calendario podés agendar la visita y elegir propiedad, lead, fecha y hora.</p></div>
         </li>
       </ol>
@@ -3699,9 +3749,7 @@
   });
 
   /* ----------------------------------------------------------------
-     Nav en teléfono: se esconde al bajar y vuelve al subir. Escribe
-     --nav-offset en <html> para que lo que va pegado arriba (las
-     pestañas de la demo) se acomode debajo cuando el nav está.
+     Nav en teléfono: se esconde al bajar y vuelve al subir.
   ---------------------------------------------------------------- */
   const siteNav = document.querySelector('.site-nav');
   const navMovil = matchMedia('(max-width: 920px)');
@@ -3716,7 +3764,6 @@
       else if (y < ultimoY - 8) oculta = false;
       if (Math.abs(y - ultimoY) > 8 || y < 120) ultimoY = y;
       siteNav.classList.toggle('nav-oculta', oculta);
-      document.documentElement.style.setProperty('--nav-offset', oculta ? '0px' : siteNav.offsetHeight + 'px');
     };
     addEventListener('scroll', () => { if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); } }, { passive: true });
     navMovil.addEventListener('change', pintar);
@@ -4067,19 +4114,9 @@
     // Desde la API (los pasos) no se mueve el foco ni la página.
     if (guiado) return;
     ficha.focus({ preventScroll: true });
-    alInicio();
   }
 
-  navBtns.forEach(b => b.addEventListener('click', () => { goTo(b.dataset.target); alInicio(); }));
-
-  // En teléfono el panel crece con la página: al cambiar de sección o
-  // abrir una ficha, si el arranque del frame quedó arriba de la
-  // pantalla, se vuelve a él para ver la sección desde el principio.
-  function alInicio() {
-    if (!matchMedia('(max-width: 768px)').matches) return;
-    const top = frame.getBoundingClientRect().top;
-    if (top < 0) scrollTo({ top: top + scrollY - 8, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-  }
+  navBtns.forEach(b => b.addEventListener('click', () => goTo(b.dataset.target)));
   if (picker) picker.addEventListener('change', () => goTo(picker.value));
 
   chips.forEach(c => c.addEventListener('click', () => {
@@ -4532,8 +4569,7 @@
   /* ---- API para los pasos de "Un día con LeadEra" ----
      irAPaso(n) lleva la demo a uno de los cuatro momentos sin mover el
      foco ni la página: solo cambia el panel y, si hace falta, el
-     scroll DENTRO de .demo-main (en teléfono no tiene scroll propio, así
-     que ahí no se mueve nada). alTocar(cb) avisa, una vez, en el próximo
+     scroll DENTRO de .demo-main. alTocar(cb) avisa, una vez, en el próximo
      toque del visitante: para que los pasos le dejen el control.
      Las llamadas a irAPaso no disparan eventos, así que no cuentan. */
   const main = frame.querySelector('.demo-main');
@@ -4571,11 +4607,15 @@
 </script>
 
 <script>
-/* Un día con LeadEra (desde 1024px): el momento que cruza el centro de la
-   pantalla maneja la demo (LeadEraDemo.irAPaso). El primer toque del
-   visitante en la demo corta la guía hasta "Volver a la guía". Los
-   momentos son texto plano; acá se "sube" cada hora a un botón real
-   (y se baja de nuevo por debajo de 1024px). Nunca mueve el foco. */
+/* Un día con LeadEra. Los momentos son texto plano; acá se "sube" cada
+   hora a un botón real (su contenido se mueve adentro) y se baja de nuevo
+   si hace falta. Nunca mueve el foco.
+   - Desde 1024px: el momento que cruza el centro de la pantalla maneja
+     la demo (LeadEraDemo.irAPaso). El primer toque del visitante en la
+     demo corta la guía hasta "Volver a la guía".
+   - Debajo de 1024px: las cuatro horas se mueven a una línea de tiempo
+     horizontal y cada punto es el control: activa el momento, cambia el
+     texto y la demo. Sin sincronización con el scroll ni autoplay. */
 (() => {
   const sec = document.getElementById('como-funciona');
   const demo = window.LeadEraDemo;
@@ -4583,24 +4623,48 @@
   const items = [...sec.querySelectorAll('.dia-pasos li')];
   const horas = items.map(li => li.querySelector('.paso-hora'));
   const textos = items.map(li => li.querySelector('.paso-texto'));
+  const guia = sec.querySelector('.dia-guia');
   const lista = sec.querySelector('.dia-pasos');
   const volver = sec.querySelector('.dia-volver');
   const anuncio = document.getElementById('diaAnuncio');
   const ancho = matchMedia('(min-width: 1024px)');
   const reducido = matchMedia('(prefers-reduced-motion: reduce)');
   const PANELES = ['Mi día', 'ficha de Martina', 'coincidencias', 'calendario'];
-  let on = false, guiado = true, armado = false, activo = 0, moviendo = false, timer, btns = [];
+  let on = false, movil = false, linea = null;
+  let guiado = true, armado = false, activo = 0, moviendo = false, timer, btns = [];
   const visibles = new Set();
 
   const marcar = i => {
     btns.forEach((b, j) => j === i ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
     items.forEach((li, j) => li.classList.toggle('is-activo', j === i));
-    lista.style.setProperty('--prog', i / (items.length - 1));   // el tramo teal de la línea llega hasta el punto activo
+    horas.forEach((h, j) => h.classList.toggle('is-activo', j === i));
+    sec.style.setProperty('--prog', i / (items.length - 1));   // el tramo teal de la línea llega hasta el punto activo
+  };
+  const limpiar = () => {
+    items.forEach(li => li.classList.remove('is-activo'));
+    horas.forEach(h => h.classList.remove('is-activo'));
+    sec.style.removeProperty('--prog');
   };
   const mostrar = i => {
     demo.irAPaso(i + 1);
     anuncio.textContent = horas[i].textContent + ': ' + PANELES[i];
   };
+
+  // La hora pasa a ser un <button> (su contenido se mueve adentro) y vuelve a texto al apagarse.
+  function subir(clicks) {
+    btns = horas.map((h, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.append(...h.childNodes); h.append(b);
+      b.addEventListener('click', clicks[i]);
+      return b;
+    });
+  }
+  function bajar() {
+    horas.forEach(h => { const b = h.querySelector('button'); if (b) { h.append(...b.childNodes); b.remove(); } });
+    btns = [];
+  }
+
+  // ---------- escritorio ----------
   function poner(i) {
     if (i === activo) return;
     activo = i; marcar(i);
@@ -4635,24 +4699,10 @@
     btns[activo].focus({ preventScroll: true });   // el botón desaparece: el foco pasa al momento actual
   };
 
-  // La hora pasa a ser un <button> (su contenido se mueve adentro) y vuelve a texto al apagarse.
-  function subir() {
-    btns = horas.map((h, i) => {
-      const b = document.createElement('button');
-      b.type = 'button'; b.append(...h.childNodes); h.append(b);
-      b.addEventListener('click', clicks[i]);
-      return b;
-    });
-  }
-  function bajar() {
-    horas.forEach((h, i) => { const b = h.querySelector('button'); if (b) { h.append(...b.childNodes); b.remove(); } });
-    btns = [];
-  }
-
   function activar() {
     if (on) return; on = true; guiado = true; volver.hidden = true;
     sec.classList.add('dia-sync');
-    subir();
+    subir(clicks);
     textos.forEach((t, i) => t.addEventListener('click', clicksTexto[i]));
     volver.addEventListener('click', alVolver);
     marcar(activo); demo.irAPaso(activo + 1); armar();
@@ -4663,12 +4713,33 @@
     sec.classList.remove('dia-sync');
     bajar();
     textos.forEach((t, i) => t.removeEventListener('click', clicksTexto[i]));
-    items.forEach(li => li.classList.remove('is-activo'));
-    lista.style.removeProperty('--prog');
+    limpiar();
     volver.removeEventListener('click', alVolver); volver.hidden = true;
     io.disconnect(); visibles.clear();
   }
-  const ajustar = () => ancho.matches ? activar() : desactivar();
+
+  // ---------- debajo de 1024px ----------
+  // Tocar un punto activa ese momento y mueve la demo; la página no se mueve.
+  const clicksMovil = items.map((_, i) => () => { activo = i; marcar(i); mostrar(i); });
+  function ponerMovil() {
+    if (movil) return; movil = true;
+    sec.classList.add('dia-movil');
+    linea = document.createElement('div'); linea.className = 'dia-linea';
+    horas.forEach(h => linea.append(h));          // se mueven, no se clonan
+    guia.insertBefore(linea, lista);
+    subir(clicksMovil);
+    activo = 0; marcar(0); demo.irAPaso(1);
+  }
+  function quitarMovil() {
+    if (!movil) return; movil = false;
+    bajar();
+    horas.forEach((h, i) => items[i].prepend(h));   // cada hora vuelve a su <li>
+    linea.remove(); linea = null;
+    sec.classList.remove('dia-movil');
+    limpiar();
+  }
+
+  const ajustar = () => { if (ancho.matches) { quitarMovil(); activar(); } else { desactivar(); ponerMovil(); } };
   ancho.addEventListener('change', ajustar);
   ajustar();
 })();

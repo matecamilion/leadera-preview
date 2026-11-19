@@ -1,0 +1,640 @@
+{
+ "mobileLoadMs": 4666,
+ "lcpBeforeScroll": [
+  {
+   "t": 2832,
+   "size": 23852,
+   "el": "H1.hero-h1"
+  }
+ ],
+ "clsBeforeScroll": 0,
+ "clsAfterScroll": 0,
+ "shifts": [],
+ "fonts": [
+  "Public Sans 400 700",
+  "Schibsted Grotesk 700 800"
+ ],
+ "requests": [
+  {
+   "url": "/fonts/public-sans-latin-var.woff2",
+   "type": "font",
+   "bytes": 20628
+  },
+  {
+   "url": "/fonts/schibsted-grotesk-latin-var.woff2",
+   "type": "font",
+   "bytes": 33148
+  },
+  {
+   "url": "/leadera-logo-icon.png",
+   "type": "image",
+   "bytes": 37705
+  },
+  {
+   "url": "/index.html",
+   "type": "document",
+   "bytes": 267892
+  },
+  {
+   "url": "/favicon.svg",
+   "type": "other",
+   "bytes": 439
+  },
+  {
+   "url": "/flyers/flyer-editorial-1080.webp",
+   "type": "image",
+   "bytes": 88944
+  },
+  {
+   "url": "/flyers/flyer-impacto-1080.webp",
+   "type": "image",
+   "bytes": 90012
+  },
+  {
+   "url": "/flyers/flyer-moderno-1080.webp",
+   "type": "image",
+   "bytes": 90816
+  }
+ ],
+ "totalBytes": 629584,
+ "domNodes": 2587,
+ "mobileChecks": {
+  "vw": 390,
+  "scrollWidth": 390,
+  "overflowing": [
+   {
+    "el": "BUTTON.demo-nav-item",
+    "right": 475
+   },
+   {
+    "el": "BUTTON.demo-nav-item",
+    "right": 599
+   },
+   {
+    "el": "svg.[object SVGAnimatedString]",
+    "right": 510
+   },
+   {
+    "el": "use.[object SVGAnimatedString]",
+    "right": 509
+   }
+  ],
+  "smallTargets": [
+   {
+    "el": "BUTTON.demo-nav-item is-active",
+    "text": "Mi día",
+    "w": 87,
+    "h": 42,
+    "section": "demo-nav"
+   },
+   {
+    "el": "BUTTON.demo-nav-item",
+    "text": "Leads",
+    "w": 86,
+    "h": 42,
+    "section": "demo-nav"
+   },
+   {
+    "el": "BUTTON.demo-nav-item",
+    "text": "Propiedades",
+    "w": 127,
+    "h": 42,
+    "section": "demo-nav"
+   },
+   {
+    "el": "BUTTON.demo-nav-item",
+    "text": "Operaciones",
+    "w": 127,
+    "h": 42,
+    "section": "demo-nav"
+   },
+   {
+    "el": "BUTTON.demo-nav-item",
+    "text": "Calendario",
+    "w": 116,
+    "h": 42,
+    "section": "demo-nav"
+   },
+   {
+    "el": "A.",
+    "text": "Probalo gratis 14 días",
+    "w": 162,
+    "h": 16,
+    "section": "flyers"
+   },
+   {
+    "el": "A.",
+    "text": "Coordiná una demo de 15 minutos",
+    "w": 213,
+    "h": 38,
+    "section": "precios"
+   },
+   {
+    "el": "A.",
+    "text": "",
+    "w": 222,
+    "h": 16,
+    "section": "faq"
+   },
+   {
+    "el": "A.",
+    "text": "Coordiná una demo",
+    "w": 340,
+    "h": 38,
+    "section": "cta-final"
+   }
+  ],
+  "clipped": [
+   {
+    "el": "SPAN.dm-ctx",
+    "text": "223 478-2214 · hace 2 días"
+   },
+   {
+    "el": "SPAN.dm-ctx",
+    "text": "223 545-1180 · hace 5 horas"
+   },
+   {
+    "el": "SPAN.dm-ctx",
+    "text": "223 533-6047 · hace 6 días"
+   },
+   {
+    "el": "SPAN.dm-name",
+    "text": "Actualizar estado de Belgrano 2450"
+   },
+   {
+    "el": "H2.sr-only",
+    "text": "Lo que dicen quienes ya usan LeadEra"
+   }
+  ]
+ },
+ "height390": 11569,
+ "sections390": [
+  {
+   "id": "hero",
+   "top": 61,
+   "h": 670
+  },
+  {
+   "id": "problema",
+   "top": 731,
+   "h": 777
+  },
+  {
+   "id": "como-funciona",
+   "top": 1508,
+   "h": 1359
+  },
+  {
+   "id": "explorar",
+   "top": 2867,
+   "h": 3330
+  },
+  {
+   "id": "flyers",
+   "top": 6198,
+   "h": 955
+  },
+  {
+   "id": "testimonios",
+   "top": 7153,
+   "h": 806
+  },
+  {
+   "id": "precios",
+   "top": 7959,
+   "h": 1662
+  },
+  {
+   "id": "faq",
+   "top": 9620,
+   "h": 656
+  },
+  {
+   "id": "cta-final",
+   "top": 10277,
+   "h": 916
+  },
+  {
+   "id": "",
+   "top": 11193,
+   "h": 307
+  }
+ ],
+ "axeMobile": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 16,
+   "nodes": [
+    ".rp-priority > .rp-card > .rp-card-title > .rp-count :: Element has insufficient color contrast of 3.49 (foreground color: #d65b36, background color: #fff0e9, font size: 8.3pt (11px), font weight:",
+    ".rp-nuevo.rp-avatar :: Element has insufficient color contrast of 4.42 (foreground color: #087a70, background color: #e3efeb, font size: 8.3pt (11px), font weight:",
+    ".rp-nuevo.rp-badge :: Element has insufficient color contrast of 4.42 (foreground color: #087a70, background color: #e3efeb, font size: 8.3pt (11px), font weight:",
+    ".rp-row:nth-child(4) > .rp-tibio.rp-avatar :: Element has insufficient color contrast of 4.37 (foreground color: #9e6500, background color: #fff3c3, font size: 8.3pt (11px), font weight:",
+    ".rp-row:nth-child(4) > .rp-tibio.rp-badge :: Element has insufficient color contrast of 4.37 (foreground color: #9e6500, background color: #fff3c3, font size: 8.3pt (11px), font weight:",
+    ".rp-row:nth-child(5) > .rp-tibio.rp-avatar :: Element has insufficient color contrast of 4.37 (foreground color: #9e6500, background color: #fff3c3, font size: 8.3pt (11px), font weight:"
+   ]
+  }
+ ],
+ "height1440": 8006,
+ "sections1440": [
+  {
+   "id": "hero",
+   "top": 65,
+   "h": 629
+  },
+  {
+   "id": "problema",
+   "top": 694,
+   "h": 652
+  },
+  {
+   "id": "como-funciona",
+   "top": 1347,
+   "h": 854
+  },
+  {
+   "id": "explorar",
+   "top": 2200,
+   "h": 1192
+  },
+  {
+   "id": "flyers",
+   "top": 3392,
+   "h": 1085
+  },
+  {
+   "id": "testimonios",
+   "top": 4477,
+   "h": 601
+  },
+  {
+   "id": "precios",
+   "top": 5078,
+   "h": 1396
+  },
+  {
+   "id": "faq",
+   "top": 6475,
+   "h": 744
+  },
+  {
+   "id": "cta-final",
+   "top": 7219,
+   "h": 689
+  },
+  {
+   "id": "",
+   "top": 7907,
+   "h": 99
+  }
+ ],
+ "headings": [
+  "H1 Abrís LeadEra y sabés a quién llamar hoy.",
+  "H2 Todo empieza con una consulta.",
+  "H2 Retomá cada conversación donde la dejaste.",
+  "H3 Sabés a quién retomar.",
+  "H3(oculto) ",
+  "H3(oculto) ",
+  "H3(oculto) ",
+  "H2 Ahora recorré la historia dentro de LeadEra.",
+  "H3 Hoy te quedan 11 tareas",
+  "H3(oculto) Todos los leads",
+  "H3(oculto) Propiedades",
+  "H3(oculto) Tablero",
+  "H4(oculto) Publicada",
+  "H4(oculto) Reservada",
+  "H4(oculto) En negociación",
+  "H4(oculto) Cerrada ganada",
+  "H4(oculto) Cancelada",
+  "H3(oculto) Calendario",
+  "H4(oculto) Confirmar cambio",
+  "H4(oculto) Mover a…",
+  "H2 Flyers de tus propiedades, listos para Instagram.",
+  "H2 Lo que dicen quienes ya usan LeadEra",
+  "H2 Empezá en tres pasos.",
+  "H3 Creás tu cuenta",
+  "H3 Cargás tus leads",
+  "H3 LeadEra te dice qué hacer",
+  "H3 Solo",
+  "H3 Agencia Chica",
+  "H3 Agencia Grande",
+  "H3 Hecho en Mar del Plata.",
+  "H2 Antes de empezar.",
+  "H2 Martina ya tiene visita. ¿Y tus leads?"
+ ],
+ "imgs": [
+  {
+   "src": "leadera-logo-icon.png",
+   "alt": "",
+   "natural": "317x327",
+   "rendered": "20x21"
+  },
+  {
+   "src": "leadera-logo-icon.png",
+   "alt": "",
+   "natural": "317x327",
+   "rendered": "18x19"
+  },
+  {
+   "src": "leadera-logo-icon.png",
+   "alt": "",
+   "natural": "317x327",
+   "rendered": "0x0"
+  },
+  {
+   "src": "leadera-logo-icon.png",
+   "alt": "",
+   "natural": "317x327",
+   "rendered": "20x17"
+  },
+  {
+   "src": "flyers/flyer-editorial-540.webp",
+   "alt": "Flyer de ejemplo con la plantilla Editorial: chalet moderno de dos plantas al atardecer, con cuatro fotos más del interior, cuatro datos de la propiedad (4 ambientes, 2 baños, 70 m² cubiertos, parque) y el precio USD 120.000 en una franja dorada.",
+   "natural": "475x594",
+   "rendered": "388x485"
+  },
+  {
+   "src": "flyers/flyer-impacto-540.webp",
+   "alt": "Flyer de ejemplo con la plantilla Impacto: título grande «Chalet de estilo» sobre fondo crema, foto del frente de la casa y dos fotos interiores (cocina y living), cuatro datos de la propiedad y el precio USD 120.000 en un bloque dorado con el nombre del agente.",
+   "natural": "475x594",
+   "rendered": "388x485"
+  },
+  {
+   "src": "flyers/flyer-moderno-540.webp",
+   "alt": "Flyer de ejemplo con la plantilla Moderno: título «Chalet de estilo» a la izquierda y los datos de la propiedad con íconos a la derecha, foto del frente de la casa con dos fotos interiores, y el precio USD 120.000 abajo con la firma del agente.",
+   "natural": "475x594",
+   "rendered": "388x485"
+  },
+  {
+   "src": "leadera-logo-icon.png",
+   "alt": "",
+   "natural": "317x327",
+   "rendered": "22x23"
+  }
+ ],
+ "focus": [
+  {
+   "el": "A.logo",
+   "text": "LeadEra",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.",
+   "text": "El problema",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.",
+   "text": "Cómo funciona",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.",
+   "text": "Demo",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.",
+   "text": "Precios",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.",
+   "text": "Preguntas",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.nav-login",
+   "text": "Iniciar sesión",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.nav-cta",
+   "text": "Probar gratis",
+   "outline": "solid 2px",
+   "shadow": true
+  },
+  {
+   "el": "A.btn-main btn-hero",
+   "text": "Probar gratis 14 días",
+   "outline": "solid 2px",
+   "shadow": true
+  },
+  {
+   "el": "A.hero-link",
+   "text": "Ver la demo",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.hero-link",
+   "text": "Escribinos por WhatsApp",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.story-link",
+   "text": "Explorá la demo de LeadEra",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.story-control",
+   "text": "Priorizá",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.story-control",
+   "text": "Recordá",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.story-control",
+   "text": "Conectá",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.story-control",
+   "text": "Organizá",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.story-play",
+   "text": "Reproducir recorrido",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.demo-nav-item is-active",
+   "text": "Mi día",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.demo-nav-item",
+   "text": "Leads",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.demo-nav-item",
+   "text": "Propiedades",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.demo-nav-item",
+   "text": "Operaciones",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "BUTTON.demo-nav-item",
+   "text": "Calendario",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "DIV.demo-main",
+   "text": "Hoy te quedan 11 tareas\n\nGesti",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.btn-main",
+   "text": "Probar 14 días gratis",
+   "outline": "solid 2px",
+   "shadow": true
+  },
+  {
+   "el": "DIV.flyer-grid",
+   "text": "Editorial\nImpacto\nModerno",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.",
+   "text": "Probalo gratis 14 días",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.btn-ghost",
+   "text": "Empezar prueba gratis",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.btn-main",
+   "text": "Empezar prueba gratis",
+   "outline": "solid 2px",
+   "shadow": true
+  },
+  {
+   "el": "A.btn-ghost",
+   "text": "Empezar prueba gratis",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.",
+   "text": "Coordiná una demo de 15 minuto",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.btn-ghost",
+   "text": "Escribinos por WhatsApp",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "SUMMARY.",
+   "text": "¿Necesito una demo para empeza",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "SUMMARY.",
+   "text": "¿Puedo traer mis contactos de ",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "SUMMARY.",
+   "text": "¿Sirve si trabajo por mi cuent",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "SUMMARY.",
+   "text": "¿Hay un máximo de leads, propi",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "SUMMARY.",
+   "text": "Tengo un equipo. ¿Qué veo como",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "SUMMARY.",
+   "text": "¿Cómo se paga?",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.btn-main-lg",
+   "text": "Probar gratis 14 días",
+   "outline": "solid 2px",
+   "shadow": true
+  },
+  {
+   "el": "A.",
+   "text": "Coordiná una demo",
+   "outline": "solid 2px",
+   "shadow": false
+  },
+  {
+   "el": "A.",
+   "text": "Iniciar sesión",
+   "outline": "solid 2px",
+   "shadow": false
+  }
+ ],
+ "axe": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 16,
+   "nodes": [
+    ".rp-priority > .rp-card > .rp-card-title > .rp-count :: Element has insufficient color contrast of 3.49 (foreground color: #d65b36, background color: #fff0e9, font size: 7.5pt (10px), font weight:",
+    ".rp-nuevo.rp-avatar :: Element has insufficient color contrast of 4.42 (foreground color: #087a70, background color: #e3efeb, font size: 8.3pt (11px), font weight:",
+    ".rp-nuevo.rp-badge :: Element has insufficient color contrast of 4.42 (foreground color: #087a70, background color: #e3efeb, font size: 6.0pt (8px), font weight: ",
+    ".rp-row:nth-child(4) > .rp-tibio.rp-avatar :: Element has insufficient color contrast of 4.37 (foreground color: #9e6500, background color: #fff3c3, font size: 8.3pt (11px), font weight:",
+    ".rp-row:nth-child(4) > .rp-tibio.rp-badge :: Element has insufficient color contrast of 4.37 (foreground color: #9e6500, background color: #fff3c3, font size: 6.0pt (8px), font weight: ",
+    ".rp-row:nth-child(5) > .rp-tibio.rp-avatar :: Element has insufficient color contrast of 4.37 (foreground color: #9e6500, background color: #fff3c3, font size: 8.3pt (11px), font weight:"
+   ]
+  },
+  {
+   "id": "scrollable-region-focusable",
+   "impact": "serious",
+   "n": 1,
+   "nodes": [
+    ".demo-main :: Element should have focusable content"
+   ]
+  }
+ ]
+}
