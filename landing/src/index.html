@@ -3033,7 +3033,7 @@
                 </div>
                 <div class="dm-row">
                   <span class="dm-chip t-neutro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg></span>
-                  <span class="dm-body"><span class="dm-name">Visita realizada</span><span class="dm-ctx">Alsina 3300 con Martina Beltrán</span></span>
+                  <span class="dm-body"><span class="dm-name">Interacción con Martina Beltrán</span><span class="dm-ctx">Llamada · confirmó la visita de hoy</span></span>
                   <span class="dm-time">ayer</span>
                 </div>
                 <div class="dm-row">
@@ -3936,7 +3936,8 @@
 
   // Fechas relativas a hoy (ver FECHAS en el primer script).
   const F = window.FECHAS;
-  const VISITA = F.semana(4);   // la visita de Martina, en cuatro días
+  // La visita de Martina a Alsina 3300 es hoy a las 16:00, igual que en
+  // el hero, Mi día y los avisos.
 
 
   const TEMP = { caliente: 'Caliente', tibio: 'Tibio', frio: 'Frío', inactivo: 'Inactivo', nuevo: 'Nuevo' };
@@ -3946,16 +3947,16 @@
   const LEADS = [
     {
       ini: 'MB', name: 'Martina Beltrán', phone: '223 545-1180', mail: 'martina.beltran@mail.com',
-      temp: 'caliente', rol: 'comprador', origen: 'Web', ultimo: 'hace 5 horas', prox: F.ddmm(2), vencido: false,
-      detalle: `Llamada · confirmó la visita del ${VISITA}`, interacciones: 7, ventas: 0, compras: 2, desde: F.ddmmyyyy(-29),
+      temp: 'caliente', rol: 'comprador', origen: 'Web', ultimo: 'ayer', prox: 'Hoy', vencido: false,
+      detalle: 'Llamada · confirmó la visita de hoy 16:00', interacciones: 7, ventas: 0, compras: 2, desde: F.ddmmyyyy(-29),
       about: 'Busca un dos ambientes en el centro para mudarse con su pareja antes de fin de año. Trabaja a seis cuadras de Alsina 3300 y quiere dejar de usar el auto todos los días.',
       buscaLabel: 'Qué busca', busca: ['2 ambientes', 'Centro', 'Hasta USD 95.000', 'Entrega inmediata'],
       inter: [
-        { icon: 'phone', title: 'Llamada', when: 'Hoy 11:30', note: `Confirmó la visita del ${VISITA} a Alsina 3300.` },
-        { icon: 'chat', title: 'WhatsApp', when: 'Ayer', note: 'Pidió fotos del contrafrente y del palier.' },
+        { icon: 'phone', title: 'Llamada', when: 'Ayer', note: 'Confirmó la visita de hoy a las 16:00 a Alsina 3300.' },
+        { icon: 'chat', title: 'WhatsApp', when: 'Hace 2 días', note: 'Pidió fotos del contrafrente y del palier.' },
         { icon: 'mail', title: 'Email', when: 'Hace 4 días', note: 'Le mandamos cuatro fichas del centro.' }
       ],
-      tasks: [[`Confirmar visita del ${VISITA} 16:00`, 'alta'], ['Pasarle la ficha de San Luis 1750', 'media']]
+      tasks: [['Visita a Alsina 3300 hoy 16:00', 'alta'], ['Pasarle la ficha de San Luis 1750', 'media']]
     },
     {
       ini: 'JG', name: 'Juan García', phone: '223 478-2214', mail: 'juan.garcia@mail.com',
@@ -4559,19 +4560,15 @@
       { tipo: 'tarea', hora: '10:00', tit: 'Llamar a Juan García', desc: 'Preguntó por las expensas' },
       { tipo: 'seguimiento', hora: '11:30', tit: 'Seguimiento a Carolina Vega', desc: 'Tasación de Belgrano 2450' }
     ],
-    [F.iso(-2)]: [
-      { tipo: 'visita', hora: '16:00', tit: 'Alsina 3300', lead: 'Martina Beltrán', notas: 'Mostrar el contrafrente' }
-    ],
     [F.iso(0)]: [
       { tipo: 'tarea', hora: '09:00', tit: 'Actualizar estado de Belgrano 2450', desc: 'Pasó a alquilada', listo: true },
       { tipo: 'tarea', hora: '10:00', tit: 'Llamar a Juan García', desc: 'Segundo intento, no contesta hace 2 días' },
       { tipo: 'tarea', hora: '18:00', tit: 'Armar comparativa de expensas', desc: 'Para Juan García' },
       { tipo: 'seguimiento', hora: '11:30', tit: 'Seguimiento a Carolina Vega', desc: 'Confirmar día de tasación' },
-      { tipo: 'visita', hora: '16:00', tit: 'Alsina 3300', lead: 'Martina Beltrán', notas: 'Segunda visita, viene con la pareja' }
+      { tipo: 'visita', hora: '16:00', tit: 'Alsina 3300', lead: 'Martina Beltrán', notas: 'Viene con la pareja. Mostrar el contrafrente' }
     ],
     [F.iso(2)]: [
-      { tipo: 'tarea', hora: '09:30', tit: `Confirmar visita del ${VISITA}`, desc: 'Martina Beltrán' },
-      { tipo: 'seguimiento', hora: '12:00', tit: 'Seguimiento a Martina Beltrán', desc: '' }
+      { tipo: 'seguimiento', hora: '12:00', tit: 'Seguimiento a Martina Beltrán', desc: 'Después de la visita a Alsina 3300' }
     ],
     [F.iso(4)]: [{ tipo: 'seguimiento', hora: '10:00', tit: 'Seguimiento a Ana Soria', desc: 'Valuación de la casa' }],
     [F.iso(5)]: [
