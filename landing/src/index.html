@@ -803,27 +803,23 @@
     .un-dia, #flyers { background: var(--bg-white); }
 
     /* ---- Un día con LeadEra: los cuatro momentos ----
-       Debajo de 1024px: los cuatro apilados arriba de la demo (los
-       botones están deshabilitados: no hacen nada). Desde 1024px: dos
-       columnas, momentos a la izquierda y demo fija a la derecha; el
-       script de la sección habilita los botones y resalta el activo. */
+       Texto plano: cada momento es una hora (.paso-hora) y su texto
+       (.paso-texto, con h3 y p). Debajo de 1024px, y sin JS, se ven así,
+       apilados arriba de la demo. Desde 1024px: dos columnas, momentos a
+       la izquierda y demo fija a la derecha; el script de la sección
+       "sube" cada hora a un botón real y resalta el activo. */
     .dia-pasos {
       list-style: none; display: grid; gap: 20px 32px; margin: 36px 0 40px;
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
     }
     .dia-pasos li { padding-top: 14px; border-top: 2px solid var(--border); }
-    .dia-pasos button {
-      display: block; width: 100%; padding: 0; border: 0; background: none;
-      font: inherit; color: inherit; text-align: left; cursor: default;
-    }
-    .dia-pasos button:focus-visible { outline: 2px solid var(--teal); outline-offset: 8px; border-radius: 6px; }
-    .dia-hora { display: block; font-size: var(--fs-sm); font-weight: 600; color: var(--text-2); }
-    .dia-hora time {
+    .paso-hora { display: block; font-size: var(--fs-sm); font-weight: 600; color: var(--text-2); }
+    .paso-hora time {
       display: inline-block; padding: 2px 9px; border-radius: 999px; margin-right: 2px;
       background: var(--teal-faint); color: var(--teal-darker); font-weight: 700; font-variant-numeric: tabular-nums;
     }
-    .dia-h3 { display: block; margin: 8px 0 4px; font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; color: var(--text); }
-    .dia-txt { display: block; font-size: var(--fs-sm); line-height: 1.55; color: var(--text-2); }
+    .paso-texto h3 { display: block; margin: 8px 0 4px; font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; color: var(--text); }
+    .paso-texto p { margin: 0; font-size: var(--fs-sm); line-height: 1.55; color: var(--text-2); }
     .dia-ancla { display: block; scroll-margin-top: 88px; }
     .dia-nota { margin-bottom: 10px; font-size: var(--fs-xs); font-weight: 600; color: var(--text-muted); }
     .dia-volver {
@@ -854,23 +850,29 @@
       }
       .dia-pasos::before { background: rgba(91,103,121,.3); }
       .dia-pasos::after { background: var(--teal); transform-origin: top; transform: scaleY(var(--prog, 0)); }
-      .dia-pasos li { display: block; height: var(--tramo); padding-top: 0; border-top: 0; }
-      .dia-pasos button { height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr); }
+      .dia-pasos li {
+        display: grid; grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+        height: var(--tramo); padding-top: 0; border-top: 0;
+      }
 
-      /* La hora, como numeral grande; el nombre del momento va a su lado. */
-      .dia-hora { grid-row: 2; position: relative; display: flex; align-items: baseline; gap: .6rem; font-size: var(--fs-md); line-height: 1; }
-      .dia-hora time {
+      /* La hora, como numeral grande; el nombre del momento va a su lado.
+         Con el botón (lo agrega el script) o sin él, se ve igual. */
+      .paso-hora, .paso-hora button { display: flex; align-items: baseline; gap: .6rem; line-height: 1; }
+      .paso-hora { grid-row: 2; position: relative; font-size: var(--fs-md); }
+      .paso-hora button { padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+      .paso-hora button:focus-visible { outline: 2px solid var(--teal); outline-offset: 8px; border-radius: 6px; }
+      .paso-hora time {
         margin: 0; padding: 0; border-radius: 0; background: none; color: var(--teal);
         font-family: var(--font-display); font-weight: 800; font-variant-numeric: tabular-nums;
         font-size: clamp(2.25rem, 1.6rem + 1.6vw, 3.25rem); line-height: 1; letter-spacing: -.02em;
       }
-      .dia-hora::before {
+      .paso-hora::before {
         content: ''; position: absolute; left: -44px; top: 50%; width: 14px; height: 14px; margin-top: -7px;
         box-sizing: border-box; border-radius: 50%; background: #fff; border: 2px solid rgba(91,103,121,.55);
       }
-      .dia-cuerpo { grid-row: 3; align-self: start; padding-top: 14px; }
-      .dia-h3 { margin: 0 0 10px; font-size: clamp(1.5rem, 1.1rem + 1.1vw, 2.125rem); font-weight: 800; line-height: 1.15; }
-      .dia-txt { max-width: 38ch; font-size: 1.125rem; line-height: 1.6; }
+      .paso-texto { grid-row: 3; align-self: start; padding-top: 14px; }
+      .paso-texto h3 { margin: 0 0 10px; font-size: clamp(1.5rem, 1.1rem + 1.1vw, 2.125rem); font-weight: 800; line-height: 1.15; }
+      .paso-texto p { max-width: 38ch; font-size: 1.125rem; line-height: 1.6; }
 
       /* El marco queda fijo debajo del nav con alto fijo: no hay saltos
          (CLS 0) al cambiar de panel. El sticky vive acá afuera porque
@@ -879,21 +881,20 @@
       .dia-sticky .demo-frame { margin-top: 0; min-height: 0; height: min(620px, calc(100vh - 140px)); }
       .dia-sticky .demo-main { max-height: none; }
 
-      /* Con la sincronización activa solo cambian color y peso: los
-         tamaños son iguales en activo e inactivo. Los inactivos siguen en AA. */
-      .dia-sync .dia-pasos button { cursor: pointer; }
-      .dia-sync .dia-pasos button[aria-current="step"] .dia-hora::before {
+      /* Con la sincronización activa solo cambia el color (el título y la
+         hora pesan 800 siempre): nada se reacomoda. Los inactivos siguen en AA. */
+      .dia-sync .paso-texto { cursor: pointer; }
+      .dia-sync li.is-activo .paso-hora::before {
         background: var(--teal); border-color: var(--teal); box-shadow: 0 0 0 5px rgba(var(--teal-rgb),.18);
       }
-      .dia-sync .dia-pasos button:not([aria-current]) .dia-hora,
-      .dia-sync .dia-pasos button:not([aria-current]) .dia-hora time,
-      .dia-sync .dia-pasos button:not([aria-current]) .dia-h3,
-      .dia-sync .dia-pasos button:not([aria-current]) .dia-txt { color: var(--text-muted); }
-      .dia-sync .dia-pasos button:not([aria-current]) .dia-h3 { font-weight: 700; }
+      .dia-sync li:not(.is-activo) .paso-hora,
+      .dia-sync li:not(.is-activo) .paso-hora time,
+      .dia-sync li:not(.is-activo) .paso-texto h3,
+      .dia-sync li:not(.is-activo) .paso-texto p { color: var(--text-muted); }
     }
     @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
       .dia-pasos::after { transition: transform .6s cubic-bezier(.25, 1, .5, 1); }
-      .dia-pasos .dia-h3, .dia-pasos .dia-txt, .dia-pasos .dia-hora, .dia-pasos .dia-hora time, .dia-hora::before { transition: color .25s, background-color .25s, border-color .25s, box-shadow .25s; }
+      .dia-pasos .paso-texto h3, .dia-pasos .paso-texto p, .dia-pasos .paso-hora, .dia-pasos .paso-hora time, .paso-hora::before { transition: color .25s, background-color .25s, border-color .25s, box-shadow .25s; }
     }
 
     /* La ficha flotante no se muestra mientras la sección está a la vista:
@@ -2466,10 +2467,22 @@
     <div class="dia-grid">
       <div class="dia-guia">
       <ol class="dia-pasos">
-        <li data-paso="1"><button type="button" disabled><span class="dia-hora"><time>9:05</time> · Priorizá</span><span class="dia-cuerpo"><span class="dia-h3">Sabés a quién retomar.</span><span class="dia-txt">Mi día reúne los leads que necesitan atención.</span></span></button></li>
-        <li data-paso="2"><button type="button" disabled><span class="dia-hora"><time>9:50</time> · Recordá</span><span class="dia-cuerpo"><span class="dia-h3">La conversación sigue acá.</span><span class="dia-txt">Revisás qué hablaron y qué opciones le interesaron.</span></span></button></li>
-        <li data-paso="3"><button type="button" disabled><span class="dia-hora"><time>12:15</time> · Conectá</span><span class="dia-cuerpo"><span class="dia-h3">Una propiedad. Una coincidencia.</span><span class="dia-txt">Su búsqueda aparece relacionada con Alsina 3300.</span></span></button></li>
-        <li data-paso="4"><button type="button" disabled><span class="dia-hora"><time>16:00</time> · Organizá</span><span class="dia-cuerpo"><span class="dia-h3">Dale lugar al próximo paso.</span><span class="dia-txt">Desde Calendario podés agendar la visita y elegir propiedad, lead, fecha y hora.</span></span></button></li>
+        <li data-paso="1">
+          <div class="paso-hora"><time>9:05</time> · Priorizá</div>
+          <div class="paso-texto"><h3>Sabés a quién retomar.</h3><p>Mi día reúne los leads que necesitan atención.</p></div>
+        </li>
+        <li data-paso="2">
+          <div class="paso-hora"><time>9:50</time> · Recordá</div>
+          <div class="paso-texto"><h3>La conversación sigue acá.</h3><p>Revisás qué hablaron y qué opciones le interesaron.</p></div>
+        </li>
+        <li data-paso="3">
+          <div class="paso-hora"><time>12:15</time> · Conectá</div>
+          <div class="paso-texto"><h3>Una propiedad. Una coincidencia.</h3><p>Su búsqueda aparece relacionada con Alsina 3300.</p></div>
+        </li>
+        <li data-paso="4">
+          <div class="paso-hora"><time>16:00</time> · Organizá</div>
+          <div class="paso-texto"><h3>Dale lugar al próximo paso.</h3><p>Desde Calendario podés agendar la visita y elegir propiedad, lead, fecha y hora.</p></div>
+        </li>
       </ol>
         <button type="button" class="dia-volver" hidden>Volver a la guía</button>
       </div>
@@ -4560,30 +4573,33 @@
 <script>
 /* Un día con LeadEra (desde 1024px): el momento que cruza el centro de la
    pantalla maneja la demo (LeadEraDemo.irAPaso). El primer toque del
-   visitante en la demo corta la guía hasta "Volver a la guía". Por debajo
-   de 1024px no corre nada de esto. Nunca mueve el foco. */
+   visitante en la demo corta la guía hasta "Volver a la guía". Los
+   momentos son texto plano; acá se "sube" cada hora a un botón real
+   (y se baja de nuevo por debajo de 1024px). Nunca mueve el foco. */
 (() => {
   const sec = document.getElementById('como-funciona');
   const demo = window.LeadEraDemo;
   if (!sec || !demo || !('IntersectionObserver' in window)) return;
   const items = [...sec.querySelectorAll('.dia-pasos li')];
-  const btns = items.map(li => li.querySelector('button'));
+  const horas = items.map(li => li.querySelector('.paso-hora'));
+  const textos = items.map(li => li.querySelector('.paso-texto'));
   const lista = sec.querySelector('.dia-pasos');
   const volver = sec.querySelector('.dia-volver');
   const anuncio = document.getElementById('diaAnuncio');
   const ancho = matchMedia('(min-width: 1024px)');
   const reducido = matchMedia('(prefers-reduced-motion: reduce)');
   const PANELES = ['Mi día', 'ficha de Martina', 'coincidencias', 'calendario'];
-  let on = false, guiado = true, armado = false, activo = 0, moviendo = false, timer;
+  let on = false, guiado = true, armado = false, activo = 0, moviendo = false, timer, btns = [];
   const visibles = new Set();
 
   const marcar = i => {
     btns.forEach((b, j) => j === i ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
-    lista.style.setProperty('--prog', i / (btns.length - 1));   // el tramo teal de la línea llega hasta el punto activo
+    items.forEach((li, j) => li.classList.toggle('is-activo', j === i));
+    lista.style.setProperty('--prog', i / (items.length - 1));   // el tramo teal de la línea llega hasta el punto activo
   };
   const mostrar = i => {
     demo.irAPaso(i + 1);
-    anuncio.textContent = items[i].querySelector('.dia-hora').textContent + ': ' + PANELES[i];
+    anuncio.textContent = horas[i].textContent + ': ' + PANELES[i];
   };
   function poner(i) {
     if (i === activo) return;
@@ -4611,16 +4627,33 @@
     timer = setTimeout(fin, 1500);
     items[i].scrollIntoView({ block: 'center', behavior: reducido.matches ? 'auto' : 'smooth' });
   }
-  const clicks = btns.map((b, i) => () => alClick(i));
+  const clicks = items.map((_, i) => () => alClick(i));
+  // El texto responde al mouse igual que su botón (sin tab stop extra); si se está seleccionando texto, no.
+  const clicksTexto = items.map((_, i) => () => { if (getSelection().isCollapsed) alClick(i); });
   const alVolver = () => {
     guiado = true; volver.hidden = true; armar(); mostrar(activo);
     btns[activo].focus({ preventScroll: true });   // el botón desaparece: el foco pasa al momento actual
   };
 
+  // La hora pasa a ser un <button> (su contenido se mueve adentro) y vuelve a texto al apagarse.
+  function subir() {
+    btns = horas.map((h, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.append(...h.childNodes); h.append(b);
+      b.addEventListener('click', clicks[i]);
+      return b;
+    });
+  }
+  function bajar() {
+    horas.forEach((h, i) => { const b = h.querySelector('button'); if (b) { h.append(...b.childNodes); b.remove(); } });
+    btns = [];
+  }
+
   function activar() {
     if (on) return; on = true; guiado = true; volver.hidden = true;
     sec.classList.add('dia-sync');
-    btns.forEach((b, i) => { b.disabled = false; b.addEventListener('click', clicks[i]); });
+    subir();
+    textos.forEach((t, i) => t.addEventListener('click', clicksTexto[i]));
     volver.addEventListener('click', alVolver);
     marcar(activo); demo.irAPaso(activo + 1); armar();
     items.forEach(li => io.observe(li));
@@ -4628,7 +4661,9 @@
   function desactivar() {
     if (!on) return; on = false;
     sec.classList.remove('dia-sync');
-    btns.forEach((b, i) => { b.disabled = true; b.removeEventListener('click', clicks[i]); b.removeAttribute('aria-current'); });
+    bajar();
+    textos.forEach((t, i) => t.removeEventListener('click', clicksTexto[i]));
+    items.forEach(li => li.classList.remove('is-activo'));
     lista.style.removeProperty('--prog');
     volver.removeEventListener('click', alVolver); volver.hidden = true;
     io.disconnect(); visibles.clear();
