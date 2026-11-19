@@ -403,22 +403,25 @@
     .btn-ghost:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-faint); }
 
     /* ============================================================
-       HERO — el producto abre la página
+       HERO — el aviso que abre "Mi día"
 
        El visitante llega frío desde un anuncio, en el celular. En el
        primer pantallazo: qué es (titular + subtítulo), qué hacer
-       (CTA) y por qué confiar (línea de confianza). Lo que sigue
-       asoma recortado debajo: la ventana "Mi día" con el próximo paso
-       a la vista, que es la promesa del titular hecha pantalla.
+       (CTA) y por qué confiar (línea de confianza). Debajo asoma un
+       celular: llega el aviso del resumen diario (el texto real del
+       push, desde site.config.json) y al tocarlo queda "Mi día" con
+       los mismos datos de ejemplo que la demo.
 
-       El texto está pintado desde el primer frame (es el LCP): el
-       único movimiento es la ventana, que se arma una vez al cargar
-       con transform y opacity. Sin JS y con reduced motion se ve el
-       estado final. Nada atado al scroll ni al mouse.
+       El texto está pintado desde el primer frame (es el LCP). Lo que
+       está escrito acá abajo es el estado FINAL: "Mi día" a la vista,
+       el aviso fijo como banner y, en escritorio, el toast sobre la
+       ventana. La secuencia corre una sola vez y solo con .hd-run (la
+       pone el script del hero cuando el celular está a la vista):
+       sin JS, con reduced motion o si nunca se ve, queda el final.
 
-       Mobile first: una columna, la ventana recortada contra el
-       borde de abajo. Desde 900px, dos columnas y la ventana sale
-       por el borde derecho.
+       Mobile first: una columna y el celular centrado, recortado
+       contra el borde de abajo. Desde 1024px, dos columnas: la
+       ventana "Mi día" a la derecha y el celular sobre su esquina.
     ============================================================ */
     .hero {
       position: relative; overflow: clip;
@@ -429,11 +432,13 @@
     .hero-h1 {
       font-size: clamp(2.25rem, 1.55rem + 4vw, 4.75rem);
       font-weight: 800; line-height: 1; letter-spacing: -.035em;
-      color: var(--text); margin-bottom: 16px;
+      color: var(--text); margin-bottom: 16px; text-wrap: balance;
     }
-    /* El tramo en teal arranca en línea nueva y se balancea solo: nunca
-       queda partido entre dos líneas con una palabra suelta. */
-    .hero-acento { display: block; color: var(--teal); text-wrap: balance; }
+    /* El tramo en teal arranca en línea nueva (el <br>) y el balance lo
+       deja sin palabra suelta. Es inline a propósito: así todo el texto
+       cuenta como un solo elemento, el h1, y sigue siendo el LCP aunque
+       el subtítulo sea largo. */
+    .hero-acento { color: var(--teal); }
     .hero-sub {
       font-size: clamp(1rem, .94rem + .3vw, 1.1875rem);
       color: var(--text-2); line-height: 1.5; max-width: 34ch;
@@ -455,23 +460,98 @@
     .hero-actions > .hero-link { align-self: flex-start; }
     .hero-link-wa { font-size: 14px; font-weight: 500; }
 
-    .hero-trust { margin-top: 6px; font-size: var(--fs-xs); line-height: 1.45; color: var(--text-2); }
-    .hero-trust span { white-space: nowrap; }
+    /* Confianza: dos renglones fijos. El "·" va antes de cada ítem,
+       metido en el hueco entre ítems; el que cae al comienzo de una
+       línea queda fuera de la caja y overflow: clip lo esconde, así
+       nunca hay un separador colgando. */
+    .hero-trust { margin-top: 6px; font-size: var(--fs-xs); line-height: 1.45; color: var(--text-2); overflow: clip; }
+    .ht-row { display: flex; flex-wrap: wrap; margin-left: -1.3em; }
+    .ht-row span { margin-left: 1.3em; white-space: nowrap; }
+    .ht-row span::before { content: "·"; content: "·" / ""; display: inline-block; width: 1.3em; margin-left: -1.3em; text-align: center; }
 
-    /* ---- la ventana: pantalla "Mi día" con datos de ejemplo ----
-       Usa las piezas dm-* de la demo (mismos tokens --c-*). El alto
-       fijo recorta la lista contra el borde; clip-path con márgenes
-       negativos deja salir la tarjeta del próximo paso y las sombras
-       por los costados y por arriba. */
-    .hero-app {
-      position: relative; margin-top: 28px; height: 244px;
+    /* ---- el dispositivo ----
+       Alto fijo en teléfono: el celular queda recortado contra el
+       borde y el degradé lo funde con el fondo. clip-path con márgenes
+       negativos deja respirar las sombras por los costados. */
+    .hero-dev {
+      --q: cubic-bezier(.25, 1, .5, 1);   /* ease-out-quart */
+      position: relative; margin-top: 28px; height: 340px;
       clip-path: inset(-24px -24px 0 -24px);
     }
-    .hero-app::after {
-      content: ''; position: absolute; left: -24px; right: -24px; bottom: 0; height: 104px;
-      background: linear-gradient(180deg, rgba(247,248,250,0), var(--bg) 70%);
+    .hero-dev::after {
+      content: ''; position: absolute; left: -24px; right: -24px; bottom: 0; height: 96px;
+      background: linear-gradient(180deg, rgba(247,248,250,0), var(--bg) 75%);
       pointer-events: none;
     }
+    /* En teléfono la nota se ubica contra .hero-dev; en escritorio, contra la escena. */
+
+    /* El celular: todo se mide en em, así el mismo dibujo sirve a
+       248px en teléfono y más chico en escritorio. */
+    .hd-phone {
+      width: 248px; margin: 0 auto; aspect-ratio: 9 / 19; padding: .46em;
+      font-size: 13px; background: var(--text); border-radius: 2.6em;
+      box-shadow: var(--shadow-lg);
+    }
+    .hd-screen {
+      position: relative; height: 100%; overflow: hidden; border-radius: 2.15em;
+      background: var(--c-bg); color: var(--c-ink); text-align: left;
+    }
+    .hd-app { padding: .55em .65em 0; }
+    .hd-status { padding: 0 .7em .55em; font-size: .78em; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    /* El aviso: sin z-index propio de .hd-app, queda por encima de la
+       pantalla bloqueada aunque viva en el flujo de "Mi día". */
+    .hd-push { position: relative; z-index: 2; }
+    .hd-card {
+      display: flex; gap: .65em; padding: .7em .75em;
+      background: var(--c-surface); border-radius: 1.15em;
+      box-shadow: 0 1px 2px rgba(15,23,42,.1), 0 12px 24px -12px rgba(15,23,42,.4);
+    }
+    .hd-ico {
+      flex: none; display: grid; place-items: center;
+      width: 2.4em; height: 2.4em; border-radius: .65em;
+      background: var(--teal); color: #fff;
+    }
+    .hd-ico svg { width: 60%; height: 62%; }
+    /* El texto del aviso nunca baja de 11px, aunque el celular se achique. */
+    .hd-txt { min-width: 0; flex: 1; font-size: max(11.5px, .88em); line-height: 1.3; }
+    .hd-meta { display: flex; justify-content: space-between; gap: .5em; font-size: .96em; color: var(--c-ink-3); }
+    .hd-meta b { font-weight: 600; color: var(--c-ink-2); }
+    .hd-tit { display: block; font-weight: 700; color: var(--c-ink); }
+    .hd-cuerpo { display: block; color: var(--c-ink-2); }
+
+    .hd-main { padding: 1.1em .15em 0; }
+    .hd-main .dm-h1 { display: block; font-size: 1.25em; }
+    .hd-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: .8em;
+      background: var(--c-border); border: 1px solid var(--c-border); border-radius: .85em; overflow: hidden;
+    }
+    .hd-stats span { padding: .55em .7em; background: var(--c-surface); font-size: .76em; font-weight: 600; color: var(--c-ink-3); }
+    .hd-stats b { display: block; font-size: 1.6em; line-height: 1.15; color: var(--c-ink); font-variant-numeric: tabular-nums; }
+    .hd-list {
+      list-style: none; margin-top: .8em;
+      background: var(--c-surface); border: 1px solid var(--c-border); border-radius: .85em;
+    }
+    .hd-list li { display: flex; align-items: center; gap: .6em; padding: .6em .7em; min-width: 0; }
+    .hd-list li + li { border-top: 1px solid var(--c-border); }
+    .hd-list .dm-av, .hd-list .dm-chip { width: 2.3em; height: 2.3em; border-radius: 50%; font-size: .75em; }
+    .hd-list .dm-chip svg { width: 1.2em; height: 1.2em; }
+    .hd-list .dm-name { font-size: .86em; }
+    .hd-list .dm-ctx { font-size: .74em; }
+    .hd-tag { display: block; font-size: .68em; font-weight: 700; color: var(--c-primary); }
+    .hd-time { margin-left: auto; font-size: .74em; font-weight: 600; color: var(--c-ink-3); font-variant-numeric: tabular-nums; }
+    .hd-next .hd-time { color: var(--c-primary); }
+
+    /* Pantalla bloqueada: solo existe durante la secuencia. */
+    .hd-lock {
+      position: absolute; inset: 0; z-index: 1; opacity: 0;
+      display: flex; justify-content: center; padding-top: 44%;
+      background: var(--story); color: #fff; pointer-events: none;
+    }
+    .hd-clock { font-family: var(--font-display); font-size: 4.4em; font-weight: 700; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+
+    /* La ventana de escritorio y su toast: solo desde 1024px. */
+    .ha-win, .hd-toast { display: none; }
     .ha-win {
       background: var(--c-bg); color: var(--c-ink);
       border: 1px solid rgba(15,23,42,.1); border-radius: 16px;
@@ -483,29 +563,28 @@
       border-radius: 15px 15px 0 0;
       font-size: .8rem; font-weight: 600; color: var(--c-ink-3);
     }
-    .ha-bar img { width: 18px; height: auto; }
-    .ha-body { padding: 14px 0 6px; }
-    .ha-head { padding: 0 14px 10px; }
-    .ha-head .dm-h1 { display: block; font-size: 1.15rem; }
+    .ha-bar svg { width: 16px; height: 17px; color: var(--teal); }
+    .ha-body { padding: 18px 0 10px; }
+    .ha-head { padding: 0 20px 14px; }
+    .ha-head .dm-h1 { display: block; font-size: 1.3rem; }
     .ha-list { display: flex; flex-direction: column; }
     .ha-row {
-      position: relative; display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px; min-width: 0; background: var(--c-surface);
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 20px; min-width: 0; background: var(--c-surface);
     }
     .ha-row + .ha-row { border-top: 1px solid var(--c-border); }
     .ha-time { font-size: .76rem; font-weight: 600; color: var(--c-ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .ha-row .dm-chip { width: 32px; height: 32px; border-radius: 50%; }
     .ha-row .dm-chip svg { width: 16px; height: 16px; }
 
-    /* El próximo paso: un solo nivel de elevación. La sombra y el
-       borde viven en ::before para poder fundirlos con opacity. */
-    .ha-next { z-index: 1; width: calc(100% + 10px); translate: -10px 0; padding: 12px 14px 12px 24px; border-radius: 12px; background: none; border-top-color: transparent; }
-    .ha-next + .ha-row { border-top-color: transparent; }
-    .ha-next::before {
-      content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
-      background: var(--c-surface); border: 1px solid rgba(var(--teal-rgb),.28);
+    /* El próximo paso: un solo nivel de elevación. */
+    .ha-next {
+      position: relative; z-index: var(--z-raised); width: calc(100% + 10px); translate: -10px 0;
+      padding: 14px 20px 14px 30px; border-radius: 12px;
+      border: 1px solid rgba(var(--teal-rgb),.28);
       box-shadow: 0 1px 2px rgba(15,23,42,.08), 0 16px 28px -14px rgba(15,23,42,.35);
     }
+    .ha-row + .ha-next, .ha-next + .ha-row { border-top-color: transparent; }
     .ha-tag {
       display: flex; align-items: center; gap: 5px; margin-bottom: 1px;
       font-size: .72rem; font-weight: 700; color: var(--c-primary);
@@ -513,58 +592,91 @@
     .ha-tag svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
     .ha-next .dm-name { font-size: .95rem; }
     .ha-next .ha-time { color: var(--c-primary); }
+    .hd-toast {
+      position: absolute; top: -18px; right: 20px; z-index: var(--z-overlay);
+      align-items: center; gap: 10px; padding: 9px 16px 9px 9px;
+      background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 12px;
+      box-shadow: var(--shadow-lg); font-size: .82rem; font-weight: 600; color: var(--c-ink);
+    }
+    .hd-toast .hd-ico { font-size: 12px; }
 
     .hero-nota { position: absolute; left: 0; bottom: 8px; z-index: 1; font-size: .75rem; color: var(--text-muted); }
 
     @media (min-width: 640px) {
       .hero-copy { max-width: none; }
-      .hero-app { height: 272px; }
     }
 
-    @media (min-width: 900px) {
+    @media (min-width: 1024px) {
       .hero {
         /* El titular se dimensiona con la columna: el tramo en teal
            (8,7em de ancho) entra siempre entero en su línea, así que
            el h1 nunca pasa de 3 líneas. */
-        --hero-col: clamp(28rem, 46vw, 38rem);
-        display: grid; align-items: center;
+        --hero-col: clamp(28rem, 42vw, 36rem);
+        display: grid; align-items: start;
         grid-template-columns: max(24px, calc((100% - 1200px) / 2)) var(--hero-col) 48px minmax(0, 1fr);
-        padding: 72px 0 88px;
+        padding: 36px 0 0;
       }
       .hero-copy { grid-column: 2; max-width: none; }
       .hero-h1 { font-size: calc(var(--hero-col) / 9.2); }
-      .hero-sub { max-width: 36ch; }
+      .hero-sub { max-width: 27rem; text-wrap: pretty; }
       .hero-actions { margin-top: 28px; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 0 24px; }
       .hero-actions > .hero-link { align-self: center; }
       .hero-link-wa { flex-basis: 100%; }
       .btn-hero { padding: 0 32px; }
-      .hero-trust { margin-top: 18px; max-width: 40ch; }
+      .hero-trust { margin-top: 14px; }
 
-      .hero-app { grid-column: 4; margin-top: 0; height: auto; clip-path: none; min-width: 40rem; padding: 8px 0 28px; }
-      .hero-app::after { display: none; }
-      .ha-win { border-right: 0; border-radius: 16px 0 0 16px; }
-      .ha-bar { border-radius: 15px 0 0 0; }
-      .ha-body { padding: 18px 0 10px; }
-      .ha-head { padding: 0 20px 14px; }
-      .ha-head .dm-h1 { font-size: 1.3rem; }
-      .ha-row { padding: 12px 20px; }
-      .ha-next { padding: 14px 20px 14px 30px; }
+      /* El celular va a la derecha de la ventana y la pisa solo --ov
+         (lo justo para dar profundidad), por debajo del toast. Es alto
+         a propósito: el borde de abajo de la ventana del navegador lo
+         recorta, como en teléfono. */
+      .hero-dev {
+        grid-column: 4; height: auto; clip-path: none;
+        margin-right: max(24px, calc((100vw - 1200px) / 2));
+        padding-top: 28px;
+      }
+      .hero-dev::after { display: none; }
+      .hd-scene { --w: 220px; position: relative; min-height: calc(56px + var(--w) * 19 / 9); }
+      /* --ov: cuánto pisa el celular a la ventana. Debajo del celular
+         solo pasa el fondo de la ventana: la lista de filas (y con ella
+         la tarjeta destacada, que solo desborda hacia la izquierda)
+         termina --ov + 8px antes del borde. El celular va por encima
+         de todo lo de la ventana, tarjeta incluida (--z-overlay contra
+         --z-raised). */
+      .ha-win { display: block; --ov: 28px; margin-right: calc(var(--w) - var(--ov)); }
+      .hd-toast { display: flex; }
+      .hd-phone { position: absolute; z-index: var(--z-overlay); right: 0; top: 56px; width: var(--w); margin: 0; font-size: calc(var(--w) * 13 / 248); }
+      .ha-list { margin-right: calc(var(--ov) + 8px); }
+      .ha-row { padding: 12px 14px; gap: 8px; }
+      .ha-next { padding: 14px 14px 14px 20px; }
+      /* La ventana es angosta: los textos largos pasan a dos líneas en
+         vez de cortarse con "…" (hasta 1279px, además, filas compactas). */
+      .ha-win .dm-name, .ha-win .dm-ctx { white-space: normal; }
       .hero-nota { position: static; margin-top: 12px; padding-left: 4px; }
     }
-
-    /* Un solo momento orquestado (~1 s): la lista se arma y el primer
-       ítem queda marcado como el próximo paso. Solo transform y
-       opacity. Los estados escritos arriba son los FINALES. */
-    @media (prefers-reduced-motion: no-preference) {
-      .ha-win { animation: haIn .55s var(--ease-out-expo) both; }
-      .ha-row { animation: haRow .5s var(--ease-out-expo) calc(.25s + var(--i) * 90ms) both; }
-      .ha-next::before { animation: haMark .5s var(--ease-out-expo) .85s both; }
-      .ha-next .ha-tag { animation: haTag .45s var(--ease-out-expo) .95s both; }
+    @media (min-width: 1280px) {
+      .hd-scene { --w: 260px; }
+      .ha-row { padding: 12px 20px; gap: 10px; }
+      .ha-next { padding: 14px 20px 14px 30px; }
     }
-    @keyframes haIn   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-    @keyframes haRow  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-    @keyframes haMark { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
-    @keyframes haTag  { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+
+    /* La secuencia (~4,5 s, una vez): pantalla bloqueada a las 9:05,
+       baja el aviso, se toca, se abre "Mi día" y se arma la lista.
+       Solo transform y opacity; los keyframes terminan en el estado
+       final escrito arriba. */
+    @media (prefers-reduced-motion: no-preference) {
+      .hd-run .hd-lock  { animation: hdOut .5s var(--q) 2.35s both; }
+      .hd-run .hd-push  { animation: hdDrop .7s var(--q) .8s both; }
+      .hd-run .hd-card  { animation: hdTap .3s ease-in-out 2.2s; }
+      .hd-run .hd-main  { animation: hdOpen .6s var(--q) 2.4s both; }
+      .hd-run .hd-list li { animation: hdIn .5s var(--q) calc(2.75s + var(--i) * 120ms) both; }
+      .hd-run .hd-tag   { animation: hdIn .45s var(--q) 3.9s both; }
+      .hd-run .hd-toast { animation: hdDrop .6s var(--q) .8s both; }
+    }
+    @keyframes hdOut  { from { opacity: 1; } to { opacity: 0; } }
+    @keyframes hdDrop { from { opacity: 0; transform: translateY(-120%); } to { opacity: 1; transform: none; } }
+    @keyframes hdTap  { 50% { transform: scale(.98); } }
+    @keyframes hdOpen { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+    @keyframes hdIn   { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
     /* ============================================================
        SECCIONES — comunes
@@ -840,7 +952,7 @@
     }
 
     #explorar, #flyers { background: var(--bg-white); }
-    .demo-frame, .hero-app {
+    .demo-frame, .hero-dev {
       /* marca */
       --c-primary:       #0f6e5c;
       --c-primary-hover: #0c5a4b;
@@ -2274,13 +2386,13 @@
 <main id="top" tabindex="-1">
 
 <!-- ================================================================
-     HERO — el producto abre la página: titular, subtítulo, CTA y línea
-     de confianza en el primer pantallazo; debajo asoma "Mi día" con
-     datos de ejemplo. Sin imágenes: todo es HTML/CSS.
+     HERO — titular, subtítulo, CTA y línea de confianza en el primer
+     pantallazo; debajo, el aviso del resumen diario que se abre en
+     "Mi día" con datos de ejemplo. Sin imágenes: todo es HTML/CSS.
 ================================================================ -->
 <div class="hero">
   <div class="hero-copy">
-    <h1 class="hero-h1">Abrís LeadEra y sabés <span class="hero-acento">a&nbsp;quién llamar&nbsp;hoy.</span></h1>
+    <h1 class="hero-h1">Abrís LeadEra y sabés<br> <span class="hero-acento">a&nbsp;quién llamar&nbsp;hoy.</span></h1>
     <p class="hero-sub">CRM para agentes inmobiliarios de Argentina: tus contactos, seguimientos y visitas en un solo lugar, con avisos en el celu y en la compu.</p>
 
     <div class="hero-actions">
@@ -2294,53 +2406,109 @@
       <a href="https://wa.me/542235827465?text=Hola!%20Vi%20la%20landing%20de%20LeadEra%20y%20tengo%20una%20consulta." class="hero-link hero-link-wa" data-wa="hero" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a>
     </div>
 
-    <p class="hero-trust"><span>14 días gratis ·</span> <span>Sin tarjeta ·</span> <span>Sin límite de leads ·</span> <span>Se instala en tu celu y tu compu ·</span> <span>Sincroniza con Google Calendar</span></p>
+    <p class="hero-trust"><span class="ht-row"><span>14 días gratis</span> <span>Sin tarjeta</span> <span>Sin límite de leads</span></span> <span class="ht-row"><span>Se instala en tu celu y tu compu</span> <span>Sincroniza con Google Calendar</span></span></p>
   </div>
 
-  <figure class="hero-app" role="img" aria-label="Pantalla Mi día de LeadEra, con datos de ejemplo: el próximo paso es llamar a Martina Beltrán hoy a las 10:00.">
-    <div class="ha-win">
-      <div class="ha-bar"><img src="leadera-logo-icon.svg" alt="" width="317" height="327">Mi día</div>
-      <div class="ha-body">
-        <div class="ha-head"><span class="dm-h1">Hoy te quedan <span>11</span> tareas</span></div>
-        <div class="ha-list">
-          <div class="ha-row ha-next" style="--i:0">
-            <span class="dm-av caliente">MB</span>
-            <span class="dm-body">
-              <span class="ha-tag"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg>Tu próximo paso</span>
-              <span class="dm-name">Llamar a Martina Beltrán</span>
-              <span class="dm-ctx">Consultó por un depto en el Centro</span>
-            </span>
-            <span class="ha-time">hoy 10:00</span>
+  <div class="hero-dev" role="img" aria-label="Aviso de LeadEra en un celular: Hoy: 1 visita y 3 seguimientos. 5 prioritarios y 2 leads nuevos. Empezá por Mi día.">
+    <div class="hd-scene" aria-hidden="true">
+      <div class="ha-win">
+        <div class="ha-bar"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg>Mi día</div>
+        <div class="ha-body">
+          <div class="ha-head"><span class="dm-h1">Hoy te quedan <span>11</span> tareas</span></div>
+          <div class="ha-list">
+            <div class="ha-row ha-next">
+              <span class="dm-av caliente">MB</span>
+              <span class="dm-body">
+                <span class="ha-tag"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg>Tu próximo paso</span>
+                <span class="dm-name">Llamar a Martina Beltrán</span>
+                <span class="dm-ctx">Consultó por un depto en el Centro</span>
+              </span>
+              <span class="ha-time">hoy 10:00</span>
+            </div>
+            <div class="ha-row">
+              <span class="dm-av tibio">CV</span>
+              <span class="dm-body">
+                <span class="dm-name">Seguimiento a Carolina Vega</span>
+                <span class="dm-ctx">223 566-9021 · hace 8 días</span>
+              </span>
+              <span class="ha-time">11:30</span>
+            </div>
+            <div class="ha-row">
+              <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg></span>
+              <span class="dm-body">
+                <span class="dm-name">Visita a Alsina 3300</span>
+                <span class="dm-ctx">Departamento · Centro</span>
+              </span>
+              <span class="ha-time">16:00</span>
+            </div>
+            <div class="ha-row">
+              <span class="dm-av nuevo">IS</span>
+              <span class="dm-body">
+                <span class="dm-name">Ignacio Sosa</span>
+                <span class="dm-ctx">Todavía sin contactar</span>
+              </span>
+              <span class="bdg nuevo sm">Nuevo</span>
+            </div>
           </div>
-          <div class="ha-row" style="--i:1">
-            <span class="dm-av tibio">CV</span>
-            <span class="dm-body">
-              <span class="dm-name">Seguimiento a Carolina Vega</span>
-              <span class="dm-ctx">223 566-9021 · hace 8 días</span>
-            </span>
-            <span class="ha-time">11:30</span>
+        </div>
+        <div class="hd-toast"><span class="hd-ico"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>LeadEra · Tu resumen de hoy</div>
+      </div>
+      <p class="hero-nota">Datos de ejemplo</p>
+
+      <div class="hd-phone">
+        <div class="hd-screen">
+          <div class="hd-app">
+            <div class="hd-status">9:05</div>
+            <div class="hd-push">
+              <div class="hd-card">
+                <span class="hd-ico"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
+                <span class="hd-txt">
+                  <span class="hd-meta"><b>LeadEra</b>ahora</span>
+                  <span class="hd-tit">Hoy: 1 visita y 3 seguimientos</span>
+                  <span class="hd-cuerpo">5 prioritarios y 2 leads nuevos. Empezá por Mi día.</span>
+                </span>
+              </div>
+            </div>
+            <div class="hd-main">
+              <span class="dm-h1">Hoy te quedan <span>11</span> tareas</span>
+              <div class="hd-stats"><span><b>5</b>Prioritarios</span><span><b>2</b>Nuevos</span><span><b>3</b>Seguimientos</span><span><b>1</b>Visitas hoy</span></div>
+              <ul class="hd-list">
+                <li class="hd-next" style="--i:0">
+                  <span class="dm-av caliente">MB</span>
+                  <span class="dm-body"><span class="hd-tag">Tu próximo paso</span><span class="dm-name">Martina Beltrán</span><span class="dm-ctx">Llamar</span></span>
+                  <span class="hd-time">10:00</span>
+                </li>
+                <li style="--i:1">
+                  <span class="dm-av tibio">CV</span>
+                  <span class="dm-body"><span class="dm-name">Carolina Vega</span><span class="dm-ctx">Seguimiento</span></span>
+                  <span class="hd-time">11:30</span>
+                </li>
+                <li style="--i:2">
+                  <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg></span>
+                  <span class="dm-body"><span class="dm-name">Alsina 3300</span><span class="dm-ctx">Visita</span></span>
+                  <span class="hd-time">16:00</span>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="ha-row" style="--i:2">
-            <span class="dm-chip t-frio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home"/></svg></span>
-            <span class="dm-body">
-              <span class="dm-name">Visita a Alsina 3300</span>
-              <span class="dm-ctx">Departamento · Centro</span>
-            </span>
-            <span class="ha-time">16:00</span>
-          </div>
-          <div class="ha-row" style="--i:3">
-            <span class="dm-av nuevo">IS</span>
-            <span class="dm-body">
-              <span class="dm-name">Ignacio Sosa</span>
-              <span class="dm-ctx">Todavía sin contactar</span>
-            </span>
-            <span class="bdg nuevo sm">Nuevo</span>
-          </div>
+          <div class="hd-lock"><span class="hd-clock">9:05</span></div>
         </div>
       </div>
     </div>
-    <figcaption class="hero-nota">Datos de ejemplo</figcaption>
-  </figure>
+  </div>
+  <script>
+    /* Secuencia del hero: una vez, cuando el celular está a la vista.
+       Si ya lo está al cargar, arranca sin esperar al observer. */
+    (() => {
+      const d = document.querySelector('.hero-dev');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      const go = () => d.classList.add('hd-run');
+      const r = d.getBoundingClientRect();
+      if (r.top < innerHeight && r.bottom > 0) return go();
+      const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); go(); } }, { threshold: .3 });
+      io.observe(d);
+    })();
+  </script>
 </div>
 
 <!-- ================================================================

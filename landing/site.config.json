@@ -17,5 +17,12 @@
     "agenciaChica": 25,
     "agenciaGrande": 40
   },
+  "avisos": {
+    "_nota": "Texto real del push de resumen-diario (leadera-v2, supabase/functions/_shared/resumenTexto.ts), armado con los números de las tarjetas de Mi día de la demo: 1 visita, 3 seguimientos, 5 prioritarios, 2 leads nuevos.",
+    "resumen": {
+      "titulo": "Hoy: 1 visita y 3 seguimientos",
+      "cuerpo": "5 prioritarios y 2 leads nuevos. Empezá por Mi día."
+    }
+  },
   "pixelId": ""
 }

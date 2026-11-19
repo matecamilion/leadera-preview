@@ -31,6 +31,8 @@ const values = {
   PRICE_SOLO: config.plans.solo,
   PRICE_AGENCIA_CHICA: config.plans.agenciaChica,
   PRICE_AGENCIA_GRANDE: config.plans.agenciaGrande,
+  AVISO_RESUMEN_TITULO: config.avisos.resumen.titulo,
+  AVISO_RESUMEN_CUERPO: config.avisos.resumen.cuerpo,
 };
 
 for (const [key, value] of Object.entries(values)) {
