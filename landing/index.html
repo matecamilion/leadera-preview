@@ -679,6 +679,62 @@
     @keyframes hdIn   { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
     /* ============================================================
+       LEADERA TE AVISA — mundo teal profundo, como la historia que la
+       precede. Los avisos reusan la tarjeta del hero (.hd-card) a
+       tamaño real. Lo escrito acá es el estado final: la entrada
+       escalonada solo corre con .av-espera (la pone el script si la
+       lista está debajo del pliegue) y con movimiento permitido.
+    ============================================================ */
+    .avisos { background: var(--story); color: var(--on-story); }
+    .avisos .section-h2 { color: #fff; max-width: 18ch; }
+    .avisos .section-lead { color: var(--on-story); max-width: 46ch; }
+
+    .av-avisos {
+      list-style: none; display: grid; gap: 22px;
+      margin-top: 44px; max-width: 26rem; font-size: 15px;
+    }
+    .av-aviso .hd-card { box-shadow: 0 2px 4px rgba(0,0,0,.18), 0 18px 36px -16px rgba(0,0,0,.55); }
+    .av-cuando { margin-top: 10px; padding-left: 4px; font-size: var(--fs-sm); font-weight: 600; color: var(--on-story); }
+
+    .av-instalar { margin-top: 64px; max-width: 40rem; }
+    .av-h3 { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 700; letter-spacing: -.02em; color: #fff; }
+    .av-tabs { display: flex; gap: 6px; margin-top: 18px; }
+    .av-tabs[hidden] { display: none; }
+    .av-tabs button {
+      min-height: 44px; padding: 0 18px; border-radius: 999px; cursor: pointer;
+      font: 600 15px/1 var(--font); color: var(--on-story);
+      background: transparent; border: 1px solid rgba(201,223,217,.4);
+      transition: background .18s, color .18s, border-color .18s;
+    }
+    .av-tabs button:hover { border-color: var(--on-story); }
+    .av-tabs button[aria-selected="true"] { background: #fff; border-color: #fff; color: var(--story); }
+    .av-tabs button:focus-visible, .av-panel:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    .av-panel { margin-top: 22px; border-radius: 4px; }
+    .av-panel[hidden] { display: none; }
+    .av-plat { font-size: var(--fs-md); font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .av-con-tabs .av-plat { display: none; }
+    .av-pasos { padding-left: 1.4em; display: grid; gap: 12px; line-height: 1.6; }
+    .av-pasos strong { color: #fff; }
+    .av-nota { margin-top: 14px; font-size: var(--fs-sm); line-height: 1.55; }
+    .av-cta { margin-top: 44px; }
+
+    @media (max-width: 640px) {
+      .av-cta { width: 100%; justify-content: center; }
+    }
+
+    /* Escritorio: los tres avisos en fila, escalonados hacia abajo. */
+    @media (min-width: 900px) {
+      .av-avisos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: none; align-items: start; }
+      .av-aviso:nth-child(2) { margin-top: 36px; }
+      .av-aviso:nth-child(3) { margin-top: 72px; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .av-aviso { transition: opacity .6s cubic-bezier(.25, 1, .5, 1), transform .7s cubic-bezier(.25, 1, .5, 1); transition-delay: calc(var(--i) * 140ms); }
+      .av-espera .av-aviso { opacity: 0; transform: translateY(18px); }
+    }
+
+    /* ============================================================
        SECCIONES — comunes
     ============================================================ */
     section { padding: clamp(72px, 9vw, 112px) 24px; }
@@ -952,7 +1008,7 @@
     }
 
     #explorar, #flyers { background: var(--bg-white); }
-    .demo-frame, .hero-dev {
+    .demo-frame, .hero-dev, .avisos {
       /* marca */
       --c-primary:       #0f6e5c;
       --c-primary-hover: #0c5a4b;
@@ -2558,6 +2614,130 @@
 </section>
 
 <!-- ================================================================
+     LEADERA TE AVISA — los tres avisos reales (textos de la app, desde
+     site.config.json) y cómo instalarla para recibirlos.
+================================================================ -->
+<section id="avisos" class="avisos" aria-labelledby="avisos-titulo" data-martina="1">
+  <div class="inner">
+    <h2 class="section-h2 reveal" id="avisos-titulo">LeadEra te avisa lo que toca hoy.</h2>
+    <p class="section-lead reveal d1">Instalala como app en tu celu o en tu compu y recibí los avisos sin tener LeadEra abierto.</p>
+
+    <ul class="av-avisos" aria-label="Avisos de ejemplo">
+      <li class="av-aviso" style="--i:0">
+        <div class="hd-card">
+          <span class="hd-ico" aria-hidden="true"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
+          <span class="hd-txt">
+            <span class="hd-meta"><b>LeadEra</b>ahora</span>
+            <span class="hd-tit">Hoy: 1 visita y 3 seguimientos</span>
+            <span class="hd-cuerpo">5 prioritarios y 2 leads nuevos. Empezá por Mi día.</span>
+          </span>
+        </div>
+        <p class="av-cuando">Resumen diario · 9:05</p>
+      </li>
+      <li class="av-aviso" style="--i:1">
+        <div class="hd-card">
+          <span class="hd-ico" aria-hidden="true"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
+          <span class="hd-txt">
+            <span class="hd-meta"><b>LeadEra</b>ahora</span>
+            <span class="hd-tit">Visita a las 16:00 con Martina Beltrán en Alsina 3300</span>
+            <span class="hd-cuerpo">Empieza a las 16:00. Alsina 3300. Con Martina Beltrán.</span>
+          </span>
+        </div>
+        <p class="av-cuando">Recordatorio · 1 hora antes de la visita</p>
+      </li>
+      <li class="av-aviso" style="--i:2">
+        <div class="hd-card">
+          <span class="hd-ico" aria-hidden="true"><svg viewBox="0 0 26 27"><use href="#i-logo"/></svg></span>
+          <span class="hd-txt">
+            <span class="hd-meta"><b>LeadEra</b>ahora</span>
+            <span class="hd-tit">¿Cómo te fue con Martina Beltrán en Alsina 3300?</span>
+            <span class="hd-cuerpo">Registrá cómo fue en la ficha del lead.</span>
+          </span>
+        </div>
+        <p class="av-cuando">Post-visita · 30 minutos después</p>
+      </li>
+    </ul>
+
+    <div class="av-instalar">
+      <h3 class="av-h3" id="av-instalar-titulo">Instalala en 2 pasos</h3>
+      <!-- Sin JS las pestañas no existen: se ven las tres listas, cada una con su título. -->
+      <div class="av-tabs" role="tablist" aria-labelledby="av-instalar-titulo" hidden>
+        <button type="button" role="tab" id="av-tab-iphone" aria-controls="av-iphone" aria-selected="false" tabindex="-1">iPhone</button>
+        <button type="button" role="tab" id="av-tab-android" aria-controls="av-android" aria-selected="false" tabindex="-1">Android</button>
+        <button type="button" role="tab" id="av-tab-compu" aria-controls="av-compu" aria-selected="false" tabindex="-1">Compu</button>
+      </div>
+
+      <div class="av-panel" id="av-iphone">
+        <h4 class="av-plat">iPhone</h4>
+        <ol class="av-pasos">
+          <li><strong>Instalala desde Safari.</strong> Abrí LeadEra en Safari y tocá el botón Compartir (el cuadrado con una flecha hacia arriba). Elegí «Agregar a pantalla de inicio» y tocá «Agregar». Después abrí LeadEra desde ese ícono, no desde Safari.</li>
+          <li><strong>Activá los avisos.</strong> En Configuración › Notificaciones, prendé «Notificaciones en este dispositivo».</li>
+        </ol>
+        <p class="av-nota">En iPhone, los avisos solo llegan si instalaste LeadEra en la pantalla de inicio.</p>
+      </div>
+      <div class="av-panel" id="av-android">
+        <h4 class="av-plat">Android</h4>
+        <ol class="av-pasos">
+          <li><strong>Instalala desde Chrome.</strong> Abrí LeadEra en Chrome, tocá tu nombre arriba a la derecha y elegí «Instalar app». Confirmá en el aviso del navegador.</li>
+          <li><strong>Activá los avisos.</strong> En Configuración › Notificaciones, prendé «Notificaciones en este dispositivo».</li>
+        </ol>
+      </div>
+      <div class="av-panel" id="av-compu">
+        <h4 class="av-plat">Compu</h4>
+        <ol class="av-pasos">
+          <li><strong>Instalala desde Chrome o Edge.</strong> Abrí LeadEra, hacé clic en tu nombre arriba a la derecha y elegí «Instalar app». Confirmá en el aviso del navegador.</li>
+          <li><strong>Activá los avisos.</strong> En Configuración › Notificaciones, prendé «Notificaciones en este dispositivo». Se activan por dispositivo: hacelo en cada uno donde quieras recibirlos.</li>
+        </ol>
+      </div>
+    </div>
+
+    <a href="https://app.leadera.com.ar/signup" class="btn-main-lg av-cta" data-cta="avisos">
+      Probar gratis 14 días
+      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" aria-hidden="true">
+        <path d="M2.5 8.5h12M9.5 4.5l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+  <script>
+    /* Avisos: entran escalonados una vez al verse. Pestañas de instalación:
+       se arman acá (sin JS se ven las tres listas) y arrancan en la
+       plataforma del visitante, con la misma detección que la app. */
+    (() => {
+      const sec = document.getElementById('avisos');
+      const lista = sec.querySelector('.av-avisos');
+      const r = lista.getBoundingClientRect();
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window && r.top > innerHeight) {
+        sec.classList.add('av-espera');
+        const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); sec.classList.remove('av-espera'); } }, { threshold: .35 });
+        io.observe(lista);
+      }
+
+      const tabs = [...sec.querySelectorAll('[role=tab]')];
+      const panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
+      const n = navigator, ua = n.userAgent;
+      const ios = /iPhone|iPad|iPod/.test(ua) || (n.platform === 'MacIntel' && n.maxTouchPoints > 1);
+      const elegir = (i, foco) => tabs.forEach((t, j) => {
+        const on = i === j;
+        t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; panels[j].hidden = !on;
+        if (on && foco) t.focus();
+      });
+      panels.forEach((p, j) => { p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', tabs[j].id); p.tabIndex = 0; });
+      tabs.forEach((t, i) => {
+        t.addEventListener('click', () => elegir(i));
+        t.addEventListener('keydown', e => {
+          const k = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+          if (k === undefined) return;
+          e.preventDefault(); elegir((k + tabs.length) % tabs.length, true);
+        });
+      });
+      sec.querySelector('.av-tabs').hidden = false;
+      sec.classList.add('av-con-tabs');
+      elegir(ios ? 0 : /Android/.test(ua) ? 1 : 2);
+    })();
+  </script>
+</section>
+
+<!-- ================================================================
      DEMO NAVEGABLE
 ================================================================ -->
 <section id="explorar" aria-labelledby="demo-titulo" data-martina="2">
@@ -3252,6 +3432,8 @@
     <details class="reveal"><summary>¿Sirve si trabajo por mi cuenta?</summary><p class="faq-a">Sí. El plan Solo contempla un agente y hasta dos asistentes. También hay planes para equipos de hasta cinco agentes y para agencias más grandes.</p></details>
     <details class="reveal"><summary>¿Hay un máximo de leads, propiedades u operaciones?</summary><p class="faq-a">No. En todos los planes podés cargar leads, propiedades y operaciones sin límite. Los planes se diferencian por la cantidad de agentes y asistentes, las estadísticas por agente y el soporte.</p></details>
     <details class="reveal"><summary>Tengo un equipo. ¿Qué veo como dueño?</summary><p class="faq-a">Cada agente trabaja con su propia carga de trabajo, ordenada, y vos ves las estadísticas de rendimiento de cada uno (desde el plan Agencia Chica). Además, todos los planes incluyen un reporte semanal por email para arrancar la semana ordenado.</p></details>
+    <details class="reveal"><summary>¿Se puede instalar LeadEra en el celular?</summary><p class="faq-a">Sí, en el celu y en la compu, sin pasar por ninguna tienda. En Android y en la compu, abrí LeadEra en Chrome o Edge, tocá tu nombre arriba a la derecha y elegí «Instalar app». En iPhone, desde Safari: Compartir › «Agregar a pantalla de inicio».</p></details>
+    <details class="reveal"><summary>¿Qué avisos manda LeadEra?</summary><p class="faq-a">Tres: el resumen diario a las 9:05, con lo que te toca hoy (los días que tenés algo pendiente); un recordatorio una hora antes de cada visita, y media hora después, un aviso para que registres cómo te fue. Llegan al celu y a la compu donde los actives, en Configuración › Notificaciones. En iPhone necesitás tener LeadEra instalada en la pantalla de inicio.</p></details>
     <details class="reveal"><summary>¿Cómo se paga?</summary><p class="faq-a">Los planes se expresan en dólares y se pagan en pesos por transferencia, al dólar MEP, que actualizamos una vez por semana. Podés dejar de pagar cuando quieras. Si al día siguiente del vencimiento no registramos el pago, la cuenta se suspende hasta que se regularice; te avisamos por email antes.</p></details>
   </div>
 </section>

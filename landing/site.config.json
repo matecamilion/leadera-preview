@@ -22,6 +22,15 @@
     "resumen": {
       "titulo": "Hoy: 1 visita y 3 seguimientos",
       "cuerpo": "5 prioritarios y 2 leads nuevos. Empezá por Mi día."
+    },
+    "_notaVisitas": "Texto real de avisos-visitas (leadera-v2, supabase/functions/_shared/avisosVisitas.ts, textoDeAviso) para la visita de ejemplo: 16:00, Martina Beltrán, Alsina 3300.",
+    "visita": {
+      "titulo": "Visita a las 16:00 con Martina Beltrán en Alsina 3300",
+      "cuerpo": "Empieza a las 16:00. Alsina 3300. Con Martina Beltrán."
+    },
+    "post": {
+      "titulo": "¿Cómo te fue con Martina Beltrán en Alsina 3300?",
+      "cuerpo": "Registrá cómo fue en la ficha del lead."
     }
   },
   "pixelId": ""

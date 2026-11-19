@@ -33,6 +33,10 @@ const values = {
   PRICE_AGENCIA_GRANDE: config.plans.agenciaGrande,
   AVISO_RESUMEN_TITULO: config.avisos.resumen.titulo,
   AVISO_RESUMEN_CUERPO: config.avisos.resumen.cuerpo,
+  AVISO_VISITA_TITULO: config.avisos.visita.titulo,
+  AVISO_VISITA_CUERPO: config.avisos.visita.cuerpo,
+  AVISO_POST_TITULO: config.avisos.post.titulo,
+  AVISO_POST_CUERPO: config.avisos.post.cuerpo,
 };
 
 for (const [key, value] of Object.entries(values)) {
